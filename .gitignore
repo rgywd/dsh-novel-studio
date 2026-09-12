@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.local/
+.env
+*.sqlite*
+*.log
+test-results/
+playwright-report/
+docs/novel-studio/evidence/private-*
