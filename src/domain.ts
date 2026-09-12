@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { Store, hash } from './store.js';
 import { activeStatuses, DomainError, id, now, objectSchema, projectSchema, requireThat, taskInputSchema, type Artifact, type ChapterVersion, type CreativeTask, type ObjectInput, type Project, type Review, type StoryObject, type TaskStatus } from './contracts.js';
+const chapterProjection=['currentVersion','summary','summaryVersion','extractionPending','needsReview','control'];
+export const editablePlan=(o:StoryObject)=>['book','volume','chapter'].includes(o.kind)&&!o.locked&&o.status==='planned'&&(o.kind!=='chapter'||!o.body.trim());
+function chapterMetadata(data:ObjectInput,old?:StoryObject){if(data.kind!=='chapter')return;requireThat(data.body===(old?.body??''),'BODY_ENDPOINT','正文请通过编辑器保存，不能通过章纲接口覆盖');requireThat(old?data.status===old.status:['planned','draft'].includes(data.status),'VERSION_REQUIRED','正文接受状态只能通过版本提交改变');for(const key of chapterProjection)requireThat(JSON.stringify(data.fields[key])===JSON.stringify(old?.fields[key]),'VERSION_REQUIRED',`不能直接修改版本投影 ${key}`);}
+function authorSource(data:ObjectInput,old?:StoryObject){return {type:'user' as const,quote:data.source?.quote??data.body,time:data.source?.time??'用户明确设定',fromChapter:data.source?.fromChapter,toChapter:data.source?.toChapter,inference:data.source?.type==='user'?data.source.inference:false,modality:data.source?.type==='user'?data.source.modality:'objective' as const,supersedes:old?.id,policy:old?'author-confirmed':'author-setting'};}
 
 export class Domain {
   onInterrupt:(taskId:string)=>void=()=>{};
@@ -23,12 +27,18 @@ export class Domain {
   addObject(projectId:string,input:unknown):StoryObject {
     const data=objectSchema.parse(input);
     if(data.parentId){const parent=this.object(projectId,data.parentId);requireThat(data.kind==='chapter'?parent.kind==='volume':data.kind==='volume'?parent.kind==='book':parent.kind===data.kind,'HIERARCHY','上级节点类型不匹配');}
-    if(data.kind==='relationship'){this.object(projectId,String(data.fields.fromId));this.object(projectId,String(data.fields.toId));}
+    this.references(projectId,data);
     const o={...data,id:id(data.kind),projectId,revision:1,updatedAt:now()};this.store.put('objects',o);return o;
   }
   createObject(projectId:string,revision:number,input:unknown){
     const data=objectSchema.parse(input);if(data.source)requireThat(data.source.type==='user','SOURCE','手工资料的来源必须是用户设定');
-    return this.store.transaction(()=>{this.guard(projectId,revision);this.invalidateTasks(projectId,'资料新增，需重建上下文');const o=this.addObject(projectId,{...data,source:{...data.source,type:'user',quote:data.source?.quote??data.body}});this.bump(projectId);this.store.change(projectId,'object.create',{after:o});return o;});
+    chapterMetadata(data);
+    return this.store.transaction(()=>{this.guard(projectId,revision);this.invalidateTasks(projectId,'资料新增，需重建上下文');const o=this.addObject(projectId,{...data,source:authorSource(data)});this.bump(projectId);this.store.change(projectId,'object.create',{after:o});return o;});
+  }
+  private references(projectId:string,data:ObjectInput){
+    if(data.kind==='relationship')requireThat(['fromId','toId'].every(k=>this.object(projectId,String(data.fields[k])).kind==='character'),'RELATION','关系两端必须是角色');
+    if(data.kind==='fact'&&(data.status==='accepted'||data.fields.entityId))requireThat(['character','world','foreshadow','relationship'].includes(this.object(projectId,String(data.fields.entityId)).kind),'ENTITY','事实必须关联本作品实体');
+    if(data.source?.versionId){const v=this.store.get('versions',data.source.versionId);requireThat(v.projectId===projectId&&v.chapterId===data.source.chapterId,'SOURCE','来源版本不属于此作品章节');requireThat(!data.source.quote||v.content.includes(data.source.quote),'SOURCE','来源引文不在指定正文版本中');}
   }
   updateObject(projectId:string,objectId:string,revision:number,input:unknown){
     const data=objectSchema.parse(input);
@@ -36,10 +46,18 @@ export class Domain {
       const old=this.object(projectId,objectId);requireThat(old.revision===revision,'STALE','资料已被其他操作更新，请刷新');requireThat(!this.project(projectId).archived,'ARCHIVED','作品已归档');
       requireThat(old.kind===data.kind,'KIND','不能改变对象类型');
       if(old.locked){requireThat(!data.locked && JSON.stringify({...data,locked:true})===JSON.stringify(objectSchema.parse(oldInput(old))),'LOCKED','先解锁再编辑；解锁操作只能改变锁定开关');}
+      chapterMetadata(data,old);
       if(data.parentId){let parent:StoryObject|null=this.object(projectId,data.parentId);requireThat(data.kind==='chapter'?parent.kind==='volume':data.kind==='volume'?parent.kind==='book':parent.kind===data.kind,'HIERARCHY','上级节点类型不匹配');while(parent){requireThat(parent.id!==old.id,'CYCLE','不能把节点移动到自己的下级');parent=parent.parentId?this.object(projectId,parent.parentId):null;}}
-      if(data.kind==='relationship'){requireThat(this.object(projectId,String(data.fields.fromId)).kind==='character'&&this.object(projectId,String(data.fields.toId)).kind==='character','RELATION','关系两端必须是角色');}
       if(data.source) requireThat(JSON.stringify(data.source)===JSON.stringify(old.source)||data.source.type==='user','SOURCE','不能伪造正文来源');
       this.invalidateTasks(projectId,'作者修改资料，旧依赖已失效');
+      const material=old.body!==data.body||JSON.stringify(old.fields)!==JSON.stringify(data.fields)||old.status!==data.status;
+      if(material&&old.kind!=='chapter')data.source=authorSource(data,old);
+      this.references(projectId,data);
+      if(material&&['fact','event'].includes(old.kind)){
+        requireThat(!['revoked','stale'].includes(old.status),'HISTORY','历史事实不能原地覆盖；请创建新的用户设定');
+        this.store.put('objects',{...old,status:'revoked',revision:old.revision+1,updatedAt:now()});
+        const replacement=this.addObject(projectId,{...data,source:authorSource(data,old)});this.bump(projectId);this.store.change(projectId,'fact.supersede',{before:old,after:replacement});return replacement;
+      }
       const o={...old,...data,revision:old.revision+1,updatedAt:now()};this.store.put('objects',o);this.bump(projectId);this.store.change(projectId,'object.update',{before:old,after:o});return o;
     });
   }
@@ -56,6 +74,7 @@ export class Domain {
     const content=z.string().max(100000).parse(body);
     return this.store.transaction(()=>{const c=this.object(projectId,chapterId);requireThat(c.kind==='chapter','KIND','请选择章节');requireThat(c.revision===revision,'STALE','正文版本冲突，您的编辑仍保留在本地');requireThat(!c.locked,'LOCKED','章节已锁定');requireThat(!this.project(projectId).archived,'ARCHIVED','作品已归档');
       requireThat(!this.store.list('tasks',projectId).some(t=>activeStatuses.includes(t.status)&&(t.chapterId===chapterId||t.checkpoint.chapterId===chapterId)),'TAKEOVER_REQUIRED','导演正在处理本章，请先接管再保存');
+      requireThat(c.fields.control!=='director','TAKEOVER_REQUIRED','请先接管导演交付的正文，再进行人工保存');
       this.invalidateTasks(projectId,'正文已修改，旧上下文已失效');this.invalidateDerived(projectId,chapterId,true);
       const v:ChapterVersion={id:id('version'),projectId,chapterId,content,chapterRevision:c.revision+1,createdAt:now(),actor:'author',accepted:true,summary:''};this.store.put('versions',v);
       const updated={...c,body:content,status:'accepted' as const,revision:c.revision+1,updatedAt:now(),fields:{...c.fields,currentVersion:v.id,summary:'',summaryVersion:'',extractionPending:true,control:'author'}};
@@ -71,11 +90,19 @@ export class Domain {
   }
   chapters(projectId:string){const all=this.store.objects(projectId);const parents=new Map(all.map(o=>[o.id,o.order]));return all.filter(o=>o.kind==='chapter').sort((a,b)=>(parents.get(a.parentId??'')??0)-(parents.get(b.parentId??'')??0)||a.order-b.order||a.id.localeCompare(b.id));}
   versions(projectId:string,chapterId:string){this.object(projectId,chapterId);return this.store.list('versions',projectId).filter(v=>v.chapterId===chapterId).sort((a,b)=>b.createdAt.localeCompare(a.createdAt));}
+  history(projectId:string,objectId:string){
+    const object=this.object(projectId,objectId);const all=this.store.objects(projectId);const ids=new Set([object.id]);let ancestor=object.source?.supersedes;
+    while(ancestor&&!ids.has(ancestor)){ids.add(ancestor);ancestor=all.find(o=>o.id===ancestor)?.source?.supersedes;}
+    const records=all.filter(o=>ids.has(o.id)||o.fields.entityId===objectId).map(o=>({id:o.id,title:o.title,status:o.status,fields:o.fields,source:o.source,updatedAt:o.updatedAt}));
+    const changes=this.store.db.prepare('SELECT * FROM changesets WHERE projectId=? ORDER BY at DESC').all(projectId).map(c=>({...c,data:JSON.parse(String(c.data))})).filter(c=>ids.has(c.data.before?.id)||ids.has(c.data.after?.id)||ids.has(c.data.chapterId)).slice(0,50);
+    return {records,changes};
+  }
   rollback(projectId:string,chapterId:string,revision:number,versionId:string){
     return this.store.transaction(()=>{const c=this.object(projectId,chapterId);requireThat(c.revision===revision,'STALE','章节已修改');requireThat(!c.locked,'LOCKED','章节已锁定');requireThat(!this.project(projectId).archived,'ARCHIVED','作品已归档');const v=this.store.get('versions',versionId);requireThat(v.projectId===projectId&&v.chapterId===chapterId,'SCOPE','版本不属于本章');
       this.invalidateTasks(projectId,'正文版本回滚，下游依赖需要重新验证');this.invalidateDerived(projectId,chapterId,true);
       const nv={...v,id:id('version'),createdAt:now(),chapterRevision:c.revision+1,actor:'author-rollback',restoredFrom:v.id,commitKey:undefined};this.store.put('versions',nv);
-      for(const o of this.store.objects(projectId))if(o.source?.versionId===v.id&&o.source?.chapterId===chapterId){const restored={...o,id:id(o.kind),revision:1,status:o.source.inference||o.source.modality!=='objective'&&o.source.modality!=='knowledge'?'candidate' as const:'accepted' as const,source:{...o.source,versionId:nv.id,supersedes:o.id},updatedAt:now()};this.store.put('objects',restored);}
+      const records=this.store.objects(projectId);
+      for(const o of records)if(o.source?.versionId===v.id&&o.source?.chapterId===chapterId&&!records.some(r=>r.source?.type==='user'&&r.source.supersedes===o.id)){const restored={...o,id:id(o.kind),revision:1,status:o.source.inference||o.source.modality!=='objective'&&o.source.modality!=='knowledge'?'candidate' as const:'accepted' as const,source:{...o.source,versionId:nv.id,supersedes:o.id},updatedAt:now()};this.store.put('objects',restored);}
       const updated={...c,body:v.content,status:v.accepted?'accepted' as const:'draft' as const,revision:c.revision+1,fields:{...c.fields,currentVersion:nv.id,summary:v.summary,summaryVersion:nv.id,extractionPending:!v.summary,needsReview:false},updatedAt:now()};this.store.put('objects',updated);this.bump(projectId);this.store.change(projectId,'chapter.rollback',{chapterId,from:c.fields.currentVersion,to:nv.id});return updated;
     });
   }
@@ -84,6 +111,7 @@ export class Domain {
     requireThat(!this.store.list('tasks',projectId).some(t=>activeStatuses.includes(t.status)),'BUSY','本作品已有运行任务，请先暂停或取消');
     if(data.chapterId){const c=this.object(projectId,data.chapterId);requireThat(c.kind==='chapter','SCOPE','任务目标必须是章节');if(['write','review','assist'].includes(data.kind))requireThat(!c.locked,'LOCKED','任务不能改写锁定章节');if(data.kind==='write')requireThat(c.status!=='accepted'||!c.body.trim(),'ACCEPTED_SCOPE','已接受正文请使用审查修复任务或生成后续章节');}
     if(['review','assist'].includes(data.kind))requireThat(data.chapterId,'SCOPE','请选择指定章节');
+    if(data.draft!==undefined||data.draftArtifactId){requireThat(data.kind==='review'&&data.draftArtifactId&&data.draft!==undefined,'SCOPE','手工工作稿必须基于一个现有章节成果');const a=this.artifact(projectId,data.draftArtifactId);requireThat(a.status==='pending'&&a.chapterId===data.chapterId&&a.baseRevision===p.revision&&a.chapterRevision===this.object(projectId,data.chapterId!).revision,'STALE','原成果已过期，不能用旧工作稿覆盖当前版本');}
     if(data.kind==='assist'){const c=this.object(projectId,data.chapterId!);requireThat(data.range&&data.range.start<=data.range.end&&c.body.slice(data.range.start,data.range.end)===data.range.expectedText,'RANGE','选区已变化');}
     const t:CreativeTask={...data,id:id('task'),projectId,status:'QUEUED',inputRevision:p.revision,expectedRevision:p.revision,epoch:0,createdAt:now(),updatedAt:now(),currentStep:'queued',completedChapters:0,steps:[],usage:{calls:0,outputTokens:0,estimated:false},checkpoint:{committed:[]},contract:{scope:data.chapterId?`指定章节 ${this.object(projectId,data.chapterId).title}`:`${data.kind==='write'?`最多 ${data.count} 章新正文`:'本作品的候选资料与未锁定未来规划'}`,lockedIds:this.store.objects(projectId).filter(o=>o.locked).map(o=>o.id),permitted:['读取有界资料','创建候选与草稿','最多两轮局部修复',...(data.autoAccept?['按合格成果策略自动接受']:[])],forbidden:['覆盖锁定对象','改写范围外已接受正文','删除用户内容','发布到外部平台'],deliverables:data.kind==='write'?['正文','一致性报告','有来源的候选事实','上下文依据']:['可审阅成果','影响与依据'],stop:['预算耗尽','重大冲突','版本变化','用户暂停或取消']}};
     this.store.transaction(()=>{this.store.put('tasks',t);this.store.event(projectId,t.id,'task.queued','任务约定已保存，可开始执行',{scope:t.contract.scope,budget:t.budget});});return t;
@@ -102,7 +130,7 @@ export class Domain {
       t.updatedAt=now();this.store.put('tasks',t);this.store.event(projectId,t.id,`task.${action}`,({pause:'暂停已请求，将在安全边界停下',cancel:'任务已取消，未接受草稿保留',resume:'从检查点恢复',redelegate:'已绑定当前作品版本，重建必要上下文'})[action]);return t;
     });
   }
-  recover(){for(const t of this.store.list('tasks'))if(activeStatuses.includes(t.status)){t.status='PAUSED';t.error={code:'INTERRUPTED',message:'服务曾中断；已保留检查点，点击恢复继续'};this.store.put('tasks',t);this.store.event(t.projectId,t.id,'task.recovered','服务重启；任务停在安全检查点');}}
+  recover(){for(const t of this.store.list('tasks')){if(t.usage.calls>t.steps.reduce((n,s)=>n+(s.calls?.length??0),0)&&!t.usage.estimated){t.usage.estimated=true;this.store.put('tasks',t);}if(activeStatuses.includes(t.status)){t.status='PAUSED';t.error={code:'INTERRUPTED',message:'服务曾中断；已保留检查点，点击恢复继续'};this.store.put('tasks',t);this.store.event(t.projectId,t.id,'task.recovered','服务重启；任务停在安全检查点');}}}
   putArtifact(task:CreativeTask,type:Artifact['type'],data:any,chapter?:StoryObject):Artifact {
     const fresh=this.task(task.projectId,task.id);const valid=fresh.expectedRevision===task.expectedRevision&&this.project(task.projectId).revision===task.expectedRevision&&!['CANCELED','PAUSED','PAUSE_REQUESTED'].includes(fresh.status);
     const a:Artifact={id:id('artifact'),taskId:task.id,projectId:task.projectId,type,data,baseRevision:task.expectedRevision,chapterId:chapter?.id,chapterRevision:chapter?.revision,status:valid?'pending':'stale',createdAt:now()};this.store.put('artifacts',a);this.store.event(task.projectId,task.id,'artifact.saved',valid?'成果已落盘，等待检查或接受':'过期成果已保留，未覆盖作者内容',{artifactId:a.id,type});return a;
@@ -113,12 +141,14 @@ export class Domain {
       requireThat(a.status==='pending','STALE','成果已过期或已拒绝');this.guard(projectId,a.baseRevision);const t=this.task(projectId,a.taskId);
       requireThat(t.status!=='CANCELED'&&t.status!=='PAUSE_REQUESTED'&&(actor!=='auto'||t.status==='RUNNING'),'PAUSED','任务已停止，不能自动接受');
       if(actor==='auto')requireThat(t.autoAccept,'AUTHORIZATION','任务没有自动接受授权');
-      if(a.type==='chapter'){
+      if(a.type==='state-review'){
+        const c=this.object(projectId,a.chapterId!);const v=this.store.get('versions',String(c.fields.currentVersion));const review=a.data.review as Review;requireThat(c.revision===a.chapterRevision&&v.id===a.data.versionId,'STALE','作者正文又有修改');requireThat(!review.issues.some(i=>i.blocks&&i.status==='open'),'CONFLICT','请先处理状态审查中的阻塞问题');this.invalidateDerived(projectId,c.id,false);this.commitEvidence(c,v,review,t,actor);c.fields.summary=review.summary;c.fields.summaryVersion=v.id;c.fields.extractionPending=false;this.store.put('objects',c);t.checkpoint.artifactId=undefined;
+      } else if(a.type==='chapter'){
         const review=a.data.review as Review;requireThat(review,'REVIEW_REQUIRED','尚未审校，不能接受');requireThat(!review.issues.some(i=>i.blocks&&i.status==='open'),'CONFLICT','存在阻塞问题，需要先处理');
         const c=this.object(projectId,a.chapterId!);requireThat(c.revision===a.chapterRevision&&!c.locked,'STALE','章节版本已变化或被锁定');
         const version:ChapterVersion={id:id('version'),projectId,chapterId:c.id,content:a.data.content,chapterRevision:c.revision+1,createdAt:now(),actor:actor==='auto'?`auto:${t.id}:qualified-v1`:'author',accepted:true,summary:review.summary,commitKey:a.id};
         this.invalidateDerived(projectId,c.id,true);this.store.put('versions',version);this.commitEvidence(c,version,review,t,actor);
-        this.store.put('objects',{...c,body:version.content,status:'accepted',revision:c.revision+1,updatedAt:now(),fields:{...c.fields,currentVersion:version.id,summary:review.summary,summaryVersion:version.id,extractionPending:false,needsReview:false,control:actor==='auto'?'director':'author'}});
+        this.store.put('objects',{...c,body:version.content,status:'accepted',revision:c.revision+1,updatedAt:now(),fields:{...c.fields,...a.data.plan,targetWords:t.targetWords,currentVersion:version.id,summary:review.summary,summaryVersion:version.id,extractionPending:false,needsReview:false,control:actor==='auto'?'director':'author'}});
         t.completedChapters++;t.checkpoint.committed.push(a.id);t.checkpoint.artifactId=undefined;t.checkpoint.chapterId=undefined;
       } else if(a.type==='edit'){
         const c=this.object(projectId,a.chapterId!);requireThat(c.revision===a.chapterRevision&&!c.locked,'STALE','正文已修改或锁定');const range=t.range!;requireThat(c.body.slice(range.start,range.end)===range.expectedText,'STALE','选区已经改变');
@@ -126,20 +156,23 @@ export class Domain {
         this.invalidateDerived(projectId,c.id,true);const content=c.body.slice(0,range.start)+replacement+c.body.slice(range.end);const v:ChapterVersion={id:id('version'),projectId,chapterId:c.id,content,chapterRevision:c.revision+1,createdAt:now(),actor:'author-selection',accepted:true,summary:'',commitKey:a.id};this.store.put('versions',v);this.store.put('objects',{...c,body:content,status:'accepted',revision:c.revision+1,fields:{...c.fields,currentVersion:v.id,summaryVersion:'',extractionPending:true},updatedAt:now()});
       } else if(a.type==='setup'){
         const objects=a.data.objects as ObjectInput[];const titleMap=new Map<string,string>();let book=this.store.objects(projectId,'book')[0];let volume:StoryObject|undefined;
-        for(const input of objects){requireThat(!['fact','event'].includes(input.kind),'PLAN_CANON','开书规划不能登记为既成事实');if(input.kind==='book'){titleMap.set(input.title,book.id);continue;}const parentId=input.kind==='volume'?book.id:input.kind==='chapter'?volume?.id??null:null;
+        requireThat(a.data.directions[a.data.chosen],'DIRECTION','所选故事方向不存在');
+        for(const input of objects){requireThat(['book','volume','chapter','character','world'].includes(input.kind),'PLAN_CANON','开书只接受基础人物、世界与未来章纲');chapterMetadata(input);if(input.kind==='book'){titleMap.set(input.title,book.id);continue;}const parentId=input.kind==='volume'?book.id:input.kind==='chapter'?volume?.id??null:null;
           if(input.kind==='chapter'&&!parentId){volume=this.addObject(projectId,{kind:'volume',title:'第一卷',status:'planned',parentId:book.id});}
           const o=this.addObject(projectId,{...input,parentId:input.kind==='chapter'?volume!.id:parentId,status:['character','world','relationship'].includes(input.kind)?'accepted':'planned',source:{type:'ai',quote:a.data.rationale,taskId:t.id,policy:actor==='auto'?'qualified-v1':'author-accept'}});titleMap.set(o.title,o.id);if(o.kind==='volume')volume=o;
         }
         const p=this.project(projectId);p.premise=a.data.directions[a.data.chosen]?.premise??p.premise;this.store.put('projects',p);
       } else if(a.type==='replan'){
-        const before=[];for(const change of a.data.changes){const o=this.object(projectId,change.id);requireThat(['book','volume','chapter'].includes(o.kind)&&o.status!=='accepted'&&!o.locked&&!o.body.trim()||(['book','volume'].includes(o.kind)&&!o.locked)||o.kind==='chapter'&&o.status==='planned'&&!o.locked,'SCOPE','重规划仅可修改未锁定的未来大纲');before.push(o);this.store.put('objects',{...o,title:change.title??o.title,body:o.kind==='chapter'?o.body:change.body,fields:{...o.fields,...change.fields,goal:change.body},revision:o.revision+1,updatedAt:now()});}this.store.change(projectId,'replan',{before,changes:a.data.changes,impacts:a.data.impacts});
+        const known=new Set([...this.store.objects(projectId),...this.store.list('tasks',projectId)].map(o=>o.id));requireThat(a.data.impacts.every((i:any)=>known.has(i.id)),'DEPENDENCY','影响分析引用了不存在的对象');
+        const before=[];for(const change of a.data.changes){const o=this.object(projectId,change.id);requireThat(editablePlan(o),'SCOPE','重规划仅可修改未锁定的未来大纲');const updated={...o,title:change.title??o.title,body:o.kind==='chapter'?o.body:change.body,fields:{...o.fields,...change.fields,goal:change.body},revision:o.revision+1,updatedAt:now()};chapterMetadata(oldInput(updated),o);before.push(o);this.store.put('objects',updated);}this.store.change(projectId,'replan',{before,changes:a.data.changes,impacts:a.data.impacts});
       } else if(a.type==='ideas'){
         for(const idea of a.data.ideas)this.addObject(projectId,{kind:'idea',title:idea.title,body:idea.body,status:'candidate',fields:{tradeoff:idea.tradeoff},source:{type:'ai',quote:idea.body,taskId:t.id}});
       } else if(a.type==='extraction'){
         for(const input of a.data.objects??[])this.addObject(projectId,{...input,locked:false,status:'candidate',source:{type:'import',quote:input.source?.quote??'',chapterId:a.chapterId,versionId:a.data.versionId,taskId:t.id,inference:true,modality:'uncertain'}});
       }
       a.status='accepted';this.store.put('artifacts',a);const p=this.bump(projectId);this.invalidateTasks(projectId,'其他任务接受了新成果',t.id);t.expectedRevision=p.revision;
-      if(actor==='author'&&t.status==='NEEDS_INPUT'){t.status=a.type==='chapter'&&t.completedChapters<t.count?'PAUSED':'COMPLETED';t.error=undefined;}
+      if(a.type==='extraction')for(const sibling of this.store.list('artifacts',projectId).filter(x=>x.taskId===t.id&&x.type==='extraction'&&x.status==='pending')){const c=this.object(projectId,sibling.chapterId!);if(c.revision===sibling.chapterRevision&&c.fields.currentVersion===sibling.data.versionId){sibling.baseRevision=p.revision;this.store.put('artifacts',sibling);}}
+      if(actor==='author'&&t.status==='NEEDS_INPUT'){t.status=a.type==='state-review'?'PAUSED':a.type==='extraction'&&this.store.list('artifacts',projectId).some(x=>x.taskId===t.id&&x.status==='pending')?'NEEDS_INPUT':a.type==='chapter'&&t.completedChapters<t.count?'PAUSED':'COMPLETED';t.error=undefined;}
       this.store.put('tasks',t);this.store.change(projectId,'artifact.accept',{artifactId:a.id,actor,taskId:t.id,policy:actor==='auto'?'qualified-v1':'author'});this.store.event(projectId,t.id,'artifact.accepted','正文与派生资料已一致提交',{artifactId:a.id,revision:p.revision});return a;
     });
   }
@@ -151,7 +184,7 @@ export class Domain {
     for(const f of review.foreshadowUpdates){const o=this.object(chapter.projectId,f.id);requireThat(o.kind==='foreshadow'&&!o.locked&&version.content.includes(f.quote),'FORESHADOW','伏笔更新不合法');this.addObject(chapter.projectId,{kind:'fact',title:`伏笔${f.state}`,body:f.quote,status:'accepted',fields:{entityId:o.id,property:'foreshadowState',value:f.state},source:source(f.quote)});}
   }
   refreshEvidence(taskId:string,chapterId:string,review:Review){return this.store.transaction(()=>{const t=this.store.get('tasks',taskId);this.guard(t.projectId,t.expectedRevision);requireThat(t.status==='RUNNING','PAUSED','任务已停止');const c=this.object(t.projectId,chapterId);const v=this.store.get('versions',String(c.fields.currentVersion));requireThat(v.content===c.body,'STALE','正文已修改');requireThat(!review.issues.some(i=>i.blocks&&i.status==='open'),'CONFLICT','作者修改后的正文存在重大冲突，请先审查');this.invalidateDerived(t.projectId,c.id,false);this.commitEvidence(c,v,review,t,'author');c.fields.summary=review.summary;c.fields.summaryVersion=v.id;c.fields.extractionPending=false;this.store.put('objects',c);t.expectedRevision=this.bump(t.projectId).revision;this.store.put('tasks',t);this.store.event(t.projectId,t.id,'canon.refreshed','已根据作者最新正文重建候选事实与摘要',{chapterId,versionId:v.id});return t;});}
-  rejectArtifact(projectId:string,artifactId:string){return this.store.transaction(()=>{const a=this.artifact(projectId,artifactId);requireThat(a.status!=='accepted','ACCEPTED','已接受成果请通过版本恢复撤销');a.status='rejected';this.store.put('artifacts',a);this.store.event(projectId,a.taskId,'artifact.rejected','作者拒绝成果');return a;});}
+  rejectArtifact(projectId:string,artifactId:string){return this.store.transaction(()=>{const a=this.artifact(projectId,artifactId);requireThat(a.status!=='accepted','ACCEPTED','已接受成果请通过版本恢复撤销');a.status='rejected';this.store.put('artifacts',a);const t=this.task(projectId,a.taskId);if(t.status==='NEEDS_INPUT'&&!this.store.list('artifacts',projectId).some(x=>x.taskId===t.id&&x.status==='pending')){t.status='CANCELED';t.error=undefined;this.store.put('tasks',t);}this.store.event(projectId,a.taskId,'artifact.rejected','作者拒绝成果');return a;});}
   resolveIssue(projectId:string,artifactId:string,issueId:string,status:'ignored'|'intentional',reason:string){return this.store.transaction(()=>{requireThat(reason.trim().length>=3,'REASON','请记录具体理由');const a=this.artifact(projectId,artifactId);requireThat(a.status==='pending','STALE','成果不是待审状态');const issue=(a.data.review as Review).issues.find(i=>i.id===issueId);requireThat(issue,'NOT_FOUND','找不到问题');requireThat(!(issue.blocks&&issue.engine==='deterministic'),'LOCKED_CONFLICT','结构化硬约束冲突必须修复正文或显式修改设定');issue.status=status;issue.reason=reason;this.store.put('artifacts',a);this.store.change(projectId,'review.decision',{artifactId,issueId,status,reason});return a;});}
   splitImport(raw:string){
     requireThat(raw.length<=5_000_000,'SIZE','单次导入限 500 万字符',413);const re=/^(?:#{1,3}\s+.+|第[零〇一二三四五六七八九十百千万\d]+[章节回][^\r\n]*|Chapter\s+\d+[^\r\n]*)$/gimu;const matches=[...raw.matchAll(re)];

@@ -12,7 +12,7 @@ export class DemoProvider implements ModelProvider {
       case 'plan':value={title:next?'留灯的人':'蓝色信封',goal:r.task.goal,conflict:'守住承诺还是追问信的来处',participants:char?[char.id]:[],events:'调查未送达的信',change:'愿意请人共同承担',reveal:'档案存在缺页',foreshadow:'蓝色信封的压痕',ending:'踏向港灯',constraints:r.task.constraints.join('；')};break;
       case 'write':value=next?secondChapter(lead,r.input.context):firstChapter(lead);break;
       case 'review':{
-        const body=String(r.input.draft??'');const quote=body.includes('把铜钥匙交给了闻溪')?`${lead}把铜钥匙交给了闻溪。`:'';
+        const body=String(r.input.draft??'');const keyName=body.includes('银钥匙')?'银钥匙':'铜钥匙';const quote=body.includes(`把${keyName}交给了闻溪`)?`${lead}把${keyName}交给了闻溪。`:body.includes(`${keyName}仍在闻溪的围裙内袋里。`)?`${keyName}仍在闻溪的围裙内袋里。`:'';
         value={summary:body.slice(0,160),claims:quote&&item&&body.includes(quote)?[{entityId:item.id,property:'holder',value:'闻溪',quote,modality:'objective',time:'本章',inference:false}]:[],events:[{title:'调查雾港的来信',quote:body.split('\n').find(x=>x.trim())??'',time:'未知',entityIds:char?[char.id]:[]}],issues:[],foreshadowUpdates:[]};break;
       }
       case 'repair':value={edits:[],summary:'演示提供方不会伪装修复成功，请手工修改或接入真实模型。'};break;
@@ -45,7 +45,7 @@ ${lead}把铜钥匙交给了闻溪。
 “明天先去这里。”他在地图的缺口旁画了一个小圆，没有写下母亲的名字。闻溪点点头。她把钥匙收进围裙的内袋，随后擦去灯罩上的灰，为他们留出一小片可以看清彼此的光。`;}
 function secondChapter(lead:string,context:string){const change=String(context??'').includes('银钥匙')?'银钥匙':'铜钥匙';return `早晨的港灯还亮着。${lead}在窗边读昨夜记下的回执，没有把它当成命令。他要先确认写字的人是谁，也要确认自己究竟答应过什么。
 
-闻溪带着工具箱来敲门。${change}的事，他们在出门前重新核对了一次；没有人凭空多出一把能够打开档案室的钥匙。她指着小本子里的地图缺口，说灯塔维修册上也少了同一个街名。
+闻溪带着工具箱来敲门。${change}仍在闻溪的围裙内袋里。钥匙的事，他们在出门前重新核对了一次；没有人凭空多出一把能够打开档案室的钥匙。她指着小本子里的地图缺口，说灯塔维修册上也少了同一个街名。
 
 他们沿海堤走到第六盏港灯。石缝里嵌着陈旧的纸屑，脚下的积水映出一扇并不存在的门。${lead}没有立刻敲门，而是先问闻溪，昨天这个地方有没有台阶。她蹲下来，摸了摸石面新露出的断口。
 

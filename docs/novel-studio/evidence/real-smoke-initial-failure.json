@@ -1,0 +1,64 @@
+{
+  "at": "2026-09-12T17:26:13.411Z",
+  "base": "http://127.0.0.1:4318",
+  "status": "FAIL",
+  "checks": [
+    {
+      "name": "real_bootstrap",
+      "status": "PASS"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task_9c80f6e2-7517-4ec0-b5a5-0d40746ffda8",
+      "kind": "bootstrap",
+      "status": "COMPLETED",
+      "usage": {
+        "calls": 2,
+        "outputTokens": 14255,
+        "estimated": false
+      },
+      "steps": [
+        {
+          "name": "开书方向与资料",
+          "status": "COMPLETED",
+          "attempts": 2,
+          "inputRevision": 1,
+          "usage": {
+            "outputTokens": 6755,
+            "estimated": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "task_0ced7298-bdd6-4705-bfa1-6de8fad78ace",
+      "kind": "write",
+      "status": "FAILED",
+      "usage": {
+        "calls": 3,
+        "outputTokens": 15000,
+        "estimated": true
+      },
+      "error": {
+        "code": "INVALID_JSON",
+        "message": "模型没有返回有效 JSON；已保留诊断并限制重试次数"
+      },
+      "steps": [
+        {
+          "name": "章节规划",
+          "status": "FAILED",
+          "attempts": 3,
+          "inputRevision": 2
+        }
+      ]
+    }
+  ],
+  "model": {
+    "available": true,
+    "name": "deepseek-official / deepseek-flash",
+    "detail": "复用 DSH 当前模型；凭据由 DSH 管理，实际可用性以调用结果为准"
+  },
+  "projectId": "project_5c52031c-dabb-4fd5-9180-a5f5e6782aa8",
+  "error": "FAILED: INVALID_JSON 模型没有返回有效 JSON；已保留诊断并限制重试次数"
+}

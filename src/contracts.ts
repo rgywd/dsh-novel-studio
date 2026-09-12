@@ -41,8 +41,10 @@ export const taskInputSchema = z.object({
   chapterId: z.string().optional(), count: z.number().int().min(1).max(3).default(1), targetWords: z.number().int().min(300).max(8000).default(2000),
   constraints: z.array(z.string().max(2000)).max(30).default([]), autoAccept: z.boolean().default(false),
   provider: z.enum(['dsh','demo']).default('dsh'),
+  reasoning: z.enum(['balanced','configured']).default('balanced'),
   budget: z.object({calls:z.number().int().min(1).max(40).default(18),outputTokens:z.number().int().min(500).max(150000).default(48000),contextChars:z.number().int().min(1000).max(48000).default(18000)}).default({}),
   range: z.object({start:z.number().int().nonnegative(),end:z.number().int().nonnegative(),expectedText:str}).optional()
+  ,draft: str.optional(), draftArtifactId:z.string().optional()
 }).strict();
 export type TaskInput = z.infer<typeof taskInputSchema>;
 export type TaskStatus = 'QUEUED'|'RUNNING'|'PAUSE_REQUESTED'|'PAUSED'|'NEEDS_INPUT'|'FAILED'|'COMPLETED'|'CANCELED';
@@ -50,6 +52,7 @@ export interface RunStep {
   key: string; name: string; inputHash: string; inputRevision: number; status: 'RUNNING'|'COMPLETED'|'FAILED'|'STALE';
   attempts: number; startedAt: string; endedAt?: string; output?: unknown; partial?: string; error?: string;
   usage?: {outputTokens: number; estimated: boolean};
+  calls?: {attempt:number;reserved:number;outputTokens:number;estimated:boolean;status:'RUNNING'|'COMPLETED'|'FAILED';startedAt:string;endedAt?:string;error?:string;diagnostic?:string;model?:{provider:string;model:string;reasoningEffort?:string}}[];
 }
 export interface CreativeTask extends TaskInput {
   id: string; projectId: string; status: TaskStatus; inputRevision: number; expectedRevision: number; epoch: number;
@@ -58,9 +61,9 @@ export interface CreativeTask extends TaskInput {
   contract: {scope: string; lockedIds: string[]; permitted: string[]; forbidden: string[]; deliverables: string[]; stop: string[]};
   checkpoint: {chapterId?: string; artifactId?: string; committed: string[]};
 }
-export interface Artifact { id: string; taskId: string; projectId: string; type: 'chapter'|'setup'|'replan'|'ideas'|'extraction'|'edit'; status: 'pending'|'accepted'|'rejected'|'stale'; baseRevision: number; chapterId?: string; chapterRevision?: number; createdAt: string; data: any; }
+export interface Artifact { id: string; taskId: string; projectId: string; type: 'chapter'|'state-review'|'setup'|'replan'|'ideas'|'extraction'|'edit'; status: 'pending'|'accepted'|'rejected'|'stale'; baseRevision: number; chapterId?: string; chapterRevision?: number; createdAt: string; data: any; }
 export const claimSchema = z.object({
-  entityId: z.string(), property: z.string().min(1).max(120), value: z.string().min(1).max(2000), quote: z.string().min(1).max(4000),
+  entityId: z.string(), property: z.enum(['holder','location','health','status','identity','alias','name','ability','relationship','known','goal','rule','inventory','decision']), value: z.string().min(1).max(2000), quote: z.string().min(1).max(4000),
   modality: z.enum(['objective','knowledge','rumor','memory','dream','uncertain']).default('objective'),
   time: z.string().max(300).default('当前章'), inference: z.boolean().default(false),
   transition: z.object({from:z.string().max(2000),reason:z.string().max(1200)}).optional()

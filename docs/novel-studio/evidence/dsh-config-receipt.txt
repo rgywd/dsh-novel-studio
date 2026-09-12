@@ -1,0 +1,3 @@
+# == @rgywd/dsh-novel-studio
+- id: novel-studio
+  name: '@rgywd/dsh-novel-studio'

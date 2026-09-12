@@ -49,6 +49,7 @@ export class HttpApp {
       if(method==='POST'&&key&&action==='body')return this.domain.saveChapter(pid,key,num.parse(body.revision),body.body);
       if(method==='POST'&&key&&action==='rollback')return this.domain.rollback(pid,key,num.parse(body.revision),z.string().parse(body.versionId));
       if(method==='GET'&&key&&action==='versions')return this.domain.versions(pid,key);
+      if(method==='GET'&&key&&action==='history')return this.domain.history(pid,key);
     }
     if(resource==='tasks'){
       if(method==='GET'&&!key)return this.domain.store.list('tasks',pid);
