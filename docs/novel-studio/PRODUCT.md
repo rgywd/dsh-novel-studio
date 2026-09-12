@@ -21,6 +21,18 @@ A persistence including restart and honest save errors; B Director chapter 1 →
 - Chinese word count: each Han character, each Latin word/number counts as one; punctuation/whitespace excluded. Target is a range, never filled by repetition or truncation.
 - No publishing, multi-tenancy, payments, complex RBAC, real-time multi-user editing or agent society. Bind local server to loopback; same-origin requests for mutation.
 
+## Verified V1 behavior and explicit tradeoffs
+
+Acceptance A–L passed on the final code commit `b4ea427`; the actual evidence, historical failures and environment limits are in ACCEPTANCE.md. This status does not remove any original requirement above.
+
+- Writer selection operations remain scoped proposals. Director has its own goal/contract/stages/artifact center, and its new-task composer collapses during review. Viewing and takeover remain different actions.
+- Alternate story directions are editable candidates. Choosing another direction creates a new setup proposal with a concise reason; adopting an Inbox item creates only an empty future plan. Neither operation manufactures happened facts.
+- Chapter ordering follows volume order then chapter order in navigation, export and context. Future replans show dependency impacts, apply atomically and can be undone only while their affected revisions still match.
+- Important structured properties require usable property/value fields and source quotes. Extracted objects remain uncertain candidates until the author binds and accepts them; per-chapter extraction can yield repeated names. Dreams, rumors, memories and character knowledge retain their narrative layer.
+- Target length is a quality signal: below 60% blocks acceptance, outside 75%–135% warns. This conservative empty/short-output guard is not a promise that every chapter exactly meets its target. The real 4000-word acceptance produced 4232 and 4830 counted words.
+- One local SQLite writer and conservative project revisions favor reliable recovery over concurrent automation. Context uses a bounded character budget and scoped structured/text matching, not exact tokenizer accounting. Oversized mandatory information stops visibly.
+- The actual configured DSH model is used only through DSH; the fixed original demo is explicitly labeled. Literary suggestions remain fallible, and failed model outputs and manual recovery stay visible in evidence.
+
 ## References and evidence level
 
 - https://github.com/ExplosiveCoderflome/AI-Novel-Writing-Assistant at 24832d5eb0ded8c39cfaab9971af2a57e1827a22 (2026-09-12): README describes Agent/world/context/book production. Read actual checkpoint runtime and DirectorCommandLeaseService; these contain checkpoint persistence and stale lease/manual recovery branches. Not locally executed. LICENSE says AGPL-3.0-only community plus separate commercial authorization; implementation/assets not copied.

@@ -1,0 +1,15 @@
+
+> @rgywd/dsh-novel-studio@0.1.0 test:e2e
+> node --import tsx --test test/http.test.ts
+
+(node:45720) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ deterministic HTTP E2E: projects, tasks, artifacts, body, failure, export, backup and origin fence (921.8209ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1985.0511

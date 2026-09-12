@@ -1,0 +1,207 @@
+{
+  "at": "2026-09-12T19:44:39.173Z",
+  "status": "PASS",
+  "readbackOnly": true,
+  "codeCommit": "b4ea427",
+  "model": {
+    "available": true,
+    "name": "deepseek-official / deepseek-flash",
+    "detail": "复用 DSH 当前模型；凭据由 DSH 管理，实际可用性以调用结果为准"
+  },
+  "project": {
+    "id": "project_08a514b1-1198-4741-9ac0-836da5d3764d",
+    "title": "纸灯与归信 · 真实 AI 验收",
+    "revision": 12
+  },
+  "handoff": {
+    "status": "PASS",
+    "authorVersion": "version_80b6b9ee-b926-4dcb-8956-396e535bacb9",
+    "secondArtifact": "artifact_f9d38038-bcb5-41e4-9c8b-fe368c47f0d0",
+    "secondChapterVersion": "version_85472ba6-2550-40b2-ae39-8d5da1c8167e",
+    "contextReferencesAuthorVersion": true,
+    "holderClaims": [
+      {
+        "entityId": "world_91285630-ab5c-48b7-b015-b7245bd07ca5",
+        "property": "holder",
+        "value": "闻溪",
+        "quote": "闻溪把信封从内袋抽出来，没有递过来。她掌心托着，让那面蓝纸朝天，凑到灯下，自己先看。",
+        "modality": "objective",
+        "time": "当晚至次日清晨",
+        "inference": false
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "artifactId": "artifact_589ad287-aaaf-468e-8c2a-7a82b66da834",
+      "chapterId": "chapter_3a1cafa4-fc1f-4143-bb70-0ace5ed4963a",
+      "versionId": "version_80b6b9ee-b926-4dcb-8956-396e535bacb9",
+      "targetWords": 1200,
+      "generatedWords": 1207,
+      "generatedBodySha256": "9bc4c70d0ae556b85afd2e22d3a8cd8b111303757481d4233abf9e070f274379",
+      "acceptedSource": {
+        "type": "ai",
+        "quote": "选定方向一：它最贴合既定前提（邮差/修灯匠、雾港、蓝色信封单人保管、不揭露导师身份），且第一章把信封留在沈砚手中，天然回避移交事件。方向二在机制上要求信封易手或双持，与硬约束冲突，故不选。所有对象为候选/计划状态，章 body 留空，未生成 fact 或 event。",
+        "time": "未知",
+        "inference": false,
+        "modality": "objective",
+        "taskId": "task_1e8bb711-f382-4f18-b351-457ce72376a4",
+        "policy": "qualified-v1"
+      }
+    },
+    {
+      "artifactId": "artifact_f9d38038-bcb5-41e4-9c8b-fe368c47f0d0",
+      "chapterId": "chapter_763e6540-cacc-489a-bca0-e63c3257f812",
+      "versionId": "version_85472ba6-2550-40b2-ae39-8d5da1c8167e",
+      "targetWords": 1200,
+      "generatedWords": 1246,
+      "generatedBodySha256": "ce7042f8c0dbbfb5b619854201b2cc28b46bef6a03ff4689e996a88abb0304e4",
+      "acceptedSource": {
+        "type": "ai",
+        "quote": "选定方向一：它最贴合既定前提（邮差/修灯匠、雾港、蓝色信封单人保管、不揭露导师身份），且第一章把信封留在沈砚手中，天然回避移交事件。方向二在机制上要求信封易手或双持，与硬约束冲突，故不选。所有对象为候选/计划状态，章 body 留空，未生成 fact 或 event。",
+        "time": "未知",
+        "inference": false,
+        "modality": "objective",
+        "taskId": "task_1e8bb711-f382-4f18-b351-457ce72376a4",
+        "policy": "qualified-v1"
+      }
+    },
+    {
+      "artifactId": "artifact_7738184d-851c-41e1-80dc-91a0fb6cff89",
+      "chapterId": "chapter_93451b0c-859d-4f2b-bb0f-13f8d73c5eca",
+      "versionId": "version_250643b0-8351-40aa-b907-2ff55fbf9777",
+      "targetWords": 4000,
+      "generatedWords": 4232,
+      "generatedBodySha256": "f07593373f75e6e31240adac7ebca7feb1bca09b160a493beda701ee1464850d",
+      "acceptedSource": {
+        "type": "ai",
+        "quote": "选定方向一：它最贴合既定前提（邮差/修灯匠、雾港、蓝色信封单人保管、不揭露导师身份），且第一章把信封留在沈砚手中，天然回避移交事件。方向二在机制上要求信封易手或双持，与硬约束冲突，故不选。所有对象为候选/计划状态，章 body 留空，未生成 fact 或 event。",
+        "time": "未知",
+        "inference": false,
+        "modality": "objective",
+        "taskId": "task_1e8bb711-f382-4f18-b351-457ce72376a4",
+        "policy": "qualified-v1"
+      }
+    },
+    {
+      "artifactId": "artifact_e10202b6-c982-4741-b7e7-af3872ffef5f",
+      "chapterId": "chapter_c136091d-dd2f-4d51-b46e-f1f1c471a84e",
+      "versionId": "version_e8b48a1a-0011-4db3-b1b8-83bb6ff7ef35",
+      "targetWords": 4000,
+      "generatedWords": 4830,
+      "generatedBodySha256": "36967141125c2691af2594dfff5d6c212724815aa6d4a581a1046379b9895031"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task_1e8bb711-f382-4f18-b351-457ce72376a4",
+      "status": "COMPLETED",
+      "budget": {
+        "calls": 16,
+        "outputTokens": 60000,
+        "contextChars": 18000
+      },
+      "usage": {
+        "calls": 1,
+        "outputTokens": 2959,
+        "estimated": false
+      }
+    },
+    {
+      "id": "task_e727d8de-b2c0-47bd-b9ab-ad23eac6203d",
+      "status": "COMPLETED",
+      "budget": {
+        "calls": 16,
+        "outputTokens": 60000,
+        "contextChars": 18000
+      },
+      "usage": {
+        "calls": 16,
+        "outputTokens": 27276,
+        "estimated": false
+      }
+    },
+    {
+      "id": "task_2dc7a7f9-ee89-4cc1-9fa9-7e8a8242d785",
+      "status": "COMPLETED",
+      "budget": {
+        "calls": 16,
+        "outputTokens": 60000,
+        "contextChars": 18000
+      },
+      "usage": {
+        "calls": 6,
+        "outputTokens": 11937,
+        "estimated": false
+      }
+    },
+    {
+      "id": "task_9aa05bda-94ed-4379-9da3-be0fccbc6881",
+      "status": "COMPLETED",
+      "budget": {
+        "calls": 18,
+        "outputTokens": 100000,
+        "contextChars": 18000
+      },
+      "usage": {
+        "calls": 11,
+        "outputTokens": 34726,
+        "estimated": false
+      }
+    }
+  ],
+  "batch": {
+    "status": "PASS",
+    "words": [
+      4232,
+      4830
+    ],
+    "nextChapterUsesPreviousAcceptedVersion": true,
+    "usage": {
+      "calls": 11,
+      "outputTokens": 34726,
+      "estimated": false
+    },
+    "budget": {
+      "calls": 18,
+      "outputTokens": 100000,
+      "contextChars": 18000
+    }
+  },
+  "extraction": {
+    "status": "PASS",
+    "projectId": "project_859081f7-7f04-4e57-ad4e-32ff3263a33f",
+    "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba",
+    "candidates": 15,
+    "facts": 6,
+    "allSourcesVerified": true,
+    "allCandidateAndUncertain": true
+  },
+  "directionChoice": {
+    "status": "PASS",
+    "projectId": "project_a1bd5917-88f8-4b54-bc7b-f88fe5814a99",
+    "chosen": "方向B：投递坐标（悬疑/轻科幻）",
+    "artifactId": "artifact_8c721fbc-716a-480c-91f3-a847e0794011"
+  },
+  "historicalFailure": {
+    "status": "PRESERVED",
+    "taskId": "task_fa1cb418-92ec-45fa-b58a-41c9d9d06202",
+    "taskStatus": "PAUSED",
+    "budget": {
+      "calls": 16,
+      "outputTokens": 60000,
+      "contextChars": 18000
+    },
+    "usage": {
+      "calls": 16,
+      "outputTokens": 50568,
+      "estimated": false
+    }
+  },
+  "historicalEvidence": [
+    "real-smoke-initial-failure.json",
+    "real-smoke-development-failures.json",
+    "real-smoke.json",
+    "real-extra.json"
+  ]
+}

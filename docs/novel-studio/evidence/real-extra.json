@@ -1,0 +1,450 @@
+{
+  "projectId": "project_a1bd5917-88f8-4b54-bc7b-f88fe5814a99",
+  "initialTask": "task_e603ff12-9944-408a-bace-ef8ae31bf8ff",
+  "status": "PASS",
+  "directionChoice": {
+    "status": "PASS",
+    "initialChoice": "方向A：明天的邮戳（现实主义抒情）",
+    "selectedChoice": "方向B：投递坐标（悬疑/轻科幻）",
+    "initialArtifact": "artifact_66e88b35-6dce-4e3e-8064-463ba4896755",
+    "selectedArtifact": "artifact_8c721fbc-716a-480c-91f3-a847e0794011",
+    "selectedTask": "task_bc33ea4b-84ff-4219-983e-c4c8a807fa0d",
+    "acceptedRevision": 2,
+    "objects": [
+      {
+        "id": "book_34e12645-8603-43a3-95a8-f7570d085d11",
+        "kind": "book",
+        "title": "潮汐邮局 · 方向选择验收",
+        "status": "planned"
+      },
+      {
+        "id": "chapter_73b02b71-0f25-4831-8734-60c78819beba",
+        "kind": "chapter",
+        "title": "第一章 · 邮戳上的坐标",
+        "status": "planned"
+      },
+      {
+        "id": "chapter_55424b32-ef06-437a-b611-7db06802926d",
+        "kind": "chapter",
+        "title": "第二章 · 无收件人的信",
+        "status": "planned"
+      },
+      {
+        "id": "chapter_91cc4468-d3e8-4a6c-8d88-9680e6d85d02",
+        "kind": "chapter",
+        "title": "第三章 · 零件",
+        "status": "planned"
+      },
+      {
+        "id": "character_4230b1d9-a493-49fd-8ec8-6dbd00fed073",
+        "kind": "character",
+        "title": "沈砚",
+        "status": "accepted"
+      },
+      {
+        "id": "character_a49a2885-434c-43e3-87da-aaeb7147ab8a",
+        "kind": "character",
+        "title": "邮局值守者",
+        "status": "accepted"
+      },
+      {
+        "id": "volume_64c63bc0-2911-488e-8305-270a833c65af",
+        "kind": "volume",
+        "title": "第一卷 · 天亮前的三次校准",
+        "status": "planned"
+      },
+      {
+        "id": "world_0cafa70e-eea6-4018-a6f8-b914a4377270",
+        "kind": "world",
+        "title": "灯塔：校准天线",
+        "status": "accepted"
+      },
+      {
+        "id": "world_9e645b86-1359-47dd-b7d5-3374a5a4a268",
+        "kind": "world",
+        "title": "邮戳：投递坐标",
+        "status": "accepted"
+      },
+      {
+        "id": "world_1c65a221-5213-478f-be19-489cf14709d4",
+        "kind": "world",
+        "title": "潮汐：时钟误差",
+        "status": "accepted"
+      }
+    ],
+    "tasks": [
+      {
+        "id": "task_e603ff12-9944-408a-bace-ef8ae31bf8ff",
+        "status": "CANCELED",
+        "usage": {
+          "calls": 2,
+          "outputTokens": 4091,
+          "estimated": false
+        }
+      },
+      {
+        "id": "task_bc33ea4b-84ff-4219-983e-c4c8a807fa0d",
+        "status": "COMPLETED",
+        "usage": {
+          "calls": 2,
+          "outputTokens": 5178,
+          "estimated": false
+        }
+      }
+    ],
+    "browserAction": "Selected the other direction and accepted its newly generated setup in the running DSH UI."
+  },
+  "extraction": {
+    "projectId": "project_859081f7-7f04-4e57-ad4e-32ff3263a33f",
+    "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba",
+    "status": "PASS",
+    "initial": {
+      "taskId": "task_3eed0e14-fd79-4a6d-99df-6e390513cb70",
+      "status": "FAIL",
+      "reason": "The first real output retained source quotes but used holder/state fields instead of property/value. Extract schema and prompt now reject and repair this unusable fact shape.",
+      "usage": {
+        "calls": 3,
+        "outputTokens": 1725,
+        "estimated": false
+      },
+      "artifacts": [
+        "artifact_45e8a34e-e264-4459-a121-bdaa2279330f",
+        "artifact_fd73736e-cb70-4dd9-8521-12b6802e0042"
+      ]
+    },
+    "promptVersion": 4,
+    "usage": {
+      "calls": 3,
+      "outputTokens": 2059,
+      "estimated": false
+    },
+    "artifacts": [
+      {
+        "id": "artifact_32c80f82-d1ad-47b6-8261-69e506ddd055",
+        "chapterId": "chapter_2d3a3780-ace2-4b8b-af1f-908d1f856676",
+        "status": "accepted"
+      },
+      {
+        "id": "artifact_8b6ffeae-b5cd-4f6f-b4cb-6f9629f71bd2",
+        "chapterId": "chapter_ac3800c2-2409-426f-9286-fdf7f646fa6d",
+        "status": "accepted"
+      }
+    ],
+    "objects": [
+      {
+        "id": "character_a340acd0-43a3-4952-95b5-1fc92bd3710c",
+        "kind": "character",
+        "title": "沈砚",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_2d3a3780-ace2-4b8b-af1f-908d1f856676",
+          "versionId": "version_9f551ce1-5759-4316-b9b7-29f39e787321",
+          "quote": "沈砚把银钥匙交给闻溪。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "name": "沈砚"
+        }
+      },
+      {
+        "id": "character_f576a4b5-b3a4-404d-a650-1cc35d6e1314",
+        "kind": "character",
+        "title": "闻溪",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_2d3a3780-ace2-4b8b-af1f-908d1f856676",
+          "versionId": "version_9f551ce1-5759-4316-b9b7-29f39e787321",
+          "quote": "沈砚把银钥匙交给闻溪。她将钥匙放进围裙内袋。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "name": "闻溪"
+        }
+      },
+      {
+        "id": "character_3876de7d-6ab1-48ec-bb2c-1275fdfbce6c",
+        "kind": "character",
+        "title": "闻溪",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_ac3800c2-2409-426f-9286-fdf7f646fa6d",
+          "versionId": "version_93053c3b-4f30-46ac-a102-70a820df51a7",
+          "quote": "次日清晨，闻溪取出银钥匙，打开档案室的门。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "name": "闻溪"
+        }
+      },
+      {
+        "id": "character_4101af7a-a15a-4839-848d-dfd0c3efded6",
+        "kind": "character",
+        "title": "沈砚",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_ac3800c2-2409-426f-9286-fdf7f646fa6d",
+          "versionId": "version_93053c3b-4f30-46ac-a102-70a820df51a7",
+          "quote": "沈砚站在门外等候。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "name": "沈砚"
+        }
+      },
+      {
+        "id": "event_1472714d-5a3f-4394-abad-a5b73dac9aa4",
+        "kind": "event",
+        "title": "闻溪开档案室门与沈砚等候",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_ac3800c2-2409-426f-9286-fdf7f646fa6d",
+          "versionId": "version_93053c3b-4f30-46ac-a102-70a820df51a7",
+          "quote": "次日清晨，闻溪取出银钥匙，打开档案室的门。沈砚站在门外等候。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "storyTime": "次日清晨"
+        }
+      },
+      {
+        "id": "fact_2fcfde08-2c74-4aa9-b65d-a7b5149fc6ae",
+        "kind": "fact",
+        "title": "银钥匙的持有者",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_2d3a3780-ace2-4b8b-af1f-908d1f856676",
+          "versionId": "version_9f551ce1-5759-4316-b9b7-29f39e787321",
+          "quote": "沈砚把银钥匙交给闻溪。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "entityName": "银钥匙",
+          "property": "holder",
+          "value": "闻溪"
+        }
+      },
+      {
+        "id": "fact_10b6a344-82dd-4726-b2db-d6e424cec6fb",
+        "kind": "fact",
+        "title": "银钥匙的存放位置",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_2d3a3780-ace2-4b8b-af1f-908d1f856676",
+          "versionId": "version_9f551ce1-5759-4316-b9b7-29f39e787321",
+          "quote": "她将钥匙放进围裙内袋。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "entityName": "银钥匙",
+          "property": "location",
+          "value": "围裙内袋"
+        }
+      },
+      {
+        "id": "fact_d546a3f7-eacd-4f77-ba72-67d11d314cb8",
+        "kind": "fact",
+        "title": "银钥匙的转交者",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_2d3a3780-ace2-4b8b-af1f-908d1f856676",
+          "versionId": "version_9f551ce1-5759-4316-b9b7-29f39e787321",
+          "quote": "沈砚把银钥匙交给闻溪。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "entityName": "银钥匙",
+          "property": "givenBy",
+          "value": "沈砚"
+        }
+      },
+      {
+        "id": "fact_83d510db-a69f-47ff-afa4-a24ac401eca2",
+        "kind": "fact",
+        "title": "银钥匙的持有者为闻溪",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_ac3800c2-2409-426f-9286-fdf7f646fa6d",
+          "versionId": "version_93053c3b-4f30-46ac-a102-70a820df51a7",
+          "quote": "闻溪取出银钥匙",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "entityName": "银钥匙",
+          "property": "holder",
+          "value": "闻溪"
+        }
+      },
+      {
+        "id": "fact_d071ad4d-5d10-4f7c-8293-80a0ed0a941d",
+        "kind": "fact",
+        "title": "档案室门被闻溪用银钥匙打开",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_ac3800c2-2409-426f-9286-fdf7f646fa6d",
+          "versionId": "version_93053c3b-4f30-46ac-a102-70a820df51a7",
+          "quote": "闻溪取出银钥匙，打开档案室的门。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "entityName": "档案室",
+          "property": "doorState",
+          "value": "被闻溪用银钥匙打开"
+        }
+      },
+      {
+        "id": "fact_f61e1d48-eedc-45f6-9a5f-161ad886d1b6",
+        "kind": "fact",
+        "title": "沈砚在档案室门外等候",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_ac3800c2-2409-426f-9286-fdf7f646fa6d",
+          "versionId": "version_93053c3b-4f30-46ac-a102-70a820df51a7",
+          "quote": "沈砚站在门外等候。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "entityName": "沈砚",
+          "property": "location",
+          "value": "档案室门外"
+        }
+      },
+      {
+        "id": "world_f5a37cbd-6d8e-4e4c-ab65-a3a5baaf6164",
+        "kind": "world",
+        "title": "银钥匙",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_2d3a3780-ace2-4b8b-af1f-908d1f856676",
+          "versionId": "version_9f551ce1-5759-4316-b9b7-29f39e787321",
+          "quote": "沈砚把银钥匙交给闻溪。她将钥匙放进围裙内袋。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "type": "物品",
+          "name": "银钥匙"
+        }
+      },
+      {
+        "id": "world_b26fc714-786f-4df3-afb5-d1eb7f9df9fc",
+        "kind": "world",
+        "title": "围裙内袋",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_2d3a3780-ace2-4b8b-af1f-908d1f856676",
+          "versionId": "version_9f551ce1-5759-4316-b9b7-29f39e787321",
+          "quote": "她将钥匙放进围裙内袋。",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "type": "物品",
+          "name": "围裙内袋"
+        }
+      },
+      {
+        "id": "world_b3bb9ffe-c720-4484-b2ef-28bc0c77f424",
+        "kind": "world",
+        "title": "档案室",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_ac3800c2-2409-426f-9286-fdf7f646fa6d",
+          "versionId": "version_93053c3b-4f30-46ac-a102-70a820df51a7",
+          "quote": "打开档案室的门",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "type": "地点",
+          "name": "档案室"
+        }
+      },
+      {
+        "id": "world_ab6ef2a3-a33a-44c2-9819-ad6a0ef16196",
+        "kind": "world",
+        "title": "银钥匙",
+        "status": "candidate",
+        "source": {
+          "type": "import",
+          "chapterId": "chapter_ac3800c2-2409-426f-9286-fdf7f646fa6d",
+          "versionId": "version_93053c3b-4f30-46ac-a102-70a820df51a7",
+          "quote": "闻溪取出银钥匙",
+          "time": "未知",
+          "inference": true,
+          "modality": "uncertain",
+          "taskId": "task_2498ee58-58e5-468b-9a78-c39b78ac35ba"
+        },
+        "fields": {
+          "type": "物品",
+          "name": "银钥匙"
+        }
+      }
+    ],
+    "candidateCount": 15,
+    "sourceVersions": [
+      {
+        "chapterId": "chapter_2d3a3780-ace2-4b8b-af1f-908d1f856676",
+        "versionId": "version_9f551ce1-5759-4316-b9b7-29f39e787321"
+      },
+      {
+        "chapterId": "chapter_ac3800c2-2409-426f-9286-fdf7f646fa6d",
+        "versionId": "version_93053c3b-4f30-46ac-a102-70a820df51a7"
+      }
+    ],
+    "browserAction": "Reviewed and accepted both chapter extraction artifacts; fact ledger still displays candidate and uncertain status."
+  },
+  "updatedAt": "2026-09-12T19:26:27.002Z"
+}

@@ -1,0 +1,53 @@
+
+> @rgywd/dsh-novel-studio@0.1.0 test:integration
+> node --import tsx --test test/domain.test.ts test/runtime.test.ts test/guards.test.ts test/workbench.test.ts test/plugin.test.ts
+
+(node:60440) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A: author save persists and old autosave revision is rejected (83.1135ms)
+✔ atomic accept and rollback handle facts and downstream invalidation (8.9524ms)
+✔ H: failed transaction never accepts body without state (8.0272ms)
+✔ I: locks, cyclic moves and foreign-project writes rejected (4.5655ms)
+✔ J: raw import, adjusted split, export and backup references restore (22.4558ms)
+(node:44184) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ chapter metadata cannot forge accepted bodies, versions or summaries (10.7903ms)
+✔ fact edits retain source history and rollback cannot resurrect overridden claims (35.1014ms)
+✔ canon projection uses current scoped state; locked candidates stay outside canon (6.2004ms)
+✔ replan is atomic and rejects locked/accepted bodies and unknown impacts (6.3612ms)
+✔ manual multi-chapter extraction accepts siblings without duplicate facts or stale evidence (220.4981ms)
+✔ cancelled late success remains stale and preserves every retry receipt (398.5874ms)
+✔ structured retry reports field errors, keeps diagnostics and charges actual failed output (772.9152ms)
+✔ DSH adapter uses advertised low effort per call without changing configured selection (45.7806ms)
+✔ author state refresh omits old chapter plans and exposes AI risk decisions without rewriting the body (936.4272ms)
+✔ manual draft repair is durable and must pass a new review before it can replace a chapter (384.0478ms)
+✔ DSH structured tool return is parsed as data; extra or foreign tool calls are rejected (6.1348ms)
+✔ knowledge accumulates and normal decisions/movement are not deterministic contradictions (4.5678ms)
+✔ dream and rumor events retain their narrative layer and stay outside happened timeline context (3.3347ms)
+(node:54280) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ DSH ToolRuntime invokes shared reads, enforces proposal boundaries and unregisters on disposal (71.9976ms)
+(node:61760) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B/F: real domain workflow with explicit deterministic model, two chapters inherit latest versions (1762.9943ms)
+✔ C: late ignored-abort result cannot overwrite takeover (399.8504ms)
+✔ F/H: chapter/call/output budgets stay finite (196.9678ms)
+✔ H: malformed structured output exhausts bounded retries and preserves diagnostic (6.7142ms)
+✔ H: timeout bounded, partial data retained, cancel-late never commits (97.1171ms)
+✔ G: actual pause during chapter two, disk restart reuses checkpoint without repeating chapter one (1427.7904ms)
+(node:32480) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ideas enter future plans idempotently, with linked world entities in context but no invented canon (24.2581ms)
+✔ replan undo is atomic, repeat-safe and cannot overwrite subsequent edits (11.2062ms)
+✔ a chapter-scoped replan cannot change a different unlocked future chapter (4.2683ms)
+✔ multi-volume ordering is shared by UI, export and context; import appends after reordered volumes (24.8062ms)
+✔ extraction repairs missing canonical fields instead of accepting unusable state records (199.8579ms)
+✔ AI brief can pause for a material ambiguity; author clarification keeps original budget (795.193ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5194.4735

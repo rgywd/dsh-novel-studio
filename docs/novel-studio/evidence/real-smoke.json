@@ -1,8 +1,12 @@
 {
-  "at": "2026-09-12T17:26:13.411Z",
+  "at": "2026-09-12T18:32:44.883Z",
   "base": "http://127.0.0.1:4318",
-  "status": "FAIL",
+  "status": "PASS",
   "checks": [
+    {
+      "name": "real_bootstrap",
+      "status": "PASS"
+    },
     {
       "name": "real_bootstrap",
       "status": "PASS"
@@ -18,62 +22,188 @@
     {
       "name": "author_takeover_new_version",
       "status": "PASS",
-      "chapterId": "chapter_3c01e1fb-325b-451c-9df6-157e9a592622",
-      "oldVersion": "version_b26e4a8a-5a62-4aa4-8da1-f0e8549ab73e",
-      "newVersion": "version_ff16030d-72d2-49cd-bf0b-7884fb8b9fa3"
-    },
-    {
-      "name": "real_bootstrap",
-      "status": "PASS"
-    },
-    {
-      "name": "real_bootstrap",
-      "status": "PASS"
+      "chapterId": "chapter_3a1cafa4-fc1f-4143-bb70-0ace5ed4963a",
+      "oldVersion": "version_8acf2fd3-e99b-4462-978c-b00534b7c7fc",
+      "newVersion": "version_05175981-6e13-4c9c-83bb-3ce05e8f5ea5"
     },
     {
       "name": "author_transfer_rule",
       "status": "PASS",
-      "entityId": "world_3a8b85c9-cf19-4fe0-9843-c338f4c6c5e1",
+      "entityId": "world_91285630-ab5c-48b7-b015-b7245bd07ca5",
       "oldRevision": 1,
       "newRevision": 2,
       "reason": "Author explicitly establishes transferable single ownership; preserves the original bootstrap rule in history."
     },
     {
+      "name": "author_handoff_clarified",
+      "status": "PASS",
+      "oldVersion": "version_05175981-6e13-4c9c-83bb-3ce05e8f5ea5",
+      "newVersion": "version_80b6b9ee-b926-4dcb-8956-396e535bacb9",
+      "reason": "Author makes retrieval from the bag and the recipient arrival explicit after inspecting the AI review."
+    },
+    {
+      "name": "second_chapter_current_context",
+      "status": "PASS",
+      "usedVersion": "version_80b6b9ee-b926-4dcb-8956-396e535bacb9",
+      "artifactId": "artifact_f9d38038-bcb5-41e4-9c8b-fe368c47f0d0"
+    },
+    {
       "name": "real_bootstrap",
       "status": "PASS"
+    },
+    {
+      "name": "second_chapter_current_context",
+      "status": "PASS",
+      "usedVersion": "version_80b6b9ee-b926-4dcb-8956-396e535bacb9",
+      "artifactId": "artifact_f9d38038-bcb5-41e4-9c8b-fe368c47f0d0"
+    },
+    {
+      "name": "finite_4000_word_two_chapter_batch",
+      "status": "PASS",
+      "words": [
+        4232,
+        4830
+      ],
+      "usage": {
+        "calls": 11,
+        "outputTokens": 34726,
+        "estimated": false
+      }
     }
   ],
   "tasks": [
     {
-      "id": "task_9c80f6e2-7517-4ec0-b5a5-0d40746ffda8",
+      "id": "task_1e8bb711-f382-4f18-b351-457ce72376a4",
       "kind": "bootstrap",
       "status": "COMPLETED",
       "usage": {
-        "calls": 2,
-        "outputTokens": 14255,
+        "calls": 1,
+        "outputTokens": 2959,
         "estimated": false
       },
       "steps": [
         {
           "name": "开书方向与资料",
           "status": "COMPLETED",
-          "attempts": 2,
+          "attempts": 1,
           "inputRevision": 1,
           "usage": {
-            "outputTokens": 6755,
+            "outputTokens": 2959,
             "estimated": false
           }
         }
       ]
     },
     {
-      "id": "task_0ced7298-bdd6-4705-bfa1-6de8fad78ace",
+      "id": "task_e727d8de-b2c0-47bd-b9ab-ad23eac6203d",
       "kind": "write",
       "status": "FAILED",
       "usage": {
-        "calls": 3,
-        "outputTokens": 15000,
-        "estimated": true
+        "calls": 5,
+        "outputTokens": 10111,
+        "estimated": false
+      },
+      "error": {
+        "code": "INVALID_EVIDENCE",
+        "message": "冲突资料引用无法核对"
+      },
+      "steps": [
+        {
+          "name": "章节规划",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 772,
+            "estimated": false
+          }
+        },
+        {
+          "name": "生成正文",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 1255,
+            "estimated": false
+          }
+        },
+        {
+          "name": "审校与候选事实",
+          "status": "FAILED",
+          "attempts": 3,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 8084,
+            "estimated": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "task_e727d8de-b2c0-47bd-b9ab-ad23eac6203d",
+      "kind": "write",
+      "status": "FAILED",
+      "usage": {
+        "calls": 8,
+        "outputTokens": 11064,
+        "estimated": false
+      },
+      "error": {
+        "code": "INVALID_OUTPUT",
+        "message": "结构化输出校验失败：assumptions: Array must contain at most 4 element(s)"
+      },
+      "steps": [
+        {
+          "name": "章节规划",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 772,
+            "estimated": false
+          }
+        },
+        {
+          "name": "生成正文",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 1255,
+            "estimated": false
+          }
+        },
+        {
+          "name": "审校与候选事实",
+          "status": "FAILED",
+          "attempts": 3,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 8084,
+            "estimated": false
+          }
+        },
+        {
+          "name": "整理任务约定",
+          "status": "FAILED",
+          "attempts": 3,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 953,
+            "estimated": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "task_e727d8de-b2c0-47bd-b9ab-ad23eac6203d",
+      "kind": "write",
+      "status": "FAILED",
+      "usage": {
+        "calls": 14,
+        "outputTokens": 21420,
+        "estimated": false
       },
       "error": {
         "code": "INVALID_JSON",
@@ -82,39 +212,11 @@
       "steps": [
         {
           "name": "章节规划",
-          "status": "FAILED",
-          "attempts": 3,
-          "inputRevision": 2
-        }
-      ]
-    },
-    {
-      "id": "task_0ced7298-bdd6-4705-bfa1-6de8fad78ace",
-      "kind": "write",
-      "status": "FAILED",
-      "usage": {
-        "calls": 8,
-        "outputTokens": 42963,
-        "estimated": true
-      },
-      "error": {
-        "code": "INCOMPLETE_OUTPUT",
-        "message": "模型未完整结束正文；已保留输出，不能自动接受"
-      },
-      "steps": [
-        {
-          "name": "章节规划",
-          "status": "FAILED",
-          "attempts": 3,
-          "inputRevision": 2
-        },
-        {
-          "name": "章节规划",
           "status": "COMPLETED",
           "attempts": 1,
           "inputRevision": 2,
           "usage": {
-            "outputTokens": 3194,
+            "outputTokens": 772,
             "estimated": false
           }
         },
@@ -124,7 +226,7 @@
           "attempts": 1,
           "inputRevision": 2,
           "usage": {
-            "outputTokens": 3769,
+            "outputTokens": 1255,
             "estimated": false
           }
         },
@@ -134,35 +236,79 @@
           "attempts": 3,
           "inputRevision": 2,
           "usage": {
-            "outputTokens": 21000,
-            "estimated": true
+            "outputTokens": 8084,
+            "estimated": false
+          }
+        },
+        {
+          "name": "整理任务约定",
+          "status": "FAILED",
+          "attempts": 3,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 953,
+            "estimated": false
+          }
+        },
+        {
+          "name": "整理任务约定",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 353,
+            "estimated": false
+          }
+        },
+        {
+          "name": "章节规划",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 787,
+            "estimated": false
+          }
+        },
+        {
+          "name": "生成正文",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 1028,
+            "estimated": false
+          }
+        },
+        {
+          "name": "审校与候选事实",
+          "status": "FAILED",
+          "attempts": 3,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 8188,
+            "estimated": false
           }
         }
       ]
     },
     {
-      "id": "task_0ced7298-bdd6-4705-bfa1-6de8fad78ace",
+      "id": "task_e727d8de-b2c0-47bd-b9ab-ad23eac6203d",
       "kind": "write",
       "status": "COMPLETED",
       "usage": {
-        "calls": 9,
-        "outputTokens": 49558,
-        "estimated": true
+        "calls": 16,
+        "outputTokens": 27276,
+        "estimated": false
       },
       "steps": [
-        {
-          "name": "章节规划",
-          "status": "FAILED",
-          "attempts": 3,
-          "inputRevision": 2
-        },
         {
           "name": "章节规划",
           "status": "COMPLETED",
           "attempts": 1,
           "inputRevision": 2,
           "usage": {
-            "outputTokens": 3194,
+            "outputTokens": 772,
             "estimated": false
           }
         },
@@ -172,7 +318,7 @@
           "attempts": 1,
           "inputRevision": 2,
           "usage": {
-            "outputTokens": 3769,
+            "outputTokens": 1255,
             "estimated": false
           }
         },
@@ -182,181 +328,277 @@
           "attempts": 3,
           "inputRevision": 2,
           "usage": {
-            "outputTokens": 21000,
-            "estimated": true
+            "outputTokens": 8084,
+            "estimated": false
+          }
+        },
+        {
+          "name": "整理任务约定",
+          "status": "FAILED",
+          "attempts": 3,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 953,
+            "estimated": false
+          }
+        },
+        {
+          "name": "整理任务约定",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 353,
+            "estimated": false
+          }
+        },
+        {
+          "name": "章节规划",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 787,
+            "estimated": false
+          }
+        },
+        {
+          "name": "生成正文",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 1028,
+            "estimated": false
+          }
+        },
+        {
+          "name": "审校与候选事实",
+          "status": "FAILED",
+          "attempts": 3,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 8188,
+            "estimated": false
+          }
+        },
+        {
+          "name": "审校与候选事实",
+          "status": "COMPLETED",
+          "attempts": 2,
+          "inputRevision": 2,
+          "usage": {
+            "outputTokens": 5856,
+            "estimated": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "task_2dc7a7f9-ee89-4cc1-9fa9-7e8a8242d785",
+      "kind": "write",
+      "status": "COMPLETED",
+      "usage": {
+        "calls": 6,
+        "outputTokens": 11937,
+        "estimated": false
+      },
+      "steps": [
+        {
+          "name": "整理任务约定",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 7,
+          "usage": {
+            "outputTokens": 502,
+            "estimated": false
+          }
+        },
+        {
+          "name": "同步作者最新正文",
+          "status": "COMPLETED",
+          "attempts": 2,
+          "inputRevision": 7,
+          "usage": {
+            "outputTokens": 5652,
+            "estimated": false
+          }
+        },
+        {
+          "name": "章节规划",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 8,
+          "usage": {
+            "outputTokens": 1264,
+            "estimated": false
+          }
+        },
+        {
+          "name": "生成正文",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 8,
+          "usage": {
+            "outputTokens": 1107,
+            "estimated": false
           }
         },
         {
           "name": "审校与候选事实",
           "status": "COMPLETED",
           "attempts": 1,
-          "inputRevision": 2,
+          "inputRevision": 8,
           "usage": {
-            "outputTokens": 6595,
+            "outputTokens": 3412,
             "estimated": false
           }
         }
       ]
     },
     {
-      "id": "task_fa1cb418-92ec-45fa-b58a-41c9d9d06202",
-      "kind": "write",
-      "status": "FAILED",
-      "usage": {
-        "calls": 3,
-        "outputTokens": 20992,
-        "estimated": true
-      },
-      "error": {
-        "code": "INCOMPLETE_OUTPUT",
-        "message": "模型输出未完整结束；已保留片段，不能自动接受"
-      },
-      "steps": [
-        {
-          "name": "同步作者最新正文",
-          "status": "FAILED",
-          "attempts": 3,
-          "inputRevision": 5,
-          "usage": {
-            "outputTokens": 20993,
-            "estimated": true
-          }
-        }
-      ]
-    },
-    {
-      "id": "task_fa1cb418-92ec-45fa-b58a-41c9d9d06202",
+      "id": "task_9aa05bda-94ed-4379-9da3-be0fccbc6881",
       "kind": "write",
       "status": "FAILED",
       "usage": {
         "calls": 6,
-        "outputTokens": 29576,
+        "outputTokens": 17839,
         "estimated": false
       },
       "error": {
-        "code": "INVALID_EVIDENCE",
-        "message": "伏笔依据无法核对"
+        "code": "MISSING_STATE",
+        "message": "claims 必须包含物品「蓝色信封」(world_91285630-ab5c-48b7-b015-b7245bd07ca5) 的章末 holder，value 使用角色姓名或 ID；正文无法确定时使用 modality=uncertain，引用实际原文，不能漏过物品状态检查"
       },
       "steps": [
         {
-          "name": "同步作者最新正文",
-          "status": "FAILED",
-          "attempts": 3,
-          "inputRevision": 5,
+          "name": "整理任务约定",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 9,
           "usage": {
-            "outputTokens": 20993,
-            "estimated": true
+            "outputTokens": 515,
+            "estimated": false
           }
         },
         {
-          "name": "同步作者最新正文",
+          "name": "章节规划",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 9,
+          "usage": {
+            "outputTokens": 1270,
+            "estimated": false
+          }
+        },
+        {
+          "name": "生成正文",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 9,
+          "usage": {
+            "outputTokens": 3868,
+            "estimated": false
+          }
+        },
+        {
+          "name": "审校与候选事实",
           "status": "FAILED",
           "attempts": 3,
-          "inputRevision": 5,
+          "inputRevision": 9,
           "usage": {
-            "outputTokens": 8584,
+            "outputTokens": 12186,
             "estimated": false
           }
         }
       ]
     },
     {
-      "id": "task_fa1cb418-92ec-45fa-b58a-41c9d9d06202",
+      "id": "task_9aa05bda-94ed-4379-9da3-be0fccbc6881",
       "kind": "write",
-      "status": "NEEDS_INPUT",
+      "status": "COMPLETED",
       "usage": {
-        "calls": 7,
-        "outputTokens": 32172,
+        "calls": 11,
+        "outputTokens": 34726,
         "estimated": false
-      },
-      "error": {
-        "code": "CONFLICT",
-        "message": "作者修改后的正文存在重大冲突，请先审查"
       },
       "steps": [
         {
-          "name": "同步作者最新正文",
-          "status": "FAILED",
-          "attempts": 3,
-          "inputRevision": 5,
-          "usage": {
-            "outputTokens": 20993,
-            "estimated": true
-          }
-        },
-        {
-          "name": "同步作者最新正文",
-          "status": "FAILED",
-          "attempts": 3,
-          "inputRevision": 5,
-          "usage": {
-            "outputTokens": 8584,
-            "estimated": false
-          }
-        },
-        {
-          "name": "同步作者最新正文",
+          "name": "整理任务约定",
           "status": "COMPLETED",
           "attempts": 1,
-          "inputRevision": 6,
+          "inputRevision": 9,
           "usage": {
-            "outputTokens": 2596,
-            "estimated": false
-          }
-        }
-      ]
-    },
-    {
-      "id": "task_fa1cb418-92ec-45fa-b58a-41c9d9d06202",
-      "kind": "write",
-      "status": "NEEDS_INPUT",
-      "usage": {
-        "calls": 8,
-        "outputTokens": 34684,
-        "estimated": false
-      },
-      "error": {
-        "code": "WAITING_REVIEW",
-        "message": "成果已保存，请审阅后接受或拒绝"
-      },
-      "steps": [
-        {
-          "name": "同步作者最新正文",
-          "status": "FAILED",
-          "attempts": 3,
-          "inputRevision": 5,
-          "usage": {
-            "outputTokens": 20993,
-            "estimated": true
-          }
-        },
-        {
-          "name": "同步作者最新正文",
-          "status": "FAILED",
-          "attempts": 3,
-          "inputRevision": 5,
-          "usage": {
-            "outputTokens": 8584,
+            "outputTokens": 515,
             "estimated": false
           }
         },
         {
-          "name": "同步作者最新正文",
+          "name": "章节规划",
           "status": "COMPLETED",
           "attempts": 1,
-          "inputRevision": 6,
+          "inputRevision": 9,
           "usage": {
-            "outputTokens": 2596,
+            "outputTokens": 1270,
             "estimated": false
           }
         },
         {
-          "name": "同步作者最新正文",
+          "name": "生成正文",
           "status": "COMPLETED",
           "attempts": 1,
-          "inputRevision": 6,
+          "inputRevision": 9,
           "usage": {
-            "outputTokens": 2512,
+            "outputTokens": 3868,
+            "estimated": false
+          }
+        },
+        {
+          "name": "审校与候选事实",
+          "status": "FAILED",
+          "attempts": 3,
+          "inputRevision": 9,
+          "usage": {
+            "outputTokens": 12186,
+            "estimated": false
+          }
+        },
+        {
+          "name": "审校与候选事实",
+          "status": "COMPLETED",
+          "attempts": 2,
+          "inputRevision": 9,
+          "usage": {
+            "outputTokens": 7762,
+            "estimated": false
+          }
+        },
+        {
+          "name": "章节规划",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 11,
+          "usage": {
+            "outputTokens": 1460,
+            "estimated": false
+          }
+        },
+        {
+          "name": "生成正文",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 11,
+          "usage": {
+            "outputTokens": 4312,
+            "estimated": false
+          }
+        },
+        {
+          "name": "审校与候选事实",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "inputRevision": 11,
+          "usage": {
+            "outputTokens": 3353,
             "estimated": false
           }
         }
@@ -368,6 +610,5 @@
     "name": "deepseek-official / deepseek-flash",
     "detail": "复用 DSH 当前模型；凭据由 DSH 管理，实际可用性以调用结果为准"
   },
-  "projectId": "project_5c52031c-dabb-4fd5-9180-a5f5e6782aa8",
-  "error": "NEEDS_INPUT: WAITING_REVIEW 成果已保存，请审阅后接受或拒绝"
+  "projectId": "project_08a514b1-1198-4741-9ac0-836da5d3764d"
 }

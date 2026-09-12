@@ -1,0 +1,360 @@
+{
+  "at": "2026-09-12T19:39:57.968Z",
+  "status": "PASS",
+  "codeCommit": "b4ea427",
+  "check": "After restarting both owned processes: every project revision, every object SHA256, body version reference, task status and usage matches the pre-restart snapshot.",
+  "verificationNote": "Initial readback assertion compared absent JSON keys with JavaScript undefined keys; corrected the verifier to compare their JSON representation. No data difference or application change was required.",
+  "unrelatedListener": {
+    "port": 3080,
+    "pid": 10956,
+    "preserved": true
+  },
+  "instances": [
+    {
+      "port": 4317,
+      "pid": 66788,
+      "health": {
+        "version": "0.1.0",
+        "dsh": {
+          "available": false,
+          "name": "DSH 未连接",
+          "detail": "在 DSH 中启动插件，并在 Models 中选择已配置模型。也可显式选择演示提供方。"
+        },
+        "demo": {
+          "available": true,
+          "name": "演示提供方 · 非真实 AI",
+          "detail": "使用原创固定样本，供检查界面和可靠性；不代表模型创作能力。建议目标 600 字。"
+        },
+        "schema": 1,
+        "prompts": [
+          {
+            "id": "novel.task-brief",
+            "version": 3,
+            "purpose": "把委派整理为简明任务约定"
+          },
+          {
+            "id": "novel.bootstrap",
+            "version": 2,
+            "purpose": "灵感开书与最小资料"
+          },
+          {
+            "id": "novel.chapter-plan",
+            "version": 3,
+            "purpose": "当前章规划"
+          },
+          {
+            "id": "novel.chapter-write",
+            "version": 2,
+            "purpose": "完整章节正文"
+          },
+          {
+            "id": "novel.review-extract",
+            "version": 10,
+            "purpose": "语义审校及候选事实抽取"
+          },
+          {
+            "id": "novel.local-repair",
+            "version": 2,
+            "purpose": "有界局部修复"
+          },
+          {
+            "id": "novel.future-replan",
+            "version": 2,
+            "purpose": "未来章纲影响分析"
+          },
+          {
+            "id": "novel.ideas",
+            "version": 2,
+            "purpose": "灵感候选与冲突推演"
+          },
+          {
+            "id": "novel.extract",
+            "version": 4,
+            "purpose": "分章导入资料抽取"
+          },
+          {
+            "id": "novel.selection",
+            "version": 2,
+            "purpose": "选区写作助手"
+          }
+        ]
+      },
+      "projects": [
+        {
+          "id": "project_77717e50-8d31-4e7a-8e22-59adc6dd50ea",
+          "title": "雾港来信 · 原创演示",
+          "revision": 16,
+          "objects": 15,
+          "objectsSha256": "ae8403c3e09a346f14744579d3c49b25b0c1cd63d64ecd432d5c0a7abacf14fa",
+          "chapters": [
+            {
+              "id": "chapter_0ed78e79-a2bf-49c2-8f4d-13229fbbc036",
+              "revision": 6,
+              "status": "accepted",
+              "version": "version_df09a3fe-964b-4b39-b8b4-9f64004af634"
+            },
+            {
+              "id": "chapter_6945b554-add2-4aee-913f-ba5dafdd3e29",
+              "revision": 3,
+              "status": "planned"
+            },
+            {
+              "id": "chapter_b4a65b38-8a60-448d-9344-d506696be530",
+              "revision": 2,
+              "status": "accepted",
+              "version": "version_aa19cb27-54f0-49c5-a529-95bc411b0647"
+            }
+          ],
+          "status": "PASS"
+        },
+        {
+          "id": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+          "title": "导入与备份验收",
+          "revision": 2,
+          "objects": 4,
+          "objectsSha256": "d0812738281d258595387c0390cd3d3c49d761d63e35ef2e51d6fa15351bb997",
+          "chapters": [
+            {
+              "id": "chapter_0310c23e-6e40-44c9-a40c-fd5e14b5e40d",
+              "revision": 1,
+              "status": "accepted",
+              "version": "version_34257c51-5e3e-4844-9627-872a785c590e"
+            },
+            {
+              "id": "chapter_f9250985-d1db-42c1-80e3-fba223905af8",
+              "revision": 1,
+              "status": "accepted",
+              "version": "version_809c5d86-352a-408e-a9a8-a9dfed5ce925"
+            }
+          ],
+          "status": "PASS"
+        },
+        {
+          "id": "project_f875e365-e23c-4c68-9648-b56980d132d6",
+          "title": "导入与备份验收 · 恢复副本",
+          "revision": 2,
+          "objects": 4,
+          "objectsSha256": "7dfba287a2a875574f3d35d486888141768e85cae1f3587c5dcfac023c151935",
+          "chapters": [
+            {
+              "id": "chapter_260f1f73-34b6-44a2-8997-d7cf76b3c479",
+              "revision": 1,
+              "status": "accepted",
+              "version": "version_c2017e68-fc6c-440d-af49-65b5960f2d9d"
+            },
+            {
+              "id": "chapter_5a005557-28bd-4f82-8a63-69d3f375c41a",
+              "revision": 1,
+              "status": "accepted",
+              "version": "version_8504dffc-58b2-4a52-a856-5a4c26651c2e"
+            }
+          ],
+          "status": "PASS"
+        },
+        {
+          "id": "project_c48e9145-8790-4c6a-a6a8-7bd281213d64",
+          "title": "一致性与修复验收（确定性测试） · 恢复副本",
+          "revision": 10,
+          "objects": 11,
+          "objectsSha256": "8ff3b41ec8c79c2506d5406e00706e36c189bc851fb30d0f7256b3f45fe0893b",
+          "chapters": [
+            {
+              "id": "chapter_05dc87e2-4a2c-475f-a108-4742d5ba8784",
+              "revision": 2,
+              "status": "accepted",
+              "version": "version_f8538a0c-8ec2-4833-916c-bee52e26eb00"
+            },
+            {
+              "id": "chapter_a1a33775-9057-4402-bbb2-511297ed8d33",
+              "revision": 2,
+              "status": "accepted",
+              "version": "version_7ae97d1e-fd08-46b4-ba58-c6dbd848b518"
+            }
+          ],
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "port": 4318,
+      "pid": 29576,
+      "health": {
+        "version": "0.1.0",
+        "dsh": {
+          "available": true,
+          "name": "deepseek-official / deepseek-flash",
+          "detail": "复用 DSH 当前模型；凭据由 DSH 管理，实际可用性以调用结果为准"
+        },
+        "demo": {
+          "available": true,
+          "name": "演示提供方 · 非真实 AI",
+          "detail": "使用原创固定样本，供检查界面和可靠性；不代表模型创作能力。建议目标 600 字。"
+        },
+        "schema": 1,
+        "prompts": [
+          {
+            "id": "novel.task-brief",
+            "version": 3,
+            "purpose": "把委派整理为简明任务约定"
+          },
+          {
+            "id": "novel.bootstrap",
+            "version": 2,
+            "purpose": "灵感开书与最小资料"
+          },
+          {
+            "id": "novel.chapter-plan",
+            "version": 3,
+            "purpose": "当前章规划"
+          },
+          {
+            "id": "novel.chapter-write",
+            "version": 2,
+            "purpose": "完整章节正文"
+          },
+          {
+            "id": "novel.review-extract",
+            "version": 10,
+            "purpose": "语义审校及候选事实抽取"
+          },
+          {
+            "id": "novel.local-repair",
+            "version": 2,
+            "purpose": "有界局部修复"
+          },
+          {
+            "id": "novel.future-replan",
+            "version": 2,
+            "purpose": "未来章纲影响分析"
+          },
+          {
+            "id": "novel.ideas",
+            "version": 2,
+            "purpose": "灵感候选与冲突推演"
+          },
+          {
+            "id": "novel.extract",
+            "version": 4,
+            "purpose": "分章导入资料抽取"
+          },
+          {
+            "id": "novel.selection",
+            "version": 2,
+            "purpose": "选区写作助手"
+          }
+        ]
+      },
+      "projects": [
+        {
+          "id": "project_5c52031c-dabb-4fd5-9180-a5f5e6782aa8",
+          "title": "纸灯与归信 · 真实 AI 验收",
+          "revision": 8,
+          "objects": 36,
+          "objectsSha256": "8b487241f393d89390c03a7f78b83db68da8837c934084340e36887308f912a9",
+          "chapters": [
+            {
+              "id": "chapter_260d5e6c-c640-45f2-8672-47008f37f139",
+              "revision": 1,
+              "status": "planned"
+            },
+            {
+              "id": "chapter_3c01e1fb-325b-451c-9df6-157e9a592622",
+              "revision": 5,
+              "status": "accepted",
+              "version": "version_3987cb00-e2d1-4167-b79a-2da5951a2843"
+            },
+            {
+              "id": "chapter_855238a3-e24a-4006-af5a-eca7fb2bf8e7",
+              "revision": 1,
+              "status": "planned"
+            }
+          ],
+          "status": "PASS"
+        },
+        {
+          "id": "project_08a514b1-1198-4741-9ac0-836da5d3764d",
+          "title": "纸灯与归信 · 真实 AI 验收",
+          "revision": 12,
+          "objects": 96,
+          "objectsSha256": "d8b2a5a18498ff97fb6c7b39ec806d65a176a1fd612780e88c3b4cac2c0be3f3",
+          "chapters": [
+            {
+              "id": "chapter_3a1cafa4-fc1f-4143-bb70-0ace5ed4963a",
+              "revision": 5,
+              "status": "accepted",
+              "version": "version_80b6b9ee-b926-4dcb-8956-396e535bacb9"
+            },
+            {
+              "id": "chapter_763e6540-cacc-489a-bca0-e63c3257f812",
+              "revision": 2,
+              "status": "accepted",
+              "version": "version_85472ba6-2550-40b2-ae39-8d5da1c8167e"
+            },
+            {
+              "id": "chapter_93451b0c-859d-4f2b-bb0f-13f8d73c5eca",
+              "revision": 2,
+              "status": "accepted",
+              "version": "version_250643b0-8351-40aa-b907-2ff55fbf9777"
+            },
+            {
+              "id": "chapter_c136091d-dd2f-4d51-b46e-f1f1c471a84e",
+              "revision": 2,
+              "status": "accepted",
+              "version": "version_e8b48a1a-0011-4db3-b1b8-83bb6ff7ef35"
+            }
+          ],
+          "status": "PASS"
+        },
+        {
+          "id": "project_a1bd5917-88f8-4b54-bc7b-f88fe5814a99",
+          "title": "潮汐邮局 · 方向选择验收",
+          "revision": 2,
+          "objects": 10,
+          "objectsSha256": "52503cca8eb97e190b98fc68494354c1116da15ba3e85ba2fab8912338d01674",
+          "chapters": [
+            {
+              "id": "chapter_55424b32-ef06-437a-b611-7db06802926d",
+              "revision": 1,
+              "status": "planned"
+            },
+            {
+              "id": "chapter_73b02b71-0f25-4831-8734-60c78819beba",
+              "revision": 1,
+              "status": "planned"
+            },
+            {
+              "id": "chapter_91cc4468-d3e8-4a6c-8d88-9680e6d85d02",
+              "revision": 1,
+              "status": "planned"
+            }
+          ],
+          "status": "PASS"
+        },
+        {
+          "id": "project_859081f7-7f04-4e57-ad4e-32ff3263a33f",
+          "title": "正文提取 · 真实 AI 验收",
+          "revision": 4,
+          "objects": 19,
+          "objectsSha256": "f086d6c43e3551dd20182a8bd3a04a5bc8aca5ccfdc9f7febe16d9a5b3a2b23b",
+          "chapters": [
+            {
+              "id": "chapter_2d3a3780-ace2-4b8b-af1f-908d1f856676",
+              "revision": 1,
+              "status": "accepted",
+              "version": "version_9f551ce1-5759-4316-b9b7-29f39e787321"
+            },
+            {
+              "id": "chapter_ac3800c2-2409-426f-9286-fdf7f646fa6d",
+              "revision": 1,
+              "status": "accepted",
+              "version": "version_93053c3b-4f30-46ac-a102-70a820df51a7"
+            }
+          ],
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    }
+  ]
+}

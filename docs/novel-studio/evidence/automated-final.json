@@ -1,0 +1,42 @@
+{
+  "at": "2026-09-12T19:34:18.553Z",
+  "status": "PASS",
+  "counts": {
+    "unit": 9,
+    "integration": 31,
+    "deterministicHttpE2e": 1,
+    "total": 41
+  },
+  "checks": [
+    {
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "at": "2026-09-12T19:34:18.553Z"
+    },
+    {
+      "command": "npm run test:unit",
+      "status": "PASS",
+      "exitCode": 0,
+      "at": "2026-09-12T19:34:18.553Z"
+    },
+    {
+      "command": "npm run test:integration",
+      "status": "PASS",
+      "exitCode": 0,
+      "at": "2026-09-12T19:34:18.553Z"
+    },
+    {
+      "command": "npm run test:e2e",
+      "status": "PASS",
+      "exitCode": 0,
+      "at": "2026-09-12T19:34:18.553Z"
+    },
+    {
+      "command": "npm run build",
+      "status": "PASS",
+      "exitCode": 0,
+      "at": "2026-09-12T19:34:18.553Z"
+    }
+  ]
+}

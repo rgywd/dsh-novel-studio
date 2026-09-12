@@ -1,0 +1,25 @@
+
+> @rgywd/dsh-novel-studio@0.1.0 test:unit
+> node --import tsx --test test/context.test.ts test/review.test.ts
+
+(node:54408) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ D: planned events and candidates never become canon (11.8691ms)
+✔ L: large book is scoped, bounded and stale summary omitted (411.9534ms)
+✔ L: locked constraints must fit or fail visibly (7.8494ms)
+✔ word count excludes whitespace and punctuation (0.6124ms)
+✔ continuation finds carried items in the previous ending even when the broad goal omits them (5.5006ms)
+(node:34660) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ E: unique-key conflict cites both exact sources and location (11.236ms)
+✔ E: memory and explicit retrieval are not current-state conflicts (3.9347ms)
+✔ evidence fabrication and empty short chapters fail validation (4.2394ms)
+✔ holder identity IDs and names refer to the same character without erasing source values (7.0993ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1516.8505

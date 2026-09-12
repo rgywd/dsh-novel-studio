@@ -1,0 +1,182 @@
+{
+  "at": "2026-09-12T19:45:40.097Z",
+  "status": "PASS",
+  "method": "Actual running UI operated through the in-app browser; screenshots were captured and visually inspected. Deterministic and real-model projects are identified separately.",
+  "codeCommit": "b4ea427",
+  "surfaces": [
+    {
+      "url": "http://127.0.0.1:4317/novel-studio/",
+      "purpose": "Explicit deterministic demo and controlled failure acceptance"
+    },
+    {
+      "url": "http://127.0.0.1:4318/novel-studio/",
+      "purpose": "Actual DSH model, story direction choice, extraction and final delivery"
+    }
+  ],
+  "checks": [
+    {
+      "scenario": "A/B",
+      "status": "PASS",
+      "actions": "Created the original demo; generated chapter one; took over, changed copper key to silver key; observed a save failure during the owned local server outage; restarted, retried, verified saved revision 5 and reload; generated chapter two with a Context Trace referencing the author version.",
+      "screenshots": [
+        "save-failure.png",
+        "context-handoff.png",
+        "writer-focus.png"
+      ]
+    },
+    {
+      "scenario": "K",
+      "status": "PASS",
+      "actions": "Edited character aliases/voice and a world rule; edited the relationship with asymmetric participant knowledge. After final restart, the SVG group exposes two character buttons and a relationship button; clicking the edge opens the corresponding populated editor.",
+      "screenshots": [
+        "relationship-graph.png",
+        "relationship-narrow.png"
+      ]
+    },
+    {
+      "scenario": "I/K",
+      "status": "PASS",
+      "actions": "Selected body text, previewed an AI Diff and accepted only selected replacement text, keeping outside content. Adopted an Inbox idea into an empty future chapter, accepted a scoped replan and undid it; author plan restored at revision 3 without canon changes.",
+      "screenshots": [
+        "selection-diff.png",
+        "replan-diff.png"
+      ]
+    },
+    {
+      "scenario": "E/H/K",
+      "status": "PASS",
+      "projectId": "project_c48e9145-8790-4c6a-a6a8-7bd281213d64",
+      "actions": "Explicitly fault-injected deterministic key-holder conflict. UI displayed both sources and located the conflicting line. Took over the candidate, replaced the local holder sentence, re-reviewed and accepted the repaired chapter; the invalid older artifact remains stale.",
+      "screenshots": [
+        "consistency-conflict.png"
+      ]
+    },
+    {
+      "scenario": "J",
+      "status": "PASS",
+      "actions": "Uploaded original test/fixtures/import-story.md, adjusted first chapter title in split preview and confirmed both chapters. Verified raw import byte-for-byte via API. Clicked Markdown and JSON attachment links and observed browser download events; uploaded a saved response from that same backup API via file chooser and opened restored version history. Browser download-directory bytes were not inspected.",
+      "screenshots": [
+        "restored-versions.png"
+      ]
+    },
+    {
+      "scenario": "B/F/K",
+      "status": "PASS",
+      "projectId": "project_08a514b1-1198-4741-9ac0-836da5d3764d",
+      "actions": "Opened actual DSH first chapter in Writer and second-chapter completed task in Director. Verified current model, persisted stages, source versions, real artifacts and collapsed new-task composer. New task and Writer delegation reopen the composer.",
+      "screenshots": [
+        "writer-real-desktop.png",
+        "director-real-desktop.png"
+      ]
+    },
+    {
+      "scenario": "onboarding/extract",
+      "status": "PASS",
+      "actions": "In actual DSH UI selected alternate direction B and accepted its newly generated setup. Accepted both real chapter extraction artifacts; all 15 extracted objects remain source-linked uncertain candidates for author confirmation.",
+      "screenshots": [
+        "extraction-candidates.png"
+      ]
+    },
+    {
+      "scenario": "responsive",
+      "status": "PASS",
+      "viewports": [
+        {
+          "requestedWidth": 1280,
+          "height": 900,
+          "clientWidth": 1265,
+          "scrollWidth": 1265
+        },
+        {
+          "requestedWidth": 390,
+          "clientWidth": 375,
+          "scrollWidth": 375
+        }
+      ],
+      "actions": "Desktop Writer/Director and narrow window navigation/auxiliary drawers checked; light/dark controls used. Fixed the narrow header overlap and retained actionable drawers. Final temporary viewport overrides reset and standalone testing tab closed.",
+      "screenshots": [
+        "library-desktop.png",
+        "director-narrow.png",
+        "director-dark-drawer.png"
+      ]
+    }
+  ],
+  "finalDshErrorConsole": [],
+  "screenshots": [
+    {
+      "name": "consistency-conflict.png",
+      "bytes": 29448,
+      "sha256": "4e1c528e5178cd11326650b002cc4dcebfd6e9fcd244dd845fba94ebcf11a123"
+    },
+    {
+      "name": "context-handoff.png",
+      "bytes": 53537,
+      "sha256": "61d2b31656634ee16598684cb00eabc10d157a9167874a1a1210623c7fb784b4"
+    },
+    {
+      "name": "director-dark-drawer.png",
+      "bytes": 38816,
+      "sha256": "03de6cbf291cce1396faae7503381b12151e59dce78a204856fd4aa36bf06cc7"
+    },
+    {
+      "name": "director-narrow.png",
+      "bytes": 37342,
+      "sha256": "e318c9935cfeb84bfb943b409bc07871a09f2b63e5ef28586d2cf2cf94093526"
+    },
+    {
+      "name": "director-real-desktop.png",
+      "bytes": 107208,
+      "sha256": "2a984f20be38189b65650c985edd362f9adf29337b5e8ab038d96061ac0ebd47"
+    },
+    {
+      "name": "extraction-candidates.png",
+      "bytes": 73058,
+      "sha256": "70d0142a67674ea6dcd0fbe79add87013c1ed38e38b4a68c4d3b1a81ab5328b9"
+    },
+    {
+      "name": "library-desktop.png",
+      "bytes": 61918,
+      "sha256": "2e695ebdf9d415e60449a1549a0a1a2e65ee1846be81bf76ac9b518c7e7859ad"
+    },
+    {
+      "name": "relationship-graph.png",
+      "bytes": 42241,
+      "sha256": "ddc5d39ee2c82c9540b91232e9d37bea4523dbf81452d6c24f4e1a55db41bc19"
+    },
+    {
+      "name": "relationship-narrow.png",
+      "bytes": 20089,
+      "sha256": "563d11ee3de6b5887414f4b546160d97d73b3661d56a7e8b410e18fe54a57dea"
+    },
+    {
+      "name": "replan-diff.png",
+      "bytes": 35741,
+      "sha256": "85ee003dbb5a4b538bb924c12c767e6af955414c400d1d208e6ddbd522b7a35d"
+    },
+    {
+      "name": "restored-versions.png",
+      "bytes": 17759,
+      "sha256": "8594eb4429fa7ac75cab2a0647c6984920f25453c8e013091d83d443e74a0b80"
+    },
+    {
+      "name": "save-failure.png",
+      "bytes": 78513,
+      "sha256": "8bdadc92507d77ce4c218c3d872361603510320cd27246c5397ccca4c39f66af"
+    },
+    {
+      "name": "selection-diff.png",
+      "bytes": 43890,
+      "sha256": "4436c5155e588032cd1c907bdc1faa181659b16a485d4162c1ece0677b2f5242"
+    },
+    {
+      "name": "writer-focus.png",
+      "bytes": 84434,
+      "sha256": "2e729fe766526e98a108fef84286f0ed42ab9edd02b3c416c3dc0ca83d5efab8"
+    },
+    {
+      "name": "writer-real-desktop.png",
+      "bytes": 131688,
+      "sha256": "4ba935476402fd170cc536d96b2b76e8fbff9caa90a5430e0df053979f1bc7ee"
+    }
+  ]
+}
