@@ -1,0 +1,1457 @@
+{
+  "checksum": "48f66441aa1d73db6d06f0e41d36e259a587cf8060d0f111dc5cd1d17e79b083",
+  "payload": {
+    "schema": 1,
+    "project": {
+      "title": "一致性与修复验收（确定性测试）",
+      "premise": "港口的信件保存人的记忆",
+      "genre": "测试样本",
+      "style": "克制、具体，以行动与对白推动故事。",
+      "constraints": [],
+      "archived": false,
+      "id": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+      "revision": 9,
+      "createdAt": "2026-09-12T19:00:25.151Z",
+      "updatedAt": "2026-09-12T19:00:26.108Z"
+    },
+    "objects": [
+      {
+        "kind": "book",
+        "title": "可靠性测试作品",
+        "parentId": null,
+        "order": 0,
+        "status": "planned",
+        "locked": false,
+        "tags": [],
+        "body": "港口的信件保存人的记忆",
+        "fields": {},
+        "id": "book_3ff13410-15eb-4f5a-bfe2-f1bd9e83e334",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "revision": 1,
+        "updatedAt": "2026-09-12T19:00:25.153Z"
+      },
+      {
+        "kind": "chapter",
+        "title": "第一章",
+        "parentId": "volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12",
+        "order": 1,
+        "status": "accepted",
+        "locked": false,
+        "tags": [],
+        "body": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的旧报纸时，他正用拇指摸那道压痕。她把工具箱搁在地上，先看信，又看他身后空了三年的挂钩。“你今晚还要送？”她问。沈砚把信翻过去。纸背浮出一点潮湿的蓝，像地图上一段尚未命名的水。\n\n“我想去档案室查邮戳。”他说。他说得很平，仿佛只是要补一张领料单。闻溪没有拆穿，把手伸向柜台边沿。那里有一道被旧钥匙磨出的凹槽，木屑颜色比周围浅。\n\n沈砚把铜钥匙交给了闻溪。\n\n“先替我拿着。”他说，“我去关后门。”他第一次把这件事交给另一个人，心里却没有想象中轻松。钥匙离开掌心时留下一点冰凉，像突然不必再握紧的某种责任。\n\n后门外的石阶上躺着一张投递回执。上面没有签名，只有一行铅笔字：不要在第七盏灯亮起之后叫我的名字。他蹲下，把回执夹进随身的小本子。石阶下的水没有流动，却传来一声很远的船笛。\n\n闻溪站在楼梯口等他。她没有问回执上写了什么，只拎起工具箱，让出半级台阶。两个人一前一后下楼，邮局的钟终于敲响。钟声穿过楼板的时候，蓝色信封里的纸，轻轻响了一下。\n\n档案室的灯没有亮。墙上挂着一幅缺了右下角的港口地图，缺口的形状恰好能容下一条街。沈砚记得那条街。他每天回家都经过那里，可他想不起街口那家面包店是什么时候关的。\n\n“明天先去这里。”他在地图的缺口旁画了一个小圆，没有写下母亲的名字。闻溪点点头。她把钥匙收进围裙的内袋，随后擦去灯罩上的灰，为他们留出一小片可以看清彼此的光。",
+        "fields": {
+          "participants": [
+            "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce"
+          ],
+          "goal": "创作完整章节",
+          "title": "蓝色信封",
+          "conflict": "守住承诺还是追问信的来处",
+          "events": "调查未送达的信",
+          "change": "愿意请人共同承担",
+          "reveal": "档案存在缺页",
+          "foreshadow": "蓝色信封的压痕",
+          "ending": "踏向港灯",
+          "constraints": "",
+          "targetWords": 600,
+          "currentVersion": "version_480e8515-236c-497e-b98f-1c3a4062137a",
+          "summary": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的",
+          "summaryVersion": "version_480e8515-236c-497e-b98f-1c3a4062137a",
+          "extractionPending": false,
+          "needsReview": false,
+          "control": "director"
+        },
+        "source": {
+          "type": "user",
+          "quote": "",
+          "time": "用户明确设定",
+          "inference": false,
+          "modality": "objective",
+          "policy": "author-setting"
+        },
+        "id": "chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "revision": 2,
+        "updatedAt": "2026-09-12T19:00:25.910Z"
+      },
+      {
+        "kind": "chapter",
+        "title": "第2章",
+        "parentId": "volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12",
+        "order": 2,
+        "status": "planned",
+        "locked": false,
+        "tags": [],
+        "body": "",
+        "fields": {
+          "goal": "确定性故障注入：模拟钥匙未交回却被原持有人使用，验证冲突隔离。",
+          "targetWords": 600
+        },
+        "id": "chapter_36d5f4f5-32f2-480b-a88c-805f7eac3523",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "revision": 1,
+        "updatedAt": "2026-09-12T19:00:26.108Z"
+      },
+      {
+        "kind": "character",
+        "title": "沈砚",
+        "parentId": null,
+        "order": 0,
+        "status": "accepted",
+        "locked": false,
+        "tags": [],
+        "body": "邮差",
+        "fields": {
+          "identity": "邮差"
+        },
+        "source": {
+          "type": "user",
+          "quote": "邮差",
+          "time": "用户明确设定",
+          "inference": false,
+          "modality": "objective",
+          "policy": "author-setting"
+        },
+        "id": "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "revision": 1,
+        "updatedAt": "2026-09-12T19:00:25.154Z"
+      },
+      {
+        "kind": "character",
+        "title": "闻溪",
+        "parentId": null,
+        "order": 0,
+        "status": "accepted",
+        "locked": false,
+        "tags": [],
+        "body": "灯匠",
+        "fields": {},
+        "source": {
+          "type": "user",
+          "quote": "灯匠",
+          "time": "用户明确设定",
+          "inference": false,
+          "modality": "objective",
+          "policy": "author-setting"
+        },
+        "id": "character_a51a3476-5bcb-44dd-ae1a-b627808d5130",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "revision": 1,
+        "updatedAt": "2026-09-12T19:00:25.154Z"
+      },
+      {
+        "kind": "event",
+        "title": "调查雾港的来信",
+        "parentId": null,
+        "order": 0,
+        "status": "accepted",
+        "locked": false,
+        "tags": [],
+        "body": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。",
+        "fields": {
+          "entityIds": [
+            "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce"
+          ],
+          "storyTime": "未知",
+          "chapterOrder": 1
+        },
+        "source": {
+          "type": "chapter",
+          "chapterId": "chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a",
+          "versionId": "version_480e8515-236c-497e-b98f-1c3a4062137a",
+          "quote": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。",
+          "start": 0,
+          "end": 71,
+          "time": "未知",
+          "fromChapter": 1,
+          "inference": false,
+          "modality": "objective",
+          "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+          "policy": "qualified-v1"
+        },
+        "id": "event_889af53d-5ca1-4d7c-b2ed-9080ad7d1a98",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "revision": 1,
+        "updatedAt": "2026-09-12T19:00:25.910Z"
+      },
+      {
+        "kind": "fact",
+        "title": "holder：闻溪",
+        "parentId": null,
+        "order": 0,
+        "status": "accepted",
+        "locked": false,
+        "tags": [],
+        "body": "沈砚把铜钥匙交给了闻溪。",
+        "fields": {
+          "entityId": "world_622e4148-c75d-4a4a-95cc-0e8700407fd9",
+          "property": "holder",
+          "value": "闻溪"
+        },
+        "source": {
+          "type": "chapter",
+          "chapterId": "chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a",
+          "versionId": "version_480e8515-236c-497e-b98f-1c3a4062137a",
+          "quote": "沈砚把铜钥匙交给了闻溪。",
+          "start": 324,
+          "end": 336,
+          "time": "本章",
+          "fromChapter": 1,
+          "inference": false,
+          "modality": "objective",
+          "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+          "policy": "qualified-v1"
+        },
+        "id": "fact_d707e903-9d44-4203-ac01-b35cf1d9c248",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "revision": 1,
+        "updatedAt": "2026-09-12T19:00:25.909Z"
+      },
+      {
+        "kind": "volume",
+        "title": "第一卷",
+        "parentId": "book_3ff13410-15eb-4f5a-bfe2-f1bd9e83e334",
+        "order": 0,
+        "status": "planned",
+        "locked": false,
+        "tags": [],
+        "body": "",
+        "fields": {},
+        "source": {
+          "type": "user",
+          "quote": "",
+          "time": "用户明确设定",
+          "inference": false,
+          "modality": "objective",
+          "policy": "author-setting"
+        },
+        "id": "volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "revision": 1,
+        "updatedAt": "2026-09-12T19:00:25.153Z"
+      },
+      {
+        "kind": "world",
+        "title": "铜钥匙",
+        "parentId": null,
+        "order": 0,
+        "status": "accepted",
+        "locked": false,
+        "tags": [],
+        "body": "唯一钥匙",
+        "fields": {
+          "type": "物品"
+        },
+        "source": {
+          "type": "user",
+          "quote": "唯一钥匙",
+          "time": "用户明确设定",
+          "inference": false,
+          "modality": "objective",
+          "policy": "author-setting"
+        },
+        "id": "world_622e4148-c75d-4a4a-95cc-0e8700407fd9",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "revision": 1,
+        "updatedAt": "2026-09-12T19:00:25.155Z"
+      }
+    ],
+    "versions": [
+      {
+        "id": "version_480e8515-236c-497e-b98f-1c3a4062137a",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "chapterId": "chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a",
+        "content": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的旧报纸时，他正用拇指摸那道压痕。她把工具箱搁在地上，先看信，又看他身后空了三年的挂钩。“你今晚还要送？”她问。沈砚把信翻过去。纸背浮出一点潮湿的蓝，像地图上一段尚未命名的水。\n\n“我想去档案室查邮戳。”他说。他说得很平，仿佛只是要补一张领料单。闻溪没有拆穿，把手伸向柜台边沿。那里有一道被旧钥匙磨出的凹槽，木屑颜色比周围浅。\n\n沈砚把铜钥匙交给了闻溪。\n\n“先替我拿着。”他说，“我去关后门。”他第一次把这件事交给另一个人，心里却没有想象中轻松。钥匙离开掌心时留下一点冰凉，像突然不必再握紧的某种责任。\n\n后门外的石阶上躺着一张投递回执。上面没有签名，只有一行铅笔字：不要在第七盏灯亮起之后叫我的名字。他蹲下，把回执夹进随身的小本子。石阶下的水没有流动，却传来一声很远的船笛。\n\n闻溪站在楼梯口等他。她没有问回执上写了什么，只拎起工具箱，让出半级台阶。两个人一前一后下楼，邮局的钟终于敲响。钟声穿过楼板的时候，蓝色信封里的纸，轻轻响了一下。\n\n档案室的灯没有亮。墙上挂着一幅缺了右下角的港口地图，缺口的形状恰好能容下一条街。沈砚记得那条街。他每天回家都经过那里，可他想不起街口那家面包店是什么时候关的。\n\n“明天先去这里。”他在地图的缺口旁画了一个小圆，没有写下母亲的名字。闻溪点点头。她把钥匙收进围裙的内袋，随后擦去灯罩上的灰，为他们留出一小片可以看清彼此的光。",
+        "chapterRevision": 2,
+        "createdAt": "2026-09-12T19:00:25.908Z",
+        "actor": "auto:task_bfe2c851-55d5-457f-add6-321e92aa239e:qualified-v1",
+        "accepted": true,
+        "summary": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的",
+        "commitKey": "artifact_1e03fd5b-37e4-4c3c-bae2-fd3089f860d0"
+      }
+    ],
+    "tasks": [
+      {
+        "kind": "write",
+        "goal": "创作完整章节",
+        "count": 1,
+        "targetWords": 600,
+        "constraints": [],
+        "autoAccept": true,
+        "provider": "demo",
+        "reasoning": "balanced",
+        "budget": {
+          "calls": 18,
+          "outputTokens": 48000,
+          "contextChars": 18000
+        },
+        "id": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "status": "COMPLETED",
+        "inputRevision": 7,
+        "expectedRevision": 8,
+        "epoch": 0,
+        "createdAt": "2026-09-12T19:00:25.156Z",
+        "updatedAt": "2026-09-12T19:00:25.911Z",
+        "currentStep": "completed",
+        "completedChapters": 1,
+        "steps": [
+          {
+            "key": "0:0:整理任务约定",
+            "name": "整理任务约定",
+            "inputHash": "f92724b62538b947570210ae649f891ed72dd4bb6db40ec745af992a12b6c533",
+            "inputRevision": 7,
+            "status": "COMPLETED",
+            "attempts": 1,
+            "startedAt": "2026-09-12T19:00:25.157Z",
+            "calls": [
+              {
+                "attempt": 1,
+                "reserved": 5000,
+                "outputTokens": 77,
+                "estimated": true,
+                "status": "COMPLETED",
+                "startedAt": "2026-09-12T19:00:25.157Z",
+                "endedAt": "2026-09-12T19:00:25.352Z"
+              }
+            ],
+            "output": {
+              "objective": "创作完整章节",
+              "approach": "读取最新资料，完成范围内成果并审查；遇到冲突或预算耗尽暂停。",
+              "assumptions": [
+                "使用当前作品版本"
+              ],
+              "constraints": []
+            },
+            "endedAt": "2026-09-12T19:00:25.352Z",
+            "usage": {
+              "outputTokens": 77,
+              "estimated": true
+            }
+          },
+          {
+            "key": "0:0:章节规划",
+            "name": "章节规划",
+            "inputHash": "11c1f9049995ba849d1f4a8c9ac306c6b5b2c059cdd630af517cdcacdd42c386",
+            "inputRevision": 7,
+            "status": "COMPLETED",
+            "attempts": 1,
+            "startedAt": "2026-09-12T19:00:25.354Z",
+            "calls": [
+              {
+                "attempt": 1,
+                "reserved": 5000,
+                "outputTokens": 166,
+                "estimated": true,
+                "status": "COMPLETED",
+                "startedAt": "2026-09-12T19:00:25.354Z",
+                "endedAt": "2026-09-12T19:00:25.537Z"
+              }
+            ],
+            "output": {
+              "title": "蓝色信封",
+              "goal": "创作完整章节",
+              "conflict": "守住承诺还是追问信的来处",
+              "participants": [
+                "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce"
+              ],
+              "events": "调查未送达的信",
+              "change": "愿意请人共同承担",
+              "reveal": "档案存在缺页",
+              "foreshadow": "蓝色信封的压痕",
+              "ending": "踏向港灯",
+              "constraints": ""
+            },
+            "endedAt": "2026-09-12T19:00:25.537Z",
+            "usage": {
+              "outputTokens": 166,
+              "estimated": true
+            }
+          },
+          {
+            "key": "0:0:生成正文",
+            "name": "生成正文",
+            "inputHash": "a7f5e1d1ef07cf3b1f899e96594967eb25a370cebee2d857183864163a8e1edc",
+            "inputRevision": 7,
+            "status": "COMPLETED",
+            "attempts": 1,
+            "startedAt": "2026-09-12T19:00:25.538Z",
+            "calls": [
+              {
+                "attempt": 1,
+                "reserved": 2520,
+                "outputTokens": 520,
+                "estimated": true,
+                "status": "COMPLETED",
+                "startedAt": "2026-09-12T19:00:25.538Z",
+                "endedAt": "2026-09-12T19:00:25.722Z"
+              }
+            ],
+            "output": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的旧报纸时，他正用拇指摸那道压痕。她把工具箱搁在地上，先看信，又看他身后空了三年的挂钩。“你今晚还要送？”她问。沈砚把信翻过去。纸背浮出一点潮湿的蓝，像地图上一段尚未命名的水。\n\n“我想去档案室查邮戳。”他说。他说得很平，仿佛只是要补一张领料单。闻溪没有拆穿，把手伸向柜台边沿。那里有一道被旧钥匙磨出的凹槽，木屑颜色比周围浅。\n\n沈砚把铜钥匙交给了闻溪。\n\n“先替我拿着。”他说，“我去关后门。”他第一次把这件事交给另一个人，心里却没有想象中轻松。钥匙离开掌心时留下一点冰凉，像突然不必再握紧的某种责任。\n\n后门外的石阶上躺着一张投递回执。上面没有签名，只有一行铅笔字：不要在第七盏灯亮起之后叫我的名字。他蹲下，把回执夹进随身的小本子。石阶下的水没有流动，却传来一声很远的船笛。\n\n闻溪站在楼梯口等他。她没有问回执上写了什么，只拎起工具箱，让出半级台阶。两个人一前一后下楼，邮局的钟终于敲响。钟声穿过楼板的时候，蓝色信封里的纸，轻轻响了一下。\n\n档案室的灯没有亮。墙上挂着一幅缺了右下角的港口地图，缺口的形状恰好能容下一条街。沈砚记得那条街。他每天回家都经过那里，可他想不起街口那家面包店是什么时候关的。\n\n“明天先去这里。”他在地图的缺口旁画了一个小圆，没有写下母亲的名字。闻溪点点头。她把钥匙收进围裙的内袋，随后擦去灯罩上的灰，为他们留出一小片可以看清彼此的光。",
+            "endedAt": "2026-09-12T19:00:25.722Z",
+            "usage": {
+              "outputTokens": 520,
+              "estimated": true
+            }
+          },
+          {
+            "key": "0:0:审校与候选事实",
+            "name": "审校与候选事实",
+            "inputHash": "127fc40c7762fb7cfd2860edf9c1dde32b987988575f817a75dd3286a8316cf7",
+            "inputRevision": 7,
+            "status": "COMPLETED",
+            "attempts": 1,
+            "startedAt": "2026-09-12T19:00:25.723Z",
+            "calls": [
+              {
+                "attempt": 1,
+                "reserved": 7000,
+                "outputTokens": 406,
+                "estimated": true,
+                "status": "COMPLETED",
+                "startedAt": "2026-09-12T19:00:25.723Z",
+                "endedAt": "2026-09-12T19:00:25.905Z"
+              }
+            ],
+            "output": {
+              "summary": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的",
+              "claims": [
+                {
+                  "entityId": "world_622e4148-c75d-4a4a-95cc-0e8700407fd9",
+                  "property": "holder",
+                  "value": "闻溪",
+                  "quote": "沈砚把铜钥匙交给了闻溪。",
+                  "modality": "objective",
+                  "time": "本章",
+                  "inference": false
+                }
+              ],
+              "events": [
+                {
+                  "title": "调查雾港的来信",
+                  "quote": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。",
+                  "time": "未知",
+                  "entityIds": [
+                    "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce"
+                  ]
+                }
+              ],
+              "issues": [],
+              "foreshadowUpdates": []
+            },
+            "endedAt": "2026-09-12T19:00:25.906Z",
+            "usage": {
+              "outputTokens": 406,
+              "estimated": true
+            }
+          }
+        ],
+        "usage": {
+          "calls": 4,
+          "outputTokens": 1169,
+          "estimated": true
+        },
+        "checkpoint": {
+          "committed": [
+            "artifact_1e03fd5b-37e4-4c3c-bae2-fd3089f860d0"
+          ]
+        },
+        "contract": {
+          "scope": "最多 1 章新正文",
+          "lockedIds": [],
+          "permitted": [
+            "读取有界资料",
+            "创建候选与草稿",
+            "最多两轮局部修复",
+            "按合格成果策略自动接受"
+          ],
+          "forbidden": [
+            "覆盖锁定对象",
+            "改写范围外已接受正文",
+            "删除用户内容",
+            "发布到外部平台"
+          ],
+          "deliverables": [
+            "正文",
+            "一致性报告",
+            "有来源的候选事实",
+            "上下文依据"
+          ],
+          "stop": [
+            "预算耗尽",
+            "重大冲突",
+            "版本变化",
+            "用户暂停或取消"
+          ],
+          "brief": {
+            "objective": "创作完整章节",
+            "approach": "读取最新资料，完成范围内成果并审查；遇到冲突或预算耗尽暂停。",
+            "assumptions": [
+              "使用当前作品版本"
+            ],
+            "constraints": []
+          },
+          "briefEpoch": 0
+        }
+      },
+      {
+        "kind": "write",
+        "goal": "确定性故障注入：模拟钥匙未交回却被原持有人使用，验证冲突隔离。",
+        "count": 1,
+        "targetWords": 600,
+        "constraints": [],
+        "autoAccept": true,
+        "provider": "demo",
+        "reasoning": "balanced",
+        "budget": {
+          "calls": 18,
+          "outputTokens": 48000,
+          "contextChars": 18000
+        },
+        "id": "task_c9467242-0556-481a-b803-4cb961665665",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "status": "NEEDS_INPUT",
+        "inputRevision": 8,
+        "expectedRevision": 9,
+        "epoch": 0,
+        "createdAt": "2026-09-12T19:00:25.911Z",
+        "updatedAt": "2026-09-12T19:00:26.861Z",
+        "currentStep": "局部修复-1",
+        "completedChapters": 0,
+        "steps": [
+          {
+            "key": "0:0:整理任务约定",
+            "name": "整理任务约定",
+            "inputHash": "a62cb5b133c464205e8076fc5d1aff9c97c3f25b4c33c5a8759d4e198fcf31c7",
+            "inputRevision": 8,
+            "status": "COMPLETED",
+            "attempts": 1,
+            "startedAt": "2026-09-12T19:00:25.911Z",
+            "calls": [
+              {
+                "attempt": 1,
+                "reserved": 5000,
+                "outputTokens": 95,
+                "estimated": true,
+                "status": "COMPLETED",
+                "startedAt": "2026-09-12T19:00:25.911Z",
+                "endedAt": "2026-09-12T19:00:26.106Z"
+              }
+            ],
+            "output": {
+              "objective": "确定性故障注入：模拟钥匙未交回却被原持有人使用，验证冲突隔离。",
+              "approach": "读取最新资料，完成范围内成果并审查；遇到冲突或预算耗尽暂停。",
+              "assumptions": [
+                "使用当前作品版本"
+              ],
+              "constraints": []
+            },
+            "endedAt": "2026-09-12T19:00:26.106Z",
+            "usage": {
+              "outputTokens": 95,
+              "estimated": true
+            }
+          },
+          {
+            "key": "0:0:章节规划",
+            "name": "章节规划",
+            "inputHash": "cdf9293cb38b4cf3893beb02f0dac24ca820edbcbeff994253e0b1f7fde4847f",
+            "inputRevision": 9,
+            "status": "COMPLETED",
+            "attempts": 1,
+            "startedAt": "2026-09-12T19:00:26.110Z",
+            "calls": [
+              {
+                "attempt": 1,
+                "reserved": 5000,
+                "outputTokens": 184,
+                "estimated": true,
+                "status": "COMPLETED",
+                "startedAt": "2026-09-12T19:00:26.110Z",
+                "endedAt": "2026-09-12T19:00:26.305Z"
+              }
+            ],
+            "output": {
+              "title": "留灯的人",
+              "goal": "确定性故障注入：模拟钥匙未交回却被原持有人使用，验证冲突隔离。",
+              "conflict": "守住承诺还是追问信的来处",
+              "participants": [
+                "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce"
+              ],
+              "events": "调查未送达的信",
+              "change": "愿意请人共同承担",
+              "reveal": "档案存在缺页",
+              "foreshadow": "蓝色信封的压痕",
+              "ending": "踏向港灯",
+              "constraints": ""
+            },
+            "endedAt": "2026-09-12T19:00:26.305Z",
+            "usage": {
+              "outputTokens": 184,
+              "estimated": true
+            }
+          },
+          {
+            "key": "0:0:生成正文",
+            "name": "生成正文",
+            "inputHash": "327d031aa32cd1b0114b08b7d3137ee63f3e892ca6ea6d59c7e4dc38b3a03a9b",
+            "inputRevision": 9,
+            "status": "COMPLETED",
+            "attempts": 1,
+            "startedAt": "2026-09-12T19:00:26.306Z",
+            "calls": [
+              {
+                "attempt": 1,
+                "reserved": 2520,
+                "outputTokens": 559,
+                "estimated": true,
+                "status": "COMPLETED",
+                "startedAt": "2026-09-12T19:00:26.306Z",
+                "endedAt": "2026-09-12T19:00:26.491Z"
+              }
+            ],
+            "output": "早晨的港灯还亮着。沈砚在窗边读昨夜记下的回执，没有把它当成命令。他要先确认写字的人是谁，也要确认自己究竟答应过什么。\n\n闻溪带着工具箱来敲门。沈砚从自己口袋里掏出铜钥匙。钥匙的事，他们在出门前重新核对了一次；没有人凭空多出一把能够打开档案室的钥匙。她指着小本子里的地图缺口，说灯塔维修册上也少了同一个街名。\n\n他们沿海堤走到第六盏港灯。石缝里嵌着陈旧的纸屑，脚下的积水映出一扇并不存在的门。沈砚没有立刻敲门，而是先问闻溪，昨天这个地方有没有台阶。她蹲下来，摸了摸石面新露出的断口。\n\n“有东西被搬走了。”她说，“不是塌掉的。灰尘还在原来的高度。”她用螺丝刀柄量了一遍，把长度记在维修册边角。他看着那些很小的数字，忽然觉得比一句保证更可靠。\n\n灯塔管理员在午前出现，提着一桶尚未干透的白漆。他听见他们提到那条街，先看了一眼海堤尽头，又低头去擦桶沿。“旧地图经常出错。”他说。可是他没有问他们说的是哪一张地图。\n\n沈砚把这个细节记下来。他开始怀疑，有人比自己更早读过那封信。怀疑还不能成为指认；他没有追上去逼问，也没有用自己没见过的事作证。他向管理员借了一把尺，说想量量灯座。\n\n闻溪等管理员走远，才把维修册翻到最后一页。纸上印着一枚蓝色压痕。她没有替他下结论，只将信封放在压痕旁。两枚图样相差一个很短的缺口，像同一枚邮戳在断裂前后留下的影子。\n\n海风从那扇不存在的门里吹出来。风里有烤面包的味道。沈砚想起母亲曾在清晨等他穿好鞋，却仍旧想不起那家店的招牌。他把回执放进内袋，向闻溪伸手，示意她先不要进去。\n\n“如果我忘了今天，”他说，“你就把这些数字念给我听。”闻溪合上维修册，认真答应了。她没有答应一定能找到谁，只答应会把亲眼见过的事保存下来。\n\n第七盏灯在白昼里闪了一下。沈砚这才看见门后的街道。街上的每一家店都挂着同样的蓝色信封。他们在石面上画下返回的记号，然后并肩走进那片尚未被地图承认的雾。",
+            "endedAt": "2026-09-12T19:00:26.491Z",
+            "usage": {
+              "outputTokens": 559,
+              "estimated": true
+            }
+          },
+          {
+            "key": "0:0:审校与候选事实",
+            "name": "审校与候选事实",
+            "inputHash": "07871fb9871be4ce87968568fd3958b9d5e6b1316a2744eb069a868e64efc5ce",
+            "inputRevision": 9,
+            "status": "COMPLETED",
+            "attempts": 1,
+            "startedAt": "2026-09-12T19:00:26.492Z",
+            "calls": [
+              {
+                "attempt": 1,
+                "reserved": 7000,
+                "outputTokens": 280,
+                "estimated": true,
+                "status": "COMPLETED",
+                "startedAt": "2026-09-12T19:00:26.492Z",
+                "endedAt": "2026-09-12T19:00:26.676Z"
+              }
+            ],
+            "output": {
+              "summary": "早晨的港灯还亮着。沈砚在窗边读昨夜记下的回执，没有把它当成命令。他要先确认写字的人是谁，也要确认自己究竟答应过什么。\n\n闻溪带着工具箱来敲门。沈砚从自己口袋里掏出铜钥匙。钥匙的事，他们在出门前重新核对了一次；没有人凭空多出一把能够打开档案室的钥匙。她指着小本子里的地图缺口，说灯塔维修册上也少了同一个街名。\n\n他们沿海堤",
+              "claims": [
+                {
+                  "entityId": "world_622e4148-c75d-4a4a-95cc-0e8700407fd9",
+                  "property": "holder",
+                  "value": "沈砚",
+                  "quote": "沈砚从自己口袋里掏出铜钥匙。",
+                  "modality": "objective",
+                  "time": "当前章",
+                  "inference": false
+                }
+              ],
+              "events": [
+                {
+                  "title": "调查雾港的来信",
+                  "quote": "早晨的港灯还亮着。沈砚在窗边读昨夜记下的回执，没有把它当成命令。他要先确认写字的人是谁，也要确认自己究竟答应过什么。",
+                  "time": "未知",
+                  "entityIds": [
+                    "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce"
+                  ]
+                }
+              ],
+              "issues": [
+                {
+                  "id": "issue_6bed2f62-263a-4f2d-bf72-78e5a49d032c",
+                  "category": "state-transition",
+                  "severity": "critical",
+                  "quote": "沈砚从自己口袋里掏出铜钥匙。",
+                  "start": 71,
+                  "end": 85,
+                  "message": "「铜钥匙」holder 从「闻溪」变为「沈砚」，需要核对变化依据与时间",
+                  "sourceId": "fact_d707e903-9d44-4203-ac01-b35cf1d9c248",
+                  "sourceQuote": "沈砚把铜钥匙交给了闻溪。",
+                  "rationale": "基于有来源的结构化属性校验；非关键词推断",
+                  "suggestion": "检查正文的转移、移动或时间变化；审校遗漏元数据不等于正文必然矛盾。物品持有者变化必须给出明确交接依据。",
+                  "blocks": true,
+                  "status": "open",
+                  "engine": "deterministic"
+                }
+              ],
+              "foreshadowUpdates": []
+            },
+            "endedAt": "2026-09-12T19:00:26.677Z",
+            "usage": {
+              "outputTokens": 280,
+              "estimated": true
+            }
+          },
+          {
+            "key": "0:0:局部修复-1",
+            "name": "局部修复-1",
+            "inputHash": "78f7923cc387a4fd3e8bbc8b1b82fa8c3e2b337ae47a9f71c0ab76a3ebb3f310",
+            "inputRevision": 9,
+            "status": "COMPLETED",
+            "attempts": 1,
+            "startedAt": "2026-09-12T19:00:26.677Z",
+            "calls": [
+              {
+                "attempt": 1,
+                "reserved": 5000,
+                "outputTokens": 37,
+                "estimated": true,
+                "status": "COMPLETED",
+                "startedAt": "2026-09-12T19:00:26.677Z",
+                "endedAt": "2026-09-12T19:00:26.860Z"
+              }
+            ],
+            "output": {
+              "edits": [],
+              "summary": "演示提供方不会伪装修复成功，请手工修改或接入真实模型。",
+              "ranges": []
+            },
+            "endedAt": "2026-09-12T19:00:26.861Z",
+            "usage": {
+              "outputTokens": 37,
+              "estimated": true
+            }
+          }
+        ],
+        "usage": {
+          "calls": 5,
+          "outputTokens": 1155,
+          "estimated": true
+        },
+        "checkpoint": {
+          "committed": [],
+          "chapterId": "chapter_36d5f4f5-32f2-480b-a88c-805f7eac3523",
+          "artifactId": "artifact_e1380d40-c635-47cd-9436-a703ed8d1e5e"
+        },
+        "contract": {
+          "scope": "最多 1 章新正文",
+          "lockedIds": [],
+          "permitted": [
+            "读取有界资料",
+            "创建候选与草稿",
+            "最多两轮局部修复",
+            "按合格成果策略自动接受"
+          ],
+          "forbidden": [
+            "覆盖锁定对象",
+            "改写范围外已接受正文",
+            "删除用户内容",
+            "发布到外部平台"
+          ],
+          "deliverables": [
+            "正文",
+            "一致性报告",
+            "有来源的候选事实",
+            "上下文依据"
+          ],
+          "stop": [
+            "预算耗尽",
+            "重大冲突",
+            "版本变化",
+            "用户暂停或取消"
+          ],
+          "brief": {
+            "objective": "确定性故障注入：模拟钥匙未交回却被原持有人使用，验证冲突隔离。",
+            "approach": "读取最新资料，完成范围内成果并审查；遇到冲突或预算耗尽暂停。",
+            "assumptions": [
+              "使用当前作品版本"
+            ],
+            "constraints": []
+          },
+          "briefEpoch": 0
+        },
+        "error": {
+          "code": "CONFLICT",
+          "message": "重大问题仍未解决；草稿已隔离，等待作者处理"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "id": "artifact_1e03fd5b-37e4-4c3c-bae2-fd3089f860d0",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "type": "chapter",
+        "data": {
+          "content": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的旧报纸时，他正用拇指摸那道压痕。她把工具箱搁在地上，先看信，又看他身后空了三年的挂钩。“你今晚还要送？”她问。沈砚把信翻过去。纸背浮出一点潮湿的蓝，像地图上一段尚未命名的水。\n\n“我想去档案室查邮戳。”他说。他说得很平，仿佛只是要补一张领料单。闻溪没有拆穿，把手伸向柜台边沿。那里有一道被旧钥匙磨出的凹槽，木屑颜色比周围浅。\n\n沈砚把铜钥匙交给了闻溪。\n\n“先替我拿着。”他说，“我去关后门。”他第一次把这件事交给另一个人，心里却没有想象中轻松。钥匙离开掌心时留下一点冰凉，像突然不必再握紧的某种责任。\n\n后门外的石阶上躺着一张投递回执。上面没有签名，只有一行铅笔字：不要在第七盏灯亮起之后叫我的名字。他蹲下，把回执夹进随身的小本子。石阶下的水没有流动，却传来一声很远的船笛。\n\n闻溪站在楼梯口等他。她没有问回执上写了什么，只拎起工具箱，让出半级台阶。两个人一前一后下楼，邮局的钟终于敲响。钟声穿过楼板的时候，蓝色信封里的纸，轻轻响了一下。\n\n档案室的灯没有亮。墙上挂着一幅缺了右下角的港口地图，缺口的形状恰好能容下一条街。沈砚记得那条街。他每天回家都经过那里，可他想不起街口那家面包店是什么时候关的。\n\n“明天先去这里。”他在地图的缺口旁画了一个小圆，没有写下母亲的名字。闻溪点点头。她把钥匙收进围裙的内袋，随后擦去灯罩上的灰，为他们留出一小片可以看清彼此的光。",
+          "plan": {
+            "title": "蓝色信封",
+            "goal": "创作完整章节",
+            "conflict": "守住承诺还是追问信的来处",
+            "participants": [
+              "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce"
+            ],
+            "events": "调查未送达的信",
+            "change": "愿意请人共同承担",
+            "reveal": "档案存在缺页",
+            "foreshadow": "蓝色信封的压痕",
+            "ending": "踏向港灯",
+            "constraints": ""
+          },
+          "context": {
+            "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+            "revision": 7,
+            "chapterId": "chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a",
+            "budget": 18000,
+            "used": 2019,
+            "items": [
+              {
+                "id": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+                "version": "7",
+                "kind": "project",
+                "reason": "故事承诺、风格和不可破坏约束",
+                "priority": 100,
+                "mandatory": true,
+                "text": "{\"title\":\"一致性与修复验收（确定性测试）\",\"premise\":\"港口的信件保存人的记忆\",\"style\":\"克制、具体，以行动与对白推动故事。\",\"constraints\":[]}"
+              },
+              {
+                "id": "chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a",
+                "version": "1",
+                "kind": "chapter-plan",
+                "reason": "当前章目标、参与者、禁区、字数、揭示和结尾",
+                "priority": 98,
+                "mandatory": true,
+                "text": "{\"id\":\"chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a\",\"title\":\"第一章\",\"fields\":{\"participants\":[\"character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce\",\"character_a51a3476-5bcb-44dd-ae1a-b627808d5130\",\"world_622e4148-c75d-4a4a-95cc-0e8700407fd9\"],\"goal\":\"把铜钥匙交给闻溪\"},\"tags\":[],\"locked\":false}"
+              },
+              {
+                "id": "book_3ff13410-15eb-4f5a-bfe2-f1bd9e83e334",
+                "version": "1",
+                "kind": "plan",
+                "reason": "上层规划；未来内容不是既成事实",
+                "priority": 90,
+                "mandatory": false,
+                "text": "{\"id\":\"book_3ff13410-15eb-4f5a-bfe2-f1bd9e83e334\",\"title\":\"可靠性测试作品\",\"kind\":\"book\",\"status\":\"planned\",\"body\":\"港口的信件保存人的记忆\",\"fields\":{},\"tags\":[]}"
+              },
+              {
+                "id": "volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12",
+                "version": "1",
+                "kind": "plan",
+                "reason": "上层规划；未来内容不是既成事实",
+                "priority": 90,
+                "mandatory": false,
+                "text": "{\"id\":\"volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12\",\"title\":\"第一卷\",\"kind\":\"volume\",\"status\":\"planned\",\"body\":\"\",\"fields\":{},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}"
+              },
+              {
+                "id": "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce",
+                "version": "1",
+                "kind": "character",
+                "reason": "当前参与实体或一跳关系",
+                "priority": 88,
+                "mandatory": false,
+                "text": "{\"id\":\"character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce\",\"title\":\"沈砚\",\"kind\":\"character\",\"status\":\"accepted\",\"body\":\"邮差\",\"fields\":{\"identity\":\"邮差\"},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}"
+              },
+              {
+                "id": "character_a51a3476-5bcb-44dd-ae1a-b627808d5130",
+                "version": "1",
+                "kind": "character",
+                "reason": "当前参与实体或一跳关系",
+                "priority": 88,
+                "mandatory": false,
+                "text": "{\"id\":\"character_a51a3476-5bcb-44dd-ae1a-b627808d5130\",\"title\":\"闻溪\",\"kind\":\"character\",\"status\":\"accepted\",\"body\":\"灯匠\",\"fields\":{},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}"
+              },
+              {
+                "id": "world_622e4148-c75d-4a4a-95cc-0e8700407fd9",
+                "version": "1",
+                "kind": "world",
+                "reason": "当前参与实体或一跳关系",
+                "priority": 88,
+                "mandatory": false,
+                "text": "{\"id\":\"world_622e4148-c75d-4a4a-95cc-0e8700407fd9\",\"title\":\"铜钥匙\",\"kind\":\"world\",\"status\":\"accepted\",\"body\":\"唯一钥匙\",\"fields\":{\"type\":\"物品\"},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}"
+              }
+            ],
+            "omitted": [],
+            "missing": [
+              "没有上章正文；按开篇处理"
+            ],
+            "canon": [],
+            "text": "【project project_cd1be74d-c71d-4416-9ed0-cbcdb674454e @7】\n{\"title\":\"一致性与修复验收（确定性测试）\",\"premise\":\"港口的信件保存人的记忆\",\"style\":\"克制、具体，以行动与对白推动故事。\",\"constraints\":[]}\n\n【chapter-plan chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a @1】\n{\"id\":\"chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a\",\"title\":\"第一章\",\"fields\":{\"participants\":[\"character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce\",\"character_a51a3476-5bcb-44dd-ae1a-b627808d5130\",\"world_622e4148-c75d-4a4a-95cc-0e8700407fd9\"],\"goal\":\"把铜钥匙交给闻溪\"},\"tags\":[],\"locked\":false}\n\n【plan book_3ff13410-15eb-4f5a-bfe2-f1bd9e83e334 @1】\n{\"id\":\"book_3ff13410-15eb-4f5a-bfe2-f1bd9e83e334\",\"title\":\"可靠性测试作品\",\"kind\":\"book\",\"status\":\"planned\",\"body\":\"港口的信件保存人的记忆\",\"fields\":{},\"tags\":[]}\n\n【plan volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12 @1】\n{\"id\":\"volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12\",\"title\":\"第一卷\",\"kind\":\"volume\",\"status\":\"planned\",\"body\":\"\",\"fields\":{},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}\n\n【character character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce @1】\n{\"id\":\"character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce\",\"title\":\"沈砚\",\"kind\":\"character\",\"status\":\"accepted\",\"body\":\"邮差\",\"fields\":{\"identity\":\"邮差\"},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}\n\n【character character_a51a3476-5bcb-44dd-ae1a-b627808d5130 @1】\n{\"id\":\"character_a51a3476-5bcb-44dd-ae1a-b627808d5130\",\"title\":\"闻溪\",\"kind\":\"character\",\"status\":\"accepted\",\"body\":\"灯匠\",\"fields\":{},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}\n\n【world world_622e4148-c75d-4a4a-95cc-0e8700407fd9 @1】\n{\"id\":\"world_622e4148-c75d-4a4a-95cc-0e8700407fd9\",\"title\":\"铜钥匙\",\"kind\":\"world\",\"status\":\"accepted\",\"body\":\"唯一钥匙\",\"fields\":{\"type\":\"物品\"},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}"
+          },
+          "review": {
+            "summary": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的",
+            "claims": [
+              {
+                "entityId": "world_622e4148-c75d-4a4a-95cc-0e8700407fd9",
+                "property": "holder",
+                "value": "闻溪",
+                "quote": "沈砚把铜钥匙交给了闻溪。",
+                "modality": "objective",
+                "time": "本章",
+                "inference": false
+              }
+            ],
+            "events": [
+              {
+                "title": "调查雾港的来信",
+                "quote": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。",
+                "time": "未知",
+                "entityIds": [
+                  "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce"
+                ]
+              }
+            ],
+            "issues": [],
+            "foreshadowUpdates": []
+          }
+        },
+        "baseRevision": 7,
+        "chapterId": "chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a",
+        "chapterRevision": 1,
+        "status": "accepted",
+        "createdAt": "2026-09-12T19:00:25.722Z"
+      },
+      {
+        "id": "artifact_e1380d40-c635-47cd-9436-a703ed8d1e5e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "type": "chapter",
+        "data": {
+          "content": "早晨的港灯还亮着。沈砚在窗边读昨夜记下的回执，没有把它当成命令。他要先确认写字的人是谁，也要确认自己究竟答应过什么。\n\n闻溪带着工具箱来敲门。沈砚从自己口袋里掏出铜钥匙。钥匙的事，他们在出门前重新核对了一次；没有人凭空多出一把能够打开档案室的钥匙。她指着小本子里的地图缺口，说灯塔维修册上也少了同一个街名。\n\n他们沿海堤走到第六盏港灯。石缝里嵌着陈旧的纸屑，脚下的积水映出一扇并不存在的门。沈砚没有立刻敲门，而是先问闻溪，昨天这个地方有没有台阶。她蹲下来，摸了摸石面新露出的断口。\n\n“有东西被搬走了。”她说，“不是塌掉的。灰尘还在原来的高度。”她用螺丝刀柄量了一遍，把长度记在维修册边角。他看着那些很小的数字，忽然觉得比一句保证更可靠。\n\n灯塔管理员在午前出现，提着一桶尚未干透的白漆。他听见他们提到那条街，先看了一眼海堤尽头，又低头去擦桶沿。“旧地图经常出错。”他说。可是他没有问他们说的是哪一张地图。\n\n沈砚把这个细节记下来。他开始怀疑，有人比自己更早读过那封信。怀疑还不能成为指认；他没有追上去逼问，也没有用自己没见过的事作证。他向管理员借了一把尺，说想量量灯座。\n\n闻溪等管理员走远，才把维修册翻到最后一页。纸上印着一枚蓝色压痕。她没有替他下结论，只将信封放在压痕旁。两枚图样相差一个很短的缺口，像同一枚邮戳在断裂前后留下的影子。\n\n海风从那扇不存在的门里吹出来。风里有烤面包的味道。沈砚想起母亲曾在清晨等他穿好鞋，却仍旧想不起那家店的招牌。他把回执放进内袋，向闻溪伸手，示意她先不要进去。\n\n“如果我忘了今天，”他说，“你就把这些数字念给我听。”闻溪合上维修册，认真答应了。她没有答应一定能找到谁，只答应会把亲眼见过的事保存下来。\n\n第七盏灯在白昼里闪了一下。沈砚这才看见门后的街道。街上的每一家店都挂着同样的蓝色信封。他们在石面上画下返回的记号，然后并肩走进那片尚未被地图承认的雾。",
+          "plan": {
+            "title": "留灯的人",
+            "goal": "确定性故障注入：模拟钥匙未交回却被原持有人使用，验证冲突隔离。",
+            "conflict": "守住承诺还是追问信的来处",
+            "participants": [
+              "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce"
+            ],
+            "events": "调查未送达的信",
+            "change": "愿意请人共同承担",
+            "reveal": "档案存在缺页",
+            "foreshadow": "蓝色信封的压痕",
+            "ending": "踏向港灯",
+            "constraints": ""
+          },
+          "context": {
+            "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+            "revision": 9,
+            "chapterId": "chapter_36d5f4f5-32f2-480b-a88c-805f7eac3523",
+            "budget": 18000,
+            "used": 4435,
+            "items": [
+              {
+                "id": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+                "version": "9",
+                "kind": "project",
+                "reason": "故事承诺、风格和不可破坏约束",
+                "priority": 100,
+                "mandatory": true,
+                "text": "{\"title\":\"一致性与修复验收（确定性测试）\",\"premise\":\"港口的信件保存人的记忆\",\"style\":\"克制、具体，以行动与对白推动故事。\",\"constraints\":[]}"
+              },
+              {
+                "id": "chapter_36d5f4f5-32f2-480b-a88c-805f7eac3523",
+                "version": "1",
+                "kind": "chapter-plan",
+                "reason": "当前章目标、参与者、禁区、字数、揭示和结尾",
+                "priority": 98,
+                "mandatory": true,
+                "text": "{\"id\":\"chapter_36d5f4f5-32f2-480b-a88c-805f7eac3523\",\"title\":\"第2章\",\"fields\":{\"goal\":\"确定性故障注入：模拟钥匙未交回却被原持有人使用，验证冲突隔离。\",\"targetWords\":600},\"tags\":[],\"locked\":false}"
+              },
+              {
+                "id": "chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a:ending",
+                "version": "version_480e8515-236c-497e-b98f-1c3a4062137a",
+                "kind": "accepted-body",
+                "reason": "上章最新正文连续性；只取结尾",
+                "priority": 95,
+                "mandatory": false,
+                "text": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的旧报纸时，他正用拇指摸那道压痕。她把工具箱搁在地上，先看信，又看他身后空了三年的挂钩。“你今晚还要送？”她问。沈砚把信翻过去。纸背浮出一点潮湿的蓝，像地图上一段尚未命名的水。\n\n“我想去档案室查邮戳。”他说。他说得很平，仿佛只是要补一张领料单。闻溪没有拆穿，把手伸向柜台边沿。那里有一道被旧钥匙磨出的凹槽，木屑颜色比周围浅。\n\n沈砚把铜钥匙交给了闻溪。\n\n“先替我拿着。”他说，“我去关后门。”他第一次把这件事交给另一个人，心里却没有想象中轻松。钥匙离开掌心时留下一点冰凉，像突然不必再握紧的某种责任。\n\n后门外的石阶上躺着一张投递回执。上面没有签名，只有一行铅笔字：不要在第七盏灯亮起之后叫我的名字。他蹲下，把回执夹进随身的小本子。石阶下的水没有流动，却传来一声很远的船笛。\n\n闻溪站在楼梯口等他。她没有问回执上写了什么，只拎起工具箱，让出半级台阶。两个人一前一后下楼，邮局的钟终于敲响。钟声穿过楼板的时候，蓝色信封里的纸，轻轻响了一下。\n\n档案室的灯没有亮。墙上挂着一幅缺了右下角的港口地图，缺口的形状恰好能容下一条街。沈砚记得那条街。他每天回家都经过那里，可他想不起街口那家面包店是什么时候关的。\n\n“明天先去这里。”他在地图的缺口旁画了一个小圆，没有写下母亲的名字。闻溪点点头。她把钥匙收进围裙的内袋，随后擦去灯罩上的灰，为他们留出一小片可以看清彼此的光。"
+              },
+              {
+                "id": "fact_d707e903-9d44-4203-ac01-b35cf1d9c248",
+                "version": "version_480e8515-236c-497e-b98f-1c3a4062137a",
+                "kind": "canon",
+                "reason": "相关实体的有来源正式事实",
+                "priority": 92,
+                "mandatory": false,
+                "text": "{\"id\":\"fact_d707e903-9d44-4203-ac01-b35cf1d9c248\",\"title\":\"holder：闻溪\",\"kind\":\"fact\",\"status\":\"accepted\",\"body\":\"沈砚把铜钥匙交给了闻溪。\",\"fields\":{\"entityId\":\"world_622e4148-c75d-4a4a-95cc-0e8700407fd9\",\"property\":\"holder\",\"value\":\"闻溪\"},\"source\":{\"type\":\"chapter\",\"chapterId\":\"chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a\",\"versionId\":\"version_480e8515-236c-497e-b98f-1c3a4062137a\",\"start\":324,\"end\":336,\"time\":\"本章\",\"fromChapter\":1,\"inference\":false,\"modality\":\"objective\",\"taskId\":\"task_bfe2c851-55d5-457f-add6-321e92aa239e\",\"policy\":\"qualified-v1\",\"quoteRef\":\"body\"},\"tags\":[]}"
+              },
+              {
+                "id": "book_3ff13410-15eb-4f5a-bfe2-f1bd9e83e334",
+                "version": "1",
+                "kind": "plan",
+                "reason": "上层规划；未来内容不是既成事实",
+                "priority": 90,
+                "mandatory": false,
+                "text": "{\"id\":\"book_3ff13410-15eb-4f5a-bfe2-f1bd9e83e334\",\"title\":\"可靠性测试作品\",\"kind\":\"book\",\"status\":\"planned\",\"body\":\"港口的信件保存人的记忆\",\"fields\":{},\"tags\":[]}"
+              },
+              {
+                "id": "volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12",
+                "version": "1",
+                "kind": "plan",
+                "reason": "上层规划；未来内容不是既成事实",
+                "priority": 90,
+                "mandatory": false,
+                "text": "{\"id\":\"volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12\",\"title\":\"第一卷\",\"kind\":\"volume\",\"status\":\"planned\",\"body\":\"\",\"fields\":{},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}"
+              },
+              {
+                "id": "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce",
+                "version": "1",
+                "kind": "character",
+                "reason": "当前参与实体或一跳关系",
+                "priority": 88,
+                "mandatory": false,
+                "text": "{\"id\":\"character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce\",\"title\":\"沈砚\",\"kind\":\"character\",\"status\":\"accepted\",\"body\":\"邮差\",\"fields\":{\"identity\":\"邮差\"},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}"
+              },
+              {
+                "id": "character_a51a3476-5bcb-44dd-ae1a-b627808d5130",
+                "version": "1",
+                "kind": "character",
+                "reason": "当前参与实体或一跳关系",
+                "priority": 88,
+                "mandatory": false,
+                "text": "{\"id\":\"character_a51a3476-5bcb-44dd-ae1a-b627808d5130\",\"title\":\"闻溪\",\"kind\":\"character\",\"status\":\"accepted\",\"body\":\"灯匠\",\"fields\":{},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}"
+              },
+              {
+                "id": "world_622e4148-c75d-4a4a-95cc-0e8700407fd9",
+                "version": "1",
+                "kind": "world",
+                "reason": "当前参与实体或一跳关系",
+                "priority": 88,
+                "mandatory": false,
+                "text": "{\"id\":\"world_622e4148-c75d-4a4a-95cc-0e8700407fd9\",\"title\":\"铜钥匙\",\"kind\":\"world\",\"status\":\"accepted\",\"body\":\"唯一钥匙\",\"fields\":{\"type\":\"物品\"},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}"
+              },
+              {
+                "id": "chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a:summary",
+                "version": "version_480e8515-236c-497e-b98f-1c3a4062137a",
+                "kind": "summary",
+                "reason": "近期已接受版本摘要",
+                "priority": 85,
+                "mandatory": false,
+                "text": "雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的"
+              },
+              {
+                "id": "event_889af53d-5ca1-4d7c-b2ed-9080ad7d1a98",
+                "version": "version_480e8515-236c-497e-b98f-1c3a4062137a",
+                "kind": "happened-event",
+                "reason": "已经发生且来源版本仍有效的事件",
+                "priority": 65,
+                "mandatory": false,
+                "text": "{\"id\":\"event_889af53d-5ca1-4d7c-b2ed-9080ad7d1a98\",\"title\":\"调查雾港的来信\",\"kind\":\"event\",\"status\":\"accepted\",\"body\":\"雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\",\"fields\":{\"entityIds\":[\"character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce\"],\"storyTime\":\"未知\",\"chapterOrder\":1},\"source\":{\"type\":\"chapter\",\"chapterId\":\"chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a\",\"versionId\":\"version_480e8515-236c-497e-b98f-1c3a4062137a\",\"start\":0,\"end\":71,\"time\":\"未知\",\"fromChapter\":1,\"inference\":false,\"modality\":\"objective\",\"taskId\":\"task_bfe2c851-55d5-457f-add6-321e92aa239e\",\"policy\":\"qualified-v1\",\"quoteRef\":\"body\"},\"tags\":[]}"
+              }
+            ],
+            "omitted": [],
+            "missing": [],
+            "canon": [
+              {
+                "kind": "fact",
+                "title": "holder：闻溪",
+                "parentId": null,
+                "order": 0,
+                "status": "accepted",
+                "locked": false,
+                "tags": [],
+                "body": "沈砚把铜钥匙交给了闻溪。",
+                "fields": {
+                  "entityId": "world_622e4148-c75d-4a4a-95cc-0e8700407fd9",
+                  "property": "holder",
+                  "value": "闻溪"
+                },
+                "source": {
+                  "type": "chapter",
+                  "chapterId": "chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a",
+                  "versionId": "version_480e8515-236c-497e-b98f-1c3a4062137a",
+                  "quote": "沈砚把铜钥匙交给了闻溪。",
+                  "start": 324,
+                  "end": 336,
+                  "time": "本章",
+                  "fromChapter": 1,
+                  "inference": false,
+                  "modality": "objective",
+                  "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+                  "policy": "qualified-v1"
+                },
+                "id": "fact_d707e903-9d44-4203-ac01-b35cf1d9c248",
+                "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+                "revision": 1,
+                "updatedAt": "2026-09-12T19:00:25.909Z"
+              }
+            ],
+            "text": "【project project_cd1be74d-c71d-4416-9ed0-cbcdb674454e @9】\n{\"title\":\"一致性与修复验收（确定性测试）\",\"premise\":\"港口的信件保存人的记忆\",\"style\":\"克制、具体，以行动与对白推动故事。\",\"constraints\":[]}\n\n【chapter-plan chapter_36d5f4f5-32f2-480b-a88c-805f7eac3523 @1】\n{\"id\":\"chapter_36d5f4f5-32f2-480b-a88c-805f7eac3523\",\"title\":\"第2章\",\"fields\":{\"goal\":\"确定性故障注入：模拟钥匙未交回却被原持有人使用，验证冲突隔离。\",\"targetWords\":600},\"tags\":[],\"locked\":false}\n\n【accepted-body chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a:ending @version_480e8515-236c-497e-b98f-1c3a4062137a】\n雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的旧报纸时，他正用拇指摸那道压痕。她把工具箱搁在地上，先看信，又看他身后空了三年的挂钩。“你今晚还要送？”她问。沈砚把信翻过去。纸背浮出一点潮湿的蓝，像地图上一段尚未命名的水。\n\n“我想去档案室查邮戳。”他说。他说得很平，仿佛只是要补一张领料单。闻溪没有拆穿，把手伸向柜台边沿。那里有一道被旧钥匙磨出的凹槽，木屑颜色比周围浅。\n\n沈砚把铜钥匙交给了闻溪。\n\n“先替我拿着。”他说，“我去关后门。”他第一次把这件事交给另一个人，心里却没有想象中轻松。钥匙离开掌心时留下一点冰凉，像突然不必再握紧的某种责任。\n\n后门外的石阶上躺着一张投递回执。上面没有签名，只有一行铅笔字：不要在第七盏灯亮起之后叫我的名字。他蹲下，把回执夹进随身的小本子。石阶下的水没有流动，却传来一声很远的船笛。\n\n闻溪站在楼梯口等他。她没有问回执上写了什么，只拎起工具箱，让出半级台阶。两个人一前一后下楼，邮局的钟终于敲响。钟声穿过楼板的时候，蓝色信封里的纸，轻轻响了一下。\n\n档案室的灯没有亮。墙上挂着一幅缺了右下角的港口地图，缺口的形状恰好能容下一条街。沈砚记得那条街。他每天回家都经过那里，可他想不起街口那家面包店是什么时候关的。\n\n“明天先去这里。”他在地图的缺口旁画了一个小圆，没有写下母亲的名字。闻溪点点头。她把钥匙收进围裙的内袋，随后擦去灯罩上的灰，为他们留出一小片可以看清彼此的光。\n\n【canon fact_d707e903-9d44-4203-ac01-b35cf1d9c248 @version_480e8515-236c-497e-b98f-1c3a4062137a】\n{\"id\":\"fact_d707e903-9d44-4203-ac01-b35cf1d9c248\",\"title\":\"holder：闻溪\",\"kind\":\"fact\",\"status\":\"accepted\",\"body\":\"沈砚把铜钥匙交给了闻溪。\",\"fields\":{\"entityId\":\"world_622e4148-c75d-4a4a-95cc-0e8700407fd9\",\"property\":\"holder\",\"value\":\"闻溪\"},\"source\":{\"type\":\"chapter\",\"chapterId\":\"chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a\",\"versionId\":\"version_480e8515-236c-497e-b98f-1c3a4062137a\",\"start\":324,\"end\":336,\"time\":\"本章\",\"fromChapter\":1,\"inference\":false,\"modality\":\"objective\",\"taskId\":\"task_bfe2c851-55d5-457f-add6-321e92aa239e\",\"policy\":\"qualified-v1\",\"quoteRef\":\"body\"},\"tags\":[]}\n\n【plan book_3ff13410-15eb-4f5a-bfe2-f1bd9e83e334 @1】\n{\"id\":\"book_3ff13410-15eb-4f5a-bfe2-f1bd9e83e334\",\"title\":\"可靠性测试作品\",\"kind\":\"book\",\"status\":\"planned\",\"body\":\"港口的信件保存人的记忆\",\"fields\":{},\"tags\":[]}\n\n【plan volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12 @1】\n{\"id\":\"volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12\",\"title\":\"第一卷\",\"kind\":\"volume\",\"status\":\"planned\",\"body\":\"\",\"fields\":{},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}\n\n【character character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce @1】\n{\"id\":\"character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce\",\"title\":\"沈砚\",\"kind\":\"character\",\"status\":\"accepted\",\"body\":\"邮差\",\"fields\":{\"identity\":\"邮差\"},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}\n\n【character character_a51a3476-5bcb-44dd-ae1a-b627808d5130 @1】\n{\"id\":\"character_a51a3476-5bcb-44dd-ae1a-b627808d5130\",\"title\":\"闻溪\",\"kind\":\"character\",\"status\":\"accepted\",\"body\":\"灯匠\",\"fields\":{},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}\n\n【world world_622e4148-c75d-4a4a-95cc-0e8700407fd9 @1】\n{\"id\":\"world_622e4148-c75d-4a4a-95cc-0e8700407fd9\",\"title\":\"铜钥匙\",\"kind\":\"world\",\"status\":\"accepted\",\"body\":\"唯一钥匙\",\"fields\":{\"type\":\"物品\"},\"source\":{\"type\":\"user\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\",\"quoteRef\":\"body\"},\"tags\":[]}\n\n【summary chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a:summary @version_480e8515-236c-497e-b98f-1c3a4062137a】\n雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\n\n他没有拆开。邮局的规矩印在每一个抽屉背面：没有收件人的信，要等到有人记起它为止。可这封信的右下角，写着母亲的小名。那两个字很轻，像一个人隔着门试探着叫他。\n\n闻溪来取修灯用的\n\n【happened-event event_889af53d-5ca1-4d7c-b2ed-9080ad7d1a98 @version_480e8515-236c-497e-b98f-1c3a4062137a】\n{\"id\":\"event_889af53d-5ca1-4d7c-b2ed-9080ad7d1a98\",\"title\":\"调查雾港的来信\",\"kind\":\"event\",\"status\":\"accepted\",\"body\":\"雾在傍晚六点抵达旧邮局，比钟声早了半刻。沈砚把最后一袋退信搬上柜台，发现最底下那封信是干的。蓝色信封没有地址，封口压着一枚已经停用的灯塔邮戳。\",\"fields\":{\"entityIds\":[\"character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce\"],\"storyTime\":\"未知\",\"chapterOrder\":1},\"source\":{\"type\":\"chapter\",\"chapterId\":\"chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a\",\"versionId\":\"version_480e8515-236c-497e-b98f-1c3a4062137a\",\"start\":0,\"end\":71,\"time\":\"未知\",\"fromChapter\":1,\"inference\":false,\"modality\":\"objective\",\"taskId\":\"task_bfe2c851-55d5-457f-add6-321e92aa239e\",\"policy\":\"qualified-v1\",\"quoteRef\":\"body\"},\"tags\":[]}"
+          },
+          "review": {
+            "summary": "早晨的港灯还亮着。沈砚在窗边读昨夜记下的回执，没有把它当成命令。他要先确认写字的人是谁，也要确认自己究竟答应过什么。\n\n闻溪带着工具箱来敲门。沈砚从自己口袋里掏出铜钥匙。钥匙的事，他们在出门前重新核对了一次；没有人凭空多出一把能够打开档案室的钥匙。她指着小本子里的地图缺口，说灯塔维修册上也少了同一个街名。\n\n他们沿海堤",
+            "claims": [
+              {
+                "entityId": "world_622e4148-c75d-4a4a-95cc-0e8700407fd9",
+                "property": "holder",
+                "value": "沈砚",
+                "quote": "沈砚从自己口袋里掏出铜钥匙。",
+                "modality": "objective",
+                "time": "当前章",
+                "inference": false
+              }
+            ],
+            "events": [
+              {
+                "title": "调查雾港的来信",
+                "quote": "早晨的港灯还亮着。沈砚在窗边读昨夜记下的回执，没有把它当成命令。他要先确认写字的人是谁，也要确认自己究竟答应过什么。",
+                "time": "未知",
+                "entityIds": [
+                  "character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce"
+                ]
+              }
+            ],
+            "issues": [
+              {
+                "id": "issue_6bed2f62-263a-4f2d-bf72-78e5a49d032c",
+                "category": "state-transition",
+                "severity": "critical",
+                "quote": "沈砚从自己口袋里掏出铜钥匙。",
+                "start": 71,
+                "end": 85,
+                "message": "「铜钥匙」holder 从「闻溪」变为「沈砚」，需要核对变化依据与时间",
+                "sourceId": "fact_d707e903-9d44-4203-ac01-b35cf1d9c248",
+                "sourceQuote": "沈砚把铜钥匙交给了闻溪。",
+                "rationale": "基于有来源的结构化属性校验；非关键词推断",
+                "suggestion": "检查正文的转移、移动或时间变化；审校遗漏元数据不等于正文必然矛盾。物品持有者变化必须给出明确交接依据。",
+                "blocks": true,
+                "status": "open",
+                "engine": "deterministic"
+              }
+            ],
+            "foreshadowUpdates": []
+          }
+        },
+        "baseRevision": 9,
+        "chapterId": "chapter_36d5f4f5-32f2-480b-a88c-805f7eac3523",
+        "chapterRevision": 1,
+        "status": "pending",
+        "createdAt": "2026-09-12T19:00:26.491Z"
+      }
+    ],
+    "events": [
+      {
+        "id": 1,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": null,
+        "at": "2026-09-12T19:00:25.153Z",
+        "type": "project.created",
+        "message": "作品已创建",
+        "data": "{}"
+      },
+      {
+        "id": 2,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.156Z",
+        "type": "task.queued",
+        "message": "任务约定已保存，可开始执行",
+        "data": "{\"scope\":\"最多 1 章新正文\",\"budget\":{\"calls\":18,\"outputTokens\":48000,\"contextChars\":18000}}"
+      },
+      {
+        "id": 3,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.156Z",
+        "type": "task.running",
+        "message": "任务开始执行；进度来自实际落盘步骤",
+        "data": "{}"
+      },
+      {
+        "id": 4,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.157Z",
+        "type": "step.started",
+        "message": "执行 整理任务约定（第 1 次尝试）",
+        "data": "{\"key\":\"0:0:整理任务约定\",\"inputRevision\":7,\"maxTokens\":5000}"
+      },
+      {
+        "id": 5,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.352Z",
+        "type": "step.completed",
+        "message": "整理任务约定 已完成并保存",
+        "data": "{\"key\":\"0:0:整理任务约定\",\"outputTokens\":77}"
+      },
+      {
+        "id": 6,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.353Z",
+        "type": "task.brief",
+        "message": "创作完整章节",
+        "data": "{\"approach\":\"读取最新资料，完成范围内成果并审查；遇到冲突或预算耗尽暂停。\",\"assumptions\":[\"使用当前作品版本\"]}"
+      },
+      {
+        "id": 7,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.354Z",
+        "type": "context.built",
+        "message": "上下文 2019/18000 字符；7 条资料",
+        "data": "{\"chapterId\":\"chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a\",\"revision\":7,\"omitted\":0,\"purpose\":\"generation\"}"
+      },
+      {
+        "id": 8,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.354Z",
+        "type": "step.started",
+        "message": "执行 章节规划（第 1 次尝试）",
+        "data": "{\"key\":\"0:0:章节规划\",\"inputRevision\":7,\"maxTokens\":5000}"
+      },
+      {
+        "id": 9,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.537Z",
+        "type": "step.completed",
+        "message": "章节规划 已完成并保存",
+        "data": "{\"key\":\"0:0:章节规划\",\"outputTokens\":166}"
+      },
+      {
+        "id": 10,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.538Z",
+        "type": "step.started",
+        "message": "执行 生成正文（第 1 次尝试）",
+        "data": "{\"key\":\"0:0:生成正文\",\"inputRevision\":7,\"maxTokens\":2520}"
+      },
+      {
+        "id": 11,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.722Z",
+        "type": "step.completed",
+        "message": "生成正文 已完成并保存",
+        "data": "{\"key\":\"0:0:生成正文\",\"outputTokens\":520}"
+      },
+      {
+        "id": 12,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.722Z",
+        "type": "artifact.saved",
+        "message": "成果已落盘，等待检查或接受",
+        "data": "{\"artifactId\":\"artifact_1e03fd5b-37e4-4c3c-bae2-fd3089f860d0\",\"type\":\"chapter\"}"
+      },
+      {
+        "id": 13,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.723Z",
+        "type": "step.started",
+        "message": "执行 审校与候选事实（第 1 次尝试）",
+        "data": "{\"key\":\"0:0:审校与候选事实\",\"inputRevision\":7,\"maxTokens\":7000}"
+      },
+      {
+        "id": 14,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.907Z",
+        "type": "step.completed",
+        "message": "审校与候选事实 已完成并保存",
+        "data": "{\"key\":\"0:0:审校与候选事实\",\"outputTokens\":406}"
+      },
+      {
+        "id": 15,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.911Z",
+        "type": "artifact.accepted",
+        "message": "正文与派生资料已一致提交",
+        "data": "{\"artifactId\":\"artifact_1e03fd5b-37e4-4c3c-bae2-fd3089f860d0\",\"revision\":8}"
+      },
+      {
+        "id": 16,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_bfe2c851-55d5-457f-add6-321e92aa239e",
+        "at": "2026-09-12T19:00:25.911Z",
+        "type": "task.completed",
+        "message": "任务已完成；成果已落盘",
+        "data": "{}"
+      },
+      {
+        "id": 17,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:25.911Z",
+        "type": "task.queued",
+        "message": "任务约定已保存，可开始执行",
+        "data": "{\"scope\":\"最多 1 章新正文\",\"budget\":{\"calls\":18,\"outputTokens\":48000,\"contextChars\":18000}}"
+      },
+      {
+        "id": 18,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:25.911Z",
+        "type": "task.running",
+        "message": "任务开始执行；进度来自实际落盘步骤",
+        "data": "{}"
+      },
+      {
+        "id": 19,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:25.912Z",
+        "type": "step.started",
+        "message": "执行 整理任务约定（第 1 次尝试）",
+        "data": "{\"key\":\"0:0:整理任务约定\",\"inputRevision\":8,\"maxTokens\":5000}"
+      },
+      {
+        "id": 20,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.107Z",
+        "type": "step.completed",
+        "message": "整理任务约定 已完成并保存",
+        "data": "{\"key\":\"0:0:整理任务约定\",\"outputTokens\":95}"
+      },
+      {
+        "id": 21,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.107Z",
+        "type": "task.brief",
+        "message": "确定性故障注入：模拟钥匙未交回却被原持有人使用，验证冲突隔离。",
+        "data": "{\"approach\":\"读取最新资料，完成范围内成果并审查；遇到冲突或预算耗尽暂停。\",\"assumptions\":[\"使用当前作品版本\"]}"
+      },
+      {
+        "id": 22,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.109Z",
+        "type": "context.built",
+        "message": "上下文 4435/18000 字符；11 条资料",
+        "data": "{\"chapterId\":\"chapter_36d5f4f5-32f2-480b-a88c-805f7eac3523\",\"revision\":9,\"omitted\":0,\"purpose\":\"generation\"}"
+      },
+      {
+        "id": 23,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.110Z",
+        "type": "step.started",
+        "message": "执行 章节规划（第 1 次尝试）",
+        "data": "{\"key\":\"0:0:章节规划\",\"inputRevision\":9,\"maxTokens\":5000}"
+      },
+      {
+        "id": 24,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.305Z",
+        "type": "step.completed",
+        "message": "章节规划 已完成并保存",
+        "data": "{\"key\":\"0:0:章节规划\",\"outputTokens\":184}"
+      },
+      {
+        "id": 25,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.306Z",
+        "type": "step.started",
+        "message": "执行 生成正文（第 1 次尝试）",
+        "data": "{\"key\":\"0:0:生成正文\",\"inputRevision\":9,\"maxTokens\":2520}"
+      },
+      {
+        "id": 26,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.491Z",
+        "type": "step.completed",
+        "message": "生成正文 已完成并保存",
+        "data": "{\"key\":\"0:0:生成正文\",\"outputTokens\":559}"
+      },
+      {
+        "id": 27,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.491Z",
+        "type": "artifact.saved",
+        "message": "成果已落盘，等待检查或接受",
+        "data": "{\"artifactId\":\"artifact_e1380d40-c635-47cd-9436-a703ed8d1e5e\",\"type\":\"chapter\"}"
+      },
+      {
+        "id": 28,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.492Z",
+        "type": "step.started",
+        "message": "执行 审校与候选事实（第 1 次尝试）",
+        "data": "{\"key\":\"0:0:审校与候选事实\",\"inputRevision\":9,\"maxTokens\":7000}"
+      },
+      {
+        "id": 29,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.677Z",
+        "type": "step.completed",
+        "message": "审校与候选事实 已完成并保存",
+        "data": "{\"key\":\"0:0:审校与候选事实\",\"outputTokens\":280}"
+      },
+      {
+        "id": 30,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.678Z",
+        "type": "step.started",
+        "message": "执行 局部修复-1（第 1 次尝试）",
+        "data": "{\"key\":\"0:0:局部修复-1\",\"inputRevision\":9,\"maxTokens\":5000}"
+      },
+      {
+        "id": 31,
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "taskId": "task_c9467242-0556-481a-b803-4cb961665665",
+        "at": "2026-09-12T19:00:26.861Z",
+        "type": "step.completed",
+        "message": "局部修复-1 已完成并保存",
+        "data": "{\"key\":\"0:0:局部修复-1\",\"outputTokens\":37}"
+      }
+    ],
+    "changesets": [
+      {
+        "id": "change_4126e206-bcea-4afd-bcce-941c85f5fbdb",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "at": "2026-09-12T19:00:25.154Z",
+        "kind": "object.create",
+        "data": "{\"after\":{\"kind\":\"volume\",\"title\":\"第一卷\",\"parentId\":\"book_3ff13410-15eb-4f5a-bfe2-f1bd9e83e334\",\"order\":0,\"status\":\"planned\",\"locked\":false,\"tags\":[],\"body\":\"\",\"fields\":{},\"source\":{\"type\":\"user\",\"quote\":\"\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\"},\"id\":\"volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12\",\"projectId\":\"project_cd1be74d-c71d-4416-9ed0-cbcdb674454e\",\"revision\":1,\"updatedAt\":\"2026-09-12T19:00:25.153Z\"}}"
+      },
+      {
+        "id": "change_f56b34c3-1d5a-4ba3-bc84-b621fd643a9f",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "at": "2026-09-12T19:00:25.154Z",
+        "kind": "object.create",
+        "data": "{\"after\":{\"kind\":\"character\",\"title\":\"沈砚\",\"parentId\":null,\"order\":0,\"status\":\"accepted\",\"locked\":false,\"tags\":[],\"body\":\"邮差\",\"fields\":{\"identity\":\"邮差\"},\"source\":{\"type\":\"user\",\"quote\":\"邮差\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\"},\"id\":\"character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce\",\"projectId\":\"project_cd1be74d-c71d-4416-9ed0-cbcdb674454e\",\"revision\":1,\"updatedAt\":\"2026-09-12T19:00:25.154Z\"}}"
+      },
+      {
+        "id": "change_173e0499-654c-4629-baab-81d7a4633921",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "at": "2026-09-12T19:00:25.155Z",
+        "kind": "object.create",
+        "data": "{\"after\":{\"kind\":\"character\",\"title\":\"闻溪\",\"parentId\":null,\"order\":0,\"status\":\"accepted\",\"locked\":false,\"tags\":[],\"body\":\"灯匠\",\"fields\":{},\"source\":{\"type\":\"user\",\"quote\":\"灯匠\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\"},\"id\":\"character_a51a3476-5bcb-44dd-ae1a-b627808d5130\",\"projectId\":\"project_cd1be74d-c71d-4416-9ed0-cbcdb674454e\",\"revision\":1,\"updatedAt\":\"2026-09-12T19:00:25.154Z\"}}"
+      },
+      {
+        "id": "change_cd628fdb-416f-4bb7-8205-2e504df2436b",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "at": "2026-09-12T19:00:25.155Z",
+        "kind": "object.create",
+        "data": "{\"after\":{\"kind\":\"world\",\"title\":\"铜钥匙\",\"parentId\":null,\"order\":0,\"status\":\"accepted\",\"locked\":false,\"tags\":[],\"body\":\"唯一钥匙\",\"fields\":{\"type\":\"物品\"},\"source\":{\"type\":\"user\",\"quote\":\"唯一钥匙\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\"},\"id\":\"world_622e4148-c75d-4a4a-95cc-0e8700407fd9\",\"projectId\":\"project_cd1be74d-c71d-4416-9ed0-cbcdb674454e\",\"revision\":1,\"updatedAt\":\"2026-09-12T19:00:25.155Z\"}}"
+      },
+      {
+        "id": "change_4371bf48-5cac-4e4e-8a1c-2433b56c6987",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "at": "2026-09-12T19:00:25.155Z",
+        "kind": "object.create",
+        "data": "{\"after\":{\"kind\":\"chapter\",\"title\":\"第一章\",\"parentId\":\"volume_4b6d71ec-a75b-46b4-8eb5-cb7049d42e12\",\"order\":1,\"status\":\"planned\",\"locked\":false,\"tags\":[],\"body\":\"\",\"fields\":{\"participants\":[\"character_4d88fbd3-768f-440e-a7b2-3d1fa309ccce\",\"character_a51a3476-5bcb-44dd-ae1a-b627808d5130\",\"world_622e4148-c75d-4a4a-95cc-0e8700407fd9\"],\"goal\":\"把铜钥匙交给闻溪\"},\"source\":{\"type\":\"user\",\"quote\":\"\",\"time\":\"用户明确设定\",\"inference\":false,\"modality\":\"objective\",\"policy\":\"author-setting\"},\"id\":\"chapter_e56ab4a6-4db3-45d2-9db2-63c1030ae59a\",\"projectId\":\"project_cd1be74d-c71d-4416-9ed0-cbcdb674454e\",\"revision\":1,\"updatedAt\":\"2026-09-12T19:00:25.155Z\"}}"
+      },
+      {
+        "id": "change_ac8b63a8-a91c-47cd-9f96-91704e99ef4b",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "at": "2026-09-12T19:00:25.156Z",
+        "kind": "project.update",
+        "data": "{\"before\":{\"title\":\"可靠性测试作品\",\"premise\":\"港口的信件保存人的记忆\",\"genre\":\"\",\"style\":\"克制、具体，以行动与对白推动故事。\",\"constraints\":[],\"archived\":false,\"id\":\"project_cd1be74d-c71d-4416-9ed0-cbcdb674454e\",\"revision\":6,\"createdAt\":\"2026-09-12T19:00:25.151Z\",\"updatedAt\":\"2026-09-12T19:00:25.155Z\"},\"after\":{\"title\":\"一致性与修复验收（确定性测试）\",\"premise\":\"港口的信件保存人的记忆\",\"genre\":\"测试样本\",\"style\":\"克制、具体，以行动与对白推动故事。\",\"constraints\":[],\"archived\":false,\"id\":\"project_cd1be74d-c71d-4416-9ed0-cbcdb674454e\",\"revision\":7,\"createdAt\":\"2026-09-12T19:00:25.151Z\",\"updatedAt\":\"2026-09-12T19:00:25.156Z\"}}"
+      },
+      {
+        "id": "change_1d6be875-5372-4fb2-afec-5750572652c2",
+        "projectId": "project_cd1be74d-c71d-4416-9ed0-cbcdb674454e",
+        "at": "2026-09-12T19:00:25.910Z",
+        "kind": "artifact.accept",
+        "data": "{\"artifactId\":\"artifact_1e03fd5b-37e4-4c3c-bae2-fd3089f860d0\",\"actor\":\"auto\",\"taskId\":\"task_bfe2c851-55d5-457f-add6-321e92aa239e\",\"policy\":\"qualified-v1\"}"
+      }
+    ],
+    "imports": []
+  }
+}

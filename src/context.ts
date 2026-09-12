@@ -9,13 +9,14 @@ export function buildContext(domain:Domain,projectId:string,options:{chapterId?:
   const index=current?chapters.findIndex(c=>c.id===current.id):chapters.length;
   const prior=chapters.slice(0,index);const ordinal=new Map(chapters.map((c,n)=>[c.id,n+1]));const byId=new Map(all.map(o=>[o.id,o]));
   const refreshing=options.purpose==='state-refresh';
-  const relevant=new Set(options.entityIds??[]);const query=(refreshing?[current?.title,current?.body]:[options.goal,current?.title,current?.fields.goal,current?.fields.participants,current?.fields.events]).filter(Boolean).join(' ');
+  const relevant=new Set(options.entityIds??[]);const query=(refreshing?[current?.title,current?.body]:[options.goal,current?.title,current?.fields.goal,current?.fields.participants,current?.fields.events,prior.at(-1)?.body.slice(-2400)]).filter(Boolean).join(' ');
   for(const o of all.filter(o=>['character','world'].includes(o.kind))){const aliases=Array.isArray(o.fields.aliases)?o.fields.aliases:[];if(query.includes(o.id)||[o.title,...aliases].some(name=>query.includes(name)))relevant.add(o.id);}
   for(const o of all)if(o.kind==='relationship'&&(relevant.has(String(o.fields.fromId))||relevant.has(String(o.fields.toId)))){relevant.add(String(o.fields.fromId));relevant.add(String(o.fields.toId));}
+  for(const entityId of [...relevant])for(const linked of Array.isArray(byId.get(entityId)?.fields.relatedEntityIds)?byId.get(entityId)!.fields.relatedEntityIds as string[]:[])relevant.add(linked);
   const latest=(o:StoryObject)=>!o.source?.versionId||byId.get(o.source.chapterId??'')?.fields.currentVersion===o.source.versionId;
   const history=all.filter(o=>o.kind==='fact'&&o.status==='accepted'&&!o.source?.inference&&['objective','knowledge'].includes(o.source?.modality??'objective')&&latest(o)&&(!o.source?.chapterId||(ordinal.get(o.source.chapterId)??Infinity)<=index)&&(!o.source?.fromChapter||o.source.fromChapter<=index+1)&&(!o.source?.toChapter||o.source.toChapter>=index+1));
-  const projection=new Map<string,StoryObject>();
-  for(const f of history.sort((a,b)=>(a.source?.fromChapter??0)-(b.source?.fromChapter??0)||a.updatedAt.localeCompare(b.updatedAt)))projection.set(`${f.fields.entityId}:${f.fields.property}:${f.source?.modality??'objective'}`,f);
+  const projection=new Map<string,StoryObject>();const superseded=new Set(history.map(f=>f.source?.supersedes).filter(Boolean));
+  for(const f of history.filter(f=>!superseded.has(f.id)).sort((a,b)=>(a.source?.fromChapter??0)-(b.source?.fromChapter??0)||a.updatedAt.localeCompare(b.updatedAt)))projection.set(`${f.fields.entityId}:${f.fields.property}:${f.source?.modality??'objective'}${['known','alias'].includes(String(f.fields.property))?':'+String(f.fields.value):''}`,f);
   const canon=[...projection.values()];const canonIds=new Set(canon.map(f=>f.id));
   const candidates:ContextItem[]=[];const omitted:ContextPack['omitted']=[];const missing:string[]=[];
   const add=(id:string,version:string,kind:string,reason:string,priority:number,mandatory:boolean,text:string)=>{candidates.push({id,version,kind,reason,priority,mandatory,text});};

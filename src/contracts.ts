@@ -29,6 +29,10 @@ export const objectSchema = z.object({
 }).strict();
 export type ObjectInput = z.infer<typeof objectSchema>;
 export interface StoryObject extends ObjectInput { id: string; projectId: string; revision: number; updatedAt: string; }
+export function orderedChapters(objects:StoryObject[]):StoryObject[] {
+  const parents=new Map(objects.map(o=>[o.id,o.order]));
+  return objects.filter(o=>o.kind==='chapter').sort((a,b)=>(parents.get(a.parentId??'')??0)-(parents.get(b.parentId??'')??0)||(a.parentId??'').localeCompare(b.parentId??'')||a.order-b.order||a.id.localeCompare(b.id));
+}
 export const projectSchema = z.object({
   title: z.string().trim().min(1).max(160), premise: str.default(''), genre: z.string().max(100).default(''),
   style: str.default('克制、具体，以行动与对白推动故事。'), constraints: z.array(z.string().max(4000)).max(50).default([]),
@@ -58,7 +62,7 @@ export interface CreativeTask extends TaskInput {
   id: string; projectId: string; status: TaskStatus; inputRevision: number; expectedRevision: number; epoch: number;
   createdAt: string; updatedAt: string; currentStep: string; completedChapters: number; steps: RunStep[];
   usage: {calls: number; outputTokens: number; estimated: boolean}; error?: {code: string; message: string};
-  contract: {scope: string; lockedIds: string[]; permitted: string[]; forbidden: string[]; deliverables: string[]; stop: string[]};
+  contract: {scope: string; lockedIds: string[]; permitted: string[]; forbidden: string[]; deliverables: string[]; stop: string[]; brief?:{objective:string;approach:string;assumptions:string[];constraints:string[];question?:string}; briefEpoch?:number};
   checkpoint: {chapterId?: string; artifactId?: string; committed: string[]};
 }
 export interface Artifact { id: string; taskId: string; projectId: string; type: 'chapter'|'state-review'|'setup'|'replan'|'ideas'|'extraction'|'edit'; status: 'pending'|'accepted'|'rejected'|'stale'; baseRevision: number; chapterId?: string; chapterRevision?: number; createdAt: string; data: any; }
@@ -67,6 +71,7 @@ export const claimSchema = z.object({
   modality: z.enum(['objective','knowledge','rumor','memory','dream','uncertain']).default('objective'),
   time: z.string().max(300).default('当前章'), inference: z.boolean().default(false),
   transition: z.object({from:z.string().max(2000),reason:z.string().max(1200)}).optional()
+  ,supersedes:z.string().optional()
 });
 export type Claim = z.infer<typeof claimSchema>;
 export const issueSchema = z.object({
@@ -77,7 +82,7 @@ export const issueSchema = z.object({
 export type ReviewIssue = z.infer<typeof issueSchema> & {id:string; start:number; end:number; status:'open'|'ignored'|'intentional'|'resolved'; reason?:string; engine:'deterministic'|'ai'};
 export const reviewSchema = z.object({
   summary:z.string().min(1).max(3000), claims:z.array(claimSchema).max(50),
-  events:z.array(z.object({title:z.string().max(240),quote:z.string().min(1).max(3000),time:z.string().max(240).default('未知'),entityIds:z.array(z.string()).default([])})).max(30),
+  events:z.array(z.object({title:z.string().max(240),quote:z.string().min(1).max(3000),time:z.string().max(240).default('未知'),entityIds:z.array(z.string()).default([]),modality:sourceSchema.shape.modality,inference:z.boolean().default(false)})).max(30),
   issues:z.array(issueSchema).max(30),
   foreshadowUpdates:z.array(z.object({id:z.string(),state:z.enum(['planted','advancing','resolved']),quote:z.string().min(1).max(2000)})).max(20).default([])
 });

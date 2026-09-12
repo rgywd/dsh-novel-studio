@@ -21,6 +21,8 @@ export class HttpApp {
       res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','same-origin');res.setHeader('X-Frame-Options','SAMEORIGIN');
       if(url.pathname.startsWith(API)){
         const method=req.method??'GET';let body:any={};
+        const download=url.pathname.slice(API.length).match(/^\/projects\/([^/]+)\/download$/);
+        if(download&&method==='GET'){const project=this.domain.project(download[1]);const format=z.enum(['txt','md','backup']).parse(url.searchParams.get('format'));const name=project.title+(format==='backup'?'.novel.json':'.'+format);const content=format==='backup'?JSON.stringify(this.domain.backup(project.id),null,2):this.domain.exportText(project.id,format);res.writeHead(200,{'Content-Type':format==='backup'?'application/json; charset=utf-8':'text/plain; charset=utf-8','Content-Disposition':`attachment; filename="novel-studio.${format==='backup'?'json':format}"; filename*=UTF-8''${encodeURIComponent(name)}`});res.end(content);return;}
         if(!['GET','HEAD'].includes(method)){requireThat(req.headers['content-type']?.startsWith('application/json')&&req.headers['x-novel-studio']==='1','CONTENT_TYPE','写请求需要 JSON 和本地工作台标识',403);body=await readJson(req);}
         const value=this.dispatch(method,url.pathname.slice(API.length),body,url.searchParams);res.writeHead(200,{'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(value));return;
       }
@@ -46,6 +48,7 @@ export class HttpApp {
       if(method==='GET'&&key&&!action)return this.domain.object(pid,key);
       if(method==='PATCH'&&key)return this.domain.updateObject(pid,key,num.parse(body.revision),body.object);
       if(method==='POST'&&key&&action==='takeover')return this.domain.takeover(pid,key,num.parse(body.revision));
+      if(method==='POST'&&key&&action==='adopt')return this.domain.adoptIdea(pid,key,num.parse(body.revision));
       if(method==='POST'&&key&&action==='body')return this.domain.saveChapter(pid,key,num.parse(body.revision),body.body);
       if(method==='POST'&&key&&action==='rollback')return this.domain.rollback(pid,key,num.parse(body.revision),z.string().parse(body.versionId));
       if(method==='GET'&&key&&action==='versions')return this.domain.versions(pid,key);
@@ -55,11 +58,13 @@ export class HttpApp {
       if(method==='GET'&&!key)return this.domain.store.list('tasks',pid);
       if(method==='POST'&&!key){const task=this.domain.createTask(pid,body);this.runner.start(task.id);return task;}
       if(method==='GET'&&key){const t=this.domain.task(pid,key);return {...t,events:this.domain.store.events(pid,key),artifacts:this.domain.store.list('artifacts',pid).filter(a=>a.taskId===key).map(a=>({...a,data:{title:a.data.title,content:a.data.content,review:a.data.review,context:a.data.context,late:a.data.late}}))};}
+      if(method==='POST'&&key&&action==='clarify'){const t=this.domain.clarifyTask(pid,key,z.string().parse(body.answer));this.runner.start(t.id);return t;}
       if(method==='POST'&&key&&action){const parsed=z.enum(['pause','resume','redelegate','cancel']).parse(action);const task=this.domain.controlTask(pid,key,parsed);if(task.status==='QUEUED')this.runner.start(task.id);return task;}
     }
     if(resource==='artifacts'&&key){
       if(method==='GET')return this.domain.artifact(pid,key);
       if(method==='POST'&&action==='accept')return this.domain.acceptArtifact(pid,key,'author',body.partialText);
+      if(method==='POST'&&action==='revert')return this.domain.revertReplan(pid,key,num.parse(body.revision));
       if(method==='POST'&&action==='reject')return this.domain.rejectArtifact(pid,key);
       if(method==='POST'&&action==='issues')return this.domain.resolveIssue(pid,key,z.string().parse(body.issueId),z.enum(['ignored','intentional']).parse(body.status),z.string().parse(body.reason));
     }

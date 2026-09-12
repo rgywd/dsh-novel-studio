@@ -1,0 +1,144 @@
+{
+  "checksum": "729b625fad286b8ff0e018143538c01ec1f231a9b3bddf862ff31428dabfe989",
+  "payload": {
+    "schema": 1,
+    "project": {
+      "title": "导入与备份验收",
+      "premise": "",
+      "genre": "",
+      "style": "克制、具体，以行动与对白推动故事。",
+      "constraints": [],
+      "archived": false,
+      "id": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+      "revision": 2,
+      "createdAt": "2026-09-12T18:47:28.335Z",
+      "updatedAt": "2026-09-12T18:48:21.462Z"
+    },
+    "objects": [
+      {
+        "kind": "book",
+        "title": "导入与备份验收",
+        "parentId": null,
+        "order": 0,
+        "status": "planned",
+        "locked": false,
+        "tags": [],
+        "body": "",
+        "fields": {},
+        "id": "book_83e1d51b-9ff0-4d03-86e9-32de86f8ac6b",
+        "projectId": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+        "revision": 1,
+        "updatedAt": "2026-09-12T18:47:28.336Z"
+      },
+      {
+        "kind": "chapter",
+        "title": "第一章 雨停之后",
+        "parentId": "volume_3cc95207-fb07-4b24-8917-1b5b71eada98",
+        "order": 0,
+        "status": "accepted",
+        "locked": false,
+        "tags": [],
+        "body": "沈砚把银钥匙交给闻溪。她将钥匙放进围裙内袋。\n\n",
+        "fields": {
+          "currentVersion": "version_809c5d86-352a-408e-a9a8-a9dfed5ce925",
+          "extractionPending": true,
+          "control": "author"
+        },
+        "id": "chapter_f9250985-d1db-42c1-80e3-fba223905af8",
+        "projectId": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+        "revision": 1,
+        "updatedAt": "2026-09-12T18:48:21.461Z"
+      },
+      {
+        "kind": "chapter",
+        "title": "第二章 留灯的人",
+        "parentId": "volume_3cc95207-fb07-4b24-8917-1b5b71eada98",
+        "order": 1,
+        "status": "accepted",
+        "locked": false,
+        "tags": [],
+        "body": "次日清晨，闻溪取出银钥匙，打开档案室的门。沈砚站在门外等候。\r\n",
+        "fields": {
+          "currentVersion": "version_34257c51-5e3e-4844-9627-872a785c590e",
+          "extractionPending": true,
+          "control": "author"
+        },
+        "id": "chapter_0310c23e-6e40-44c9-a40c-fd5e14b5e40d",
+        "projectId": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+        "revision": 1,
+        "updatedAt": "2026-09-12T18:48:21.462Z"
+      },
+      {
+        "kind": "volume",
+        "title": "import-story.md",
+        "parentId": "book_83e1d51b-9ff0-4d03-86e9-32de86f8ac6b",
+        "order": 0,
+        "status": "planned",
+        "locked": false,
+        "tags": [],
+        "body": "",
+        "fields": {},
+        "id": "volume_3cc95207-fb07-4b24-8917-1b5b71eada98",
+        "projectId": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+        "revision": 1,
+        "updatedAt": "2026-09-12T18:48:21.461Z"
+      }
+    ],
+    "versions": [
+      {
+        "id": "version_809c5d86-352a-408e-a9a8-a9dfed5ce925",
+        "projectId": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+        "chapterId": "chapter_f9250985-d1db-42c1-80e3-fba223905af8",
+        "content": "沈砚把银钥匙交给闻溪。她将钥匙放进围裙内袋。\n\n",
+        "chapterRevision": 1,
+        "createdAt": "2026-09-12T18:48:21.461Z",
+        "actor": "author-import",
+        "accepted": true,
+        "summary": ""
+      },
+      {
+        "id": "version_34257c51-5e3e-4844-9627-872a785c590e",
+        "projectId": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+        "chapterId": "chapter_0310c23e-6e40-44c9-a40c-fd5e14b5e40d",
+        "content": "次日清晨，闻溪取出银钥匙，打开档案室的门。沈砚站在门外等候。\r\n",
+        "chapterRevision": 1,
+        "createdAt": "2026-09-12T18:48:21.462Z",
+        "actor": "author-import",
+        "accepted": true,
+        "summary": ""
+      }
+    ],
+    "tasks": [],
+    "artifacts": [],
+    "events": [
+      {
+        "id": 46,
+        "projectId": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+        "taskId": null,
+        "at": "2026-09-12T18:47:28.336Z",
+        "type": "project.created",
+        "message": "作品已创建",
+        "data": "{}"
+      },
+      {
+        "id": 47,
+        "projectId": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+        "taskId": null,
+        "at": "2026-09-12T18:48:21.462Z",
+        "type": "import.saved",
+        "message": "已保留原文并导入 2 章；资料抽取需单独委派",
+        "data": "{}"
+      }
+    ],
+    "changesets": [],
+    "imports": [
+      {
+        "id": "import_82b93913-85b8-49e7-86f6-226f3a489a33",
+        "projectId": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+        "name": "import-story.md",
+        "raw": "# 第一章 雨后的码头\n沈砚把银钥匙交给闻溪。她将钥匙放进围裙内袋。\n\n# 第二章 留灯的人\n次日清晨，闻溪取出银钥匙，打开档案室的门。沈砚站在门外等候。\r\n",
+        "at": "2026-09-12T18:48:21.461Z"
+      }
+    ]
+  }
+}

@@ -4,3 +4,9 @@ test('D: planned events and candidates never become canon',()=>{const f=fixture(
 test('L: large book is scoped, bounded and stale summary omitted',()=>{const f=fixture();f.store.transaction(()=>{for(let i=0;i<200;i++)f.domain.addObject(f.p.id,{kind:'chapter',title:`历史章${i}`,parentId:f.volume.id,order:i+2,status:'accepted',body:`unique-older-${i} `+'这是用于测试长篇检索规模的数据。'.repeat(600),fields:{summary:'OBSOLETE_SUMMARY',summaryVersion:'old',currentVersion:'new'}});});const pack=buildContext(f.domain,f.p.id,{maxChars:6000});assert.ok(pack.used<=6000);assert.ok(!pack.text.includes('OBSOLETE_SUMMARY'));assert.ok(!pack.text.includes('unique-older-0'));assert.ok(pack.missing.some(s=>s.includes('失效')));assert.ok(f.domain.exportText(f.p.id,'txt').length>1_000_000);f.store.close();});
 test('L: locked constraints must fit or fail visibly',()=>{const f=fixture();f.add({kind:'world',title:'核心规则',status:'accepted',locked:true,body:'绝不能泄露导师身份。'.repeat(300)});assert.throws(()=>buildContext(f.domain,f.p.id,{maxChars:1000}),/核心锁定约束/);const pack=buildContext(f.domain,f.p.id,{maxChars:6000});assert.ok(pack.items.some(i=>i.mandatory&&i.text.includes('绝不能泄露导师身份')));f.store.close();});
 test('word count excludes whitespace and punctuation',()=>{assert.equal(countWords('你好，世界！ hello world 123'),7);});
+
+test('continuation finds carried items in the previous ending even when the broad goal omits them',()=>{
+  const f=fixture();f.domain.saveChapter(f.p.id,f.chapter.id,f.chapter.revision,'沈砚把铜钥匙交给闻溪，收好了外套。');
+  const next=f.add({kind:'chapter',title:'第二章',parentId:f.volume.id,order:2,status:'planned',fields:{goal:'继续调查港口',participants:[f.a.id]}});
+  const pack=buildContext(f.domain,f.p.id,{chapterId:next.id,goal:'继续调查港口',maxChars:6000});assert.ok(pack.items.some(i=>i.id===f.key.id&&i.reason.includes('当前参与')));assert.ok(pack.items.some(i=>i.id===f.b.id));f.store.close();
+});

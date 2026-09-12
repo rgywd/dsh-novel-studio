@@ -29,7 +29,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test test/*.test.ts",
     "test:unit": "node --import tsx --test test/context.test.ts test/review.test.ts",
-    "test:integration": "node --import tsx --test test/domain.test.ts test/runtime.test.ts test/guards.test.ts",
+    "test:integration": "node --import tsx --test test/domain.test.ts test/runtime.test.ts test/guards.test.ts test/workbench.test.ts test/plugin.test.ts",
     "test:e2e": "node --import tsx --test test/http.test.ts",
     "smoke:real": "node scripts/real-smoke.mjs",
     "start:dsh": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/serve.ps1 -Dsh",

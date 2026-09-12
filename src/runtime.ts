@@ -22,6 +22,8 @@ export class Runner {
     try{
       this.domain.guard(t.projectId,t.expectedRevision);t=this.patch(taskId,t=>{t.status='RUNNING';t.error=undefined;});
       this.domain.store.event(t.projectId,t.id,'task.running','任务开始执行；进度来自实际落盘步骤');
+      if(!['assist','ideas'].includes(t.kind)&&t.contract.briefEpoch!==t.epoch){const brief=await this.step(taskId,'整理任务约定','brief',{goal:t.goal,kind:t.kind,count:t.count,targetWords:t.targetWords,constraints:t.constraints,contract:{scope:t.contract.scope,permitted:t.contract.permitted,forbidden:t.contract.forbidden},budget:t.budget});this.boundary(taskId);t=this.patch(taskId,t=>{t.contract.brief=brief;t.contract.briefEpoch=t.epoch;});this.domain.store.event(t.projectId,t.id,'task.brief',brief.objective,{approach:brief.approach,assumptions:brief.assumptions});}
+      if(t.contract.brief?.question){this.patch(taskId,t=>{t.status='NEEDS_INPUT';t.error={code:'TASK_CLARIFICATION',message:t.contract.brief!.question!};});throw new DomainError('TASK_CLARIFICATION',t.contract.brief.question);}
       if(t.kind==='write')await this.write(taskId);
       else if(t.kind==='review')await this.reviewTask(taskId);
       else await this.oneShot(taskId);
@@ -41,7 +43,7 @@ export class Runner {
   private input(t:CreativeTask,pack:ReturnType<typeof buildContext>,extras:Record<string,unknown>={}){
     // Only entities actually selected by Context Engine are sent. Never duplicate the entire book outside the pack.
     const ids=new Set(pack.items.map(i=>i.id));const objects=this.domain.store.objects(t.projectId).filter(o=>ids.has(o.id)&&['character','world','foreshadow'].includes(o.kind)).map(o=>({id:o.id,title:o.title,kind:o.kind}));
-    return {goal:t.goal,contract:t.contract,constraints:t.constraints,targetWords:t.targetWords,context:pack.text,contextRevision:pack.revision,missing:pack.missing,objects,sourceIds:[...new Set(pack.items.map(i=>i.id.split(':')[0]))],foreshadowIds:objects.filter(o=>o.kind==='foreshadow').map(o=>o.id),...extras};
+    return {goal:t.goal,contract:t.contract,constraints:[...new Set([...t.constraints,...(t.contract.brief?.constraints??[])])],targetWords:t.targetWords,context:pack.text,contextRevision:pack.revision,missing:pack.missing,objects,sourceIds:[...new Set(pack.items.map(i=>i.id.split(':')[0]))],foreshadowIds:objects.filter(o=>o.kind==='foreshadow').map(o=>o.id),...extras};
   }
   async step(taskId:string,label:string,prompt:PromptKey,input:Record<string,any>,validate?:(output:any)=>any):Promise<any>{
     let t=this.boundary(taskId);const epoch=t.epoch;const key=`${epoch}:${t.completedChapters}:${label}`;const inputHash=hash({prompt:prompts[prompt].id,version:prompts[prompt].version,input});
@@ -88,7 +90,7 @@ export class Runner {
         const measured=(error as any)?.outputTokens;
         if(typeof measured==='number'&&Number.isFinite(measured)&&measured>=0)this.patch(taskId,t=>{const s=t.steps.find(s=>s.key===key&&s.inputHash===inputHash);const call=s?.calls?.find(c=>c.attempt===attempt+1);if(call){t.usage.outputTokens+=measured-call.outputTokens;call.outputTokens=measured;call.estimated=false;call.model=(error as any).model;s!.usage={outputTokens:s!.calls!.reduce((n,c)=>n+c.outputTokens,0),estimated:s!.calls!.some(c=>c.estimated)};}t.usage.estimated=t.usage.calls>t.steps.reduce((n,s)=>n+(s.calls?.length??0),0)||t.steps.some(s=>s.calls?.some(c=>c.estimated));});
         step=this.current(taskId).steps.find(s=>s.key===key&&s.inputHash===inputHash);
-        if(current.status!=='RUNNING'||current.epoch!==epoch||['MODEL_UNAVAILABLE','STOPPED','STALE'].includes(e.code))throw error;
+        if(current.status!=='RUNNING'||current.epoch!==epoch||['MODEL_UNAVAILABLE','STOPPED','STALE','BUDGET_EXHAUSTED'].includes(e.code))throw error;
         if(attempt===2)throw error;
       }finally{if(timer)clearTimeout(timer);if(this.controllers.get(taskId)===controller)this.controllers.delete(taskId);}
     }
@@ -109,7 +111,7 @@ export class Runner {
       requireThat(selected.length>0,'EMPTY','没有可抽取的正文',422);
       for(const [n,c] of selected.entries()){
         requireThat(c.body.length<=t.budget.contextChars,'CONTEXT_LOCK_OVERFLOW','本章超过抽取上下文预算，请先拆分章节');
-        const output=await this.step(taskId,`提取资料-${n}`,'extract',{goal:t.goal,draft:c.body,chapterId:c.id,objects:[]},o=>{for(const x of o.objects){requireThat(['character','world','fact','event'].includes(x.kind),'EXTRACTION','抽取对象类型不合法',422);requireThat(x.source?.quote&&c.body.includes(x.source.quote),'EVIDENCE','抽取证据必须出现在当前章正文',422);}return o;});
+        const output=await this.step(taskId,`提取资料-${n}`,'extract',{goal:t.goal,draft:c.body,chapterId:c.id,objects:this.domain.store.objects(t.projectId).filter(o=>['character','world'].includes(o.kind)).slice(0,100).map(o=>({id:o.id,title:o.title,kind:o.kind}))},o=>{for(const x of o.objects){requireThat(['character','world','fact','event'].includes(x.kind),'EXTRACTION','抽取对象类型不合法',422);requireThat(x.source?.quote&&c.body.includes(x.source.quote),'EVIDENCE','抽取证据必须出现在当前章正文',422);}return o;});
         t=this.boundary(taskId);let a=this.domain.store.list('artifacts',t.projectId).find(a=>a.taskId===t.id&&a.type==='extraction'&&a.chapterId===c.id&&a.data.versionId===c.fields.currentVersion&&['pending','accepted'].includes(a.status));
         if(!a)a=this.domain.putArtifact(t,'extraction',{...output,versionId:c.fields.currentVersion,context:pack},c);if(t.autoAccept&&a.status==='pending')this.domain.acceptArtifact(t.projectId,a.id,'auto');
       }
@@ -118,7 +120,7 @@ export class Runner {
     }
     const key=t.kind as 'bootstrap'|'ideas'|'replan';let extra:Record<string,unknown>={};
     if(key==='replan'){
-      const all=this.domain.store.objects(t.projectId);const editable=all.filter(editablePlan);
+      const all=this.domain.store.objects(t.projectId);const editable=all.filter(o=>editablePlan(o)&&(!t.chapterId||o.id===t.chapterId));
       const deps=all.filter(o=>['character','foreshadow','event'].includes(o.kind));extra={editablePlans:editable.map(o=>({id:o.id,title:o.title,fields:o.fields})),dependencies:[...deps.map(o=>({id:o.id,title:o.title,fields:o.fields})),...this.domain.store.list('tasks',t.projectId).filter(o=>o.id!==t.id).map(o=>({id:o.id,goal:o.goal,status:o.status}))]};
       requireThat(JSON.stringify(extra).length+pack.used<=t.budget.contextChars*2,'CONTEXT_LOCK_OVERFLOW','重规划依赖超过范围，请缩小任务范围');
     }
@@ -143,8 +145,11 @@ export class Runner {
     this.boundary(taskId);this.domain.refreshEvidence(taskId,prev.id,review);
   }
   private reviewSources(projectId:string){const p=this.domain.project(projectId);const objects=this.domain.store.objects(projectId);return [...objects,{...objects.find(o=>o.kind==='book')!,id:p.id,title:p.title,body:p.premise,fields:{constraints:p.constraints,style:p.style}}];}
-  private async reviewed(taskId:string,c:StoryObject,content:string,pack:ReturnType<typeof buildContext>,target?:number):Promise<{content:string;review:Review}>{
-    let t=this.boundary(taskId);let review:Review=await this.step(taskId,'审校与候选事实','review',this.input(t,pack,{draft:content,chapterId:c.id}),o=>validateReview(o,content,this.reviewSources(t.projectId),pack.canon,target));
+  private async reviewed(taskId:string,c:StoryObject,content:string,pack:ReturnType<typeof buildContext>,target?:number,plan?:unknown):Promise<{content:string;review:Review}>{
+    let t=this.boundary(taskId);const planSourceId=plan?`task-plan:${t.id}:${c.id}`:undefined;const sources=this.reviewSources(t.projectId);if(planSourceId)sources.push({...c,id:planSourceId,body:'',fields:plan as StoryObject['fields'],source:undefined});
+    const requiredStates=sources.filter(o=>o.kind==='world'&&o.status==='accepted'&&(o.fields.unique===true||String(o.fields.type).includes('物品'))&&content.includes(o.title)).map(o=>({entityId:o.id,title:o.title,property:'holder'}));
+    const reviewInput=()=>{const input=this.input(t,pack,{draft:content,chapterId:c.id,plan,planSourceId,requiredStates});if(planSourceId)input.sourceIds.push(planSourceId);return input;};
+    let review:Review=await this.step(taskId,'审校与候选事实','review',reviewInput(),o=>validateReview(o,content,sources,pack.canon,target));
     for(let round=0;round<2&&review.issues.some(i=>i.blocks&&i.status==='open');round++){
       this.boundary(taskId);const draft=content;
       const repair=await this.step(taskId,`局部修复-${round+1}`,'repair',this.input(t,pack,{draft,issues:review.issues.filter(i=>i.status==='open'),chapterId:c.id}),o=>{
@@ -152,7 +157,7 @@ export class Runner {
         for(let i=1;i<ranges.length;i++)requireThat(ranges[i].start>=ranges[i-1].end,'REPAIR_RANGE','局部修复不能重叠',422);return {...o,ranges};
       });
       if(!repair.ranges.length)break;for(const range of [...repair.ranges].reverse())content=content.slice(0,range.start)+range.replacement+content.slice(range.end);
-      review=await this.step(taskId,`复核-${round+1}`,'review',this.input(t,pack,{draft:content,chapterId:c.id}),o=>validateReview(o,content,this.reviewSources(t.projectId),pack.canon,target));
+      review=await this.step(taskId,`复核-${round+1}`,'review',reviewInput(),o=>validateReview(o,content,sources,pack.canon,target));
     }
     return {content,review};
   }
@@ -167,7 +172,7 @@ export class Runner {
       // Draft is persisted before review, so a review failure never discards valid writing.
       let draft=this.domain.store.list('artifacts',t.projectId).find(a=>a.taskId===t.id&&a.chapterId===c.id&&a.baseRevision===t.expectedRevision&&a.status==='pending'&&a.data.content===content);
       if(!draft)draft=this.domain.putArtifact(t,'chapter',{content,plan,context:pack},c);
-      const checked=await this.reviewed(taskId,c,content,pack,t.targetWords);this.boundary(taskId);draft.data={...draft.data,...checked};this.domain.store.put('artifacts',draft);this.patch(taskId,t=>{t.checkpoint.artifactId=draft!.id;});
+      const checked=await this.reviewed(taskId,c,content,pack,t.targetWords,plan);this.boundary(taskId);draft.data={...draft.data,...checked};this.domain.store.put('artifacts',draft);this.patch(taskId,t=>{t.checkpoint.artifactId=draft!.id;});
       if(checked.review.issues.some(i=>i.blocks&&i.status==='open')){this.patch(taskId,t=>{t.status='NEEDS_INPUT';t.error={code:'CONFLICT',message:'重大问题仍未解决；草稿已隔离，等待作者处理'};});throw new DomainError('CONFLICT','需要处理重大问题');}
       this.deliver(taskId,draft);
     }
@@ -177,7 +182,7 @@ export class Runner {
     const c=this.domain.object(t.projectId,t.chapterId!);const body=t.draft??c.body;requireThat(body.trim(),'EMPTY','本章没有正文可审查',422);const pack=this.pack(t,c.id);
     if(t.draft!==undefined&&!this.domain.store.list('artifacts',t.projectId).some(a=>a.taskId===t.id))this.domain.putArtifact(t,'chapter',{content:body,original:c.body,sourceArtifactId:t.draftArtifactId,context:pack},c);
     const checked=await this.reviewed(taskId,c,body,pack,t.draft!==undefined?t.targetWords:undefined);
-    this.boundary(taskId);const a=this.domain.putArtifact(t,'chapter',{...checked,context:pack,original:c.body},c);this.patch(taskId,t=>{t.checkpoint.artifactId=a.id;});
+    this.boundary(taskId);let a=this.domain.store.list('artifacts',t.projectId).find(a=>a.taskId===t.id&&a.chapterId===c.id&&a.status==='pending');if(a){a.data={...a.data,...checked,context:pack,original:c.body};this.domain.store.put('artifacts',a);}else a=this.domain.putArtifact(t,'chapter',{...checked,context:pack,original:c.body},c);this.patch(taskId,t=>{t.checkpoint.artifactId=a!.id;});
     if(checked.review.issues.some(i=>i.blocks&&i.status==='open'))this.awaitReview(taskId,a);else this.deliver(taskId,a);
   }
 }
