@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { configOverrideSchema,type ConfigSnapshot } from './config-contracts.js';
 
 export const id = (prefix: string) => `${prefix}_${crypto.randomUUID()}`;
 export const now = () => new Date().toISOString();
@@ -46,6 +47,8 @@ export const taskInputSchema = z.object({
   constraints: z.array(z.string().max(2000)).max(30).default([]), autoAccept: z.boolean().default(false),
   provider: z.enum(['dsh','demo']).default('dsh'),
   reasoning: z.enum(['balanced','configured']).default('balanced'),
+  configuration: configOverrideSchema.optional(),
+  perspective: z.object({asOfChapter:z.number().int().nonnegative().optional(),viewpointId:z.string().optional(),audience:z.enum(['author','character','reader']).default('author'),branch:z.string().max(100).default('main')}).optional(),
   budget: z.object({calls:z.number().int().min(1).max(40).default(18),outputTokens:z.number().int().min(500).max(150000).default(48000),contextChars:z.number().int().min(1000).max(48000).default(18000)}).default({}),
   range: z.object({start:z.number().int().nonnegative(),end:z.number().int().nonnegative(),expectedText:str}).optional()
   ,draft: str.optional(), draftArtifactId:z.string().optional()
@@ -56,9 +59,11 @@ export interface RunStep {
   key: string; name: string; inputHash: string; inputRevision: number; status: 'RUNNING'|'COMPLETED'|'FAILED'|'STALE';
   attempts: number; startedAt: string; endedAt?: string; output?: unknown; partial?: string; error?: string;
   usage?: {outputTokens: number; estimated: boolean};
+  requestIds?:string[];
   calls?: {attempt:number;reserved:number;outputTokens:number;estimated:boolean;status:'RUNNING'|'COMPLETED'|'FAILED';startedAt:string;endedAt?:string;error?:string;diagnostic?:string;model?:{provider:string;model:string;reasoningEffort?:string}}[];
 }
 export interface CreativeTask extends TaskInput {
+  configSnapshot?:ConfigSnapshot;
   id: string; projectId: string; status: TaskStatus; inputRevision: number; expectedRevision: number; epoch: number;
   createdAt: string; updatedAt: string; currentStep: string; completedChapters: number; steps: RunStep[];
   usage: {calls: number; outputTokens: number; estimated: boolean}; error?: {code: string; message: string};

@@ -1,5 +1,22 @@
 # 验收记录
 
+## 当前增量升级 A–H（独立于下方已完成 V1）
+
+起点 `7839613`。升级前 `npm run typecheck` 与 41 项完整回归 PASS；证据 `evidence/upgrade-baseline-*.txt`。8 个旧作品备份成功；`evidence/upgrade-backup-receipt.json`。本轮功能验收尚未执行，逐切片更新。
+
+| 本轮场景 | 状态 |
+|---|---|
+| A 旧版数据与双模式迁移回归 | NOT_RUN |
+| B 预设、顺序/角色/宏、任务隔离和固定版本 | NOT_RUN |
+| C 三阶段 regex、原始响应、非法规则与隔离终止 | NOT_RUN |
+| D 关系/世界时态、单方知情和有界召回 | NOT_RUN |
+| E 长篇证据召回、覆盖缺口、失效重建与晚到保护 | NOT_RUN |
+| F 确定性编译、稳定前缀与真实缓存计量 | NOT_RUN |
+| G 双模式完整升级闭环 | NOT_RUN |
+| H 三种文风的真实可读样本 | NOT_RUN |
+
+## 历史 V1 验收
+
 2026-09-13（Asia/Shanghai）。状态：PASS / FAIL / BLOCKED / NOT_RUN。保留全部原始 V1 场景 A–L。最终实现提交 `b4ea427`；下列收口仅更新文档与证据，没有再修改实现。
 
 ## 原始场景与结果

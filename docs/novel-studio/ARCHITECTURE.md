@@ -1,5 +1,32 @@
 # Architecture
 
+## 2026-09-13 incremental upgrade (in progress)
+
+Schema 2 adds immutable `config_versions`, scope bindings, last 100 local request snapshots per project, and derived memories. Migration is additive in one SQLite transaction. Legacy projects/versions are not rewritten. JSON backups support schema 1 and 2; restoration creates a separate project and freezes its restored effective configuration, without changing global defaults. Before migration, eight real project backups were saved privately; see the non-secret receipt in evidence.
+
+`config.ts` imports and resolves global → project → task fields; arrays replace, native fields override individually. Every new CreativeTask saves a full configuration snapshot. Legacy unfinished tasks without snapshots retain disabled upgrade behavior. Changing a binding does not change the story revision or a running task. `compiler.ts` is called by the shared Runner.step for every prompt: task snapshot → scope resolution → task-role filter → read-only macro expansion → bounded Context Pack → whitelisted before-text transforms → deterministic P0–P5 messages/budget → DSH adapter → observable invocation snapshot → call. Writer uses literary entries and sampling; Reviewer reads native style only as evaluation data; Planner/Extractor/Summarizer stay neutral. Runtime/schema remain in the protected system slot. Compatibility entries keep their supported roles/order/positions; source trust does not imply tool authority.
+
+`text-pipeline.ts` executes only a fixed Worker program with user patterns as RegExp data. Per rule: 500 ms termination, 1000 matches, 100000 input and 120000 output characters, bounded worker heap. Generated prose is processed only after the complete response; review sees the candidate. Replay starts from raw response and fixed rules. Display produces an escaped read-only preview; it cannot affect facts. Raw/candidate/transform lineage is retained in artifacts beyond request-log retention.
+
+The installed DSH 0.1.5-rc.1 GenerateOptions exposes temperature/maxTokens/stop, not top_p or provider-specific cache controls. The actual DeepSeek adapter maps prompt_cache_hit_tokens (or cached_tokens) to cacheReadTokens and subtracts it from inputTokens: DSH input is uncached input. The inspector separately reports local compilation reuse, local stable-block comparison and actual server read/write fields. Missing cache fields remain UNKNOWN; full input is calculated only when cache detail is available. It stores the observed llm.stream invocation, not guessed HTTP headers or credentials. No price estimate, cache-control passthrough, keepalive or filler requests.
+
+Reference study (read, not run or copied): SillyTavern release `8172dcd0ee672d3cd9a5e5f7af134f91a45cd2b8` (2026-07-07), AGPL-3.0, actual PromptManager.js and regex/engine.js; [Prompt Manager](https://docs.sillytavern.app/usage/prompts/prompt-manager/), [Regex](https://docs.sillytavern.app/extensions/regex/), [Macros](https://docs.sillytavern.app/usage/core-concepts/macros/), [World Info](https://docs.sillytavern.app/usage/core-concepts/worldinfo/), [Summarize](https://docs.sillytavern.app/extensions/summarize/). LittleWhiteBox by **biex**, commit `960b3233c90cdd7de7ac61becb7f00b05fa8a21b` (2026-09-10), actual source-boundary.js/direct-evidence-packing.js, [official docs](https://docs.littlewhitebox.qzz.io/). Its docs/LICENSE.md adds attribution conditions to Apache 2.0; no implementation/assets copied. DeepSeek [context caching](https://api-docs.deepseek.com/guides/kv_cache/) informs the current implicit-cache adapter; only exposed usage is measured. No user community preset was supplied; tests use original fixtures and style descriptions.
+
+| Compatibility | State | Mapping |
+|---|---|---|
+| Chat Completion prompts/prompt_order, enabled, relative roles/order | SUPPORTED | Ordered supported entries, independent immutable import version; never auto-enable |
+| Absolute depth 0/1, markers, normal/continue/quiet | PARTIAL | Before/after current task, selected novel entities/current prior prose; no invented chat history |
+| Other chat depths/triggers, assistant prefill, TC/Instruct/Context templates | UNSUPPORTED | Identified, preserved and disabled with reports |
+| temperature, max output, stop | SUPPORTED | Writer only; task/step budget limits still apply |
+| top_p/top_k/penalties and provider cache controls | UNSUPPORTED | DSH has no public parameter; never converted into instructions |
+| char/user/viewpoint, project/chapterGoal/style, getvar | PARTIAL | Explicit independent bindings, read-only snapshot variables; unresolved macro remains visible |
+| date/time/random | PARTIAL | Fixed snapshot seed/date; preview has fixed values; dynamic values appear in trace |
+| setvar/STscript/eval/HTML execution | UNSUPPORTED | No execution, no persistent variable mutation |
+| JS regex captures/flags/multiline/ordering/enabled | SUPPORTED | Whole-text isolated Worker, bounded execution and visible traces |
+| ST regex placement/edit/macros | PARTIAL | Whitelisted goal/selection/world before, prose after/display; unsupported combinations disabled; onEdit tested explicitly |
+| Regex chat depth, Trim Out, script/reasoning/tool replacement | UNSUPPORTED | Preserved import diagnostics; protected protocol/schema never processed |
+| Lorebook and long-memory compatibility | NOT YET VERIFIED | Next implementation slice; acceptance remains NOT_RUN |
+
 ## DSH integration and boundaries
 
 This is a full-page DSH plugin: Novel Studio Domain + UI + a small DSH adapter in one local process. The inspected host provides web routes, model selection, credential handling, `llm.stream` and ToolRuntime. Its existing writing plugin did not provide a reusable persistent director with the required state/version semantics. The domain-specific runner therefore lives here; no DSH Core edits or replacement generic agent framework were introduced.

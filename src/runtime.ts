@@ -4,6 +4,9 @@ import { buildContext } from './context.js';
 import { validateReview } from './review.js';
 import { prompts, type PromptKey } from './prompts.js';
 import { hash } from './store.js';
+import { compilePrompt,macroEnvironment } from './compiler.js';
+import { beginRequest,observeRequest,requestPut } from './requests.js';
+import { transformText } from './text-pipeline.js';
 import { DemoProvider } from './demo.js';
 import { UnconfiguredProvider, type ModelProvider } from './provider.js';
 import { DomainError, activeStatuses, now, requireThat, type Artifact, type CreativeTask, type Review, type RunStep, type StoryObject } from './contracts.js';
@@ -43,7 +46,7 @@ export class Runner {
   private input(t:CreativeTask,pack:ReturnType<typeof buildContext>,extras:Record<string,unknown>={}){
     // Only entities actually selected by Context Engine are sent. Never duplicate the entire book outside the pack.
     const ids=new Set(pack.items.map(i=>i.id));const objects=this.domain.store.objects(t.projectId).filter(o=>ids.has(o.id)&&['character','world','foreshadow'].includes(o.kind)).map(o=>({id:o.id,title:o.title,kind:o.kind}));
-    return {goal:t.goal,contract:t.contract,constraints:[...new Set([...t.constraints,...(t.contract.brief?.constraints??[])])],targetWords:t.targetWords,context:pack.text,contextRevision:pack.revision,missing:pack.missing,objects,sourceIds:[...new Set(pack.items.map(i=>i.id.split(':')[0]))],foreshadowIds:objects.filter(o=>o.kind==='foreshadow').map(o=>o.id),...extras};
+    return {goal:t.goal,contract:t.contract,constraints:[...new Set([...t.constraints,...(t.contract.brief?.constraints??[])])],targetWords:t.targetWords,context:pack.text,_contextPack:pack,contextRevision:pack.revision,missing:pack.missing,objects,sourceIds:[...new Set(pack.items.map(i=>i.id.split(':')[0]))],foreshadowIds:objects.filter(o=>o.kind==='foreshadow').map(o=>o.id),...extras};
   }
   async step(taskId:string,label:string,prompt:PromptKey,input:Record<string,any>,validate?:(output:any)=>any):Promise<any>{
     let t=this.boundary(taskId);const epoch=t.epoch;const key=`${epoch}:${t.completedChapters}:${label}`;const inputHash=hash({prompt:prompts[prompt].id,version:prompts[prompt].version,input});
@@ -52,27 +55,34 @@ export class Runner {
     const attempts=step?.attempts??0;let repairError=step?.error;
     for(let attempt=attempts;attempt<3;attempt++){
       t=this.boundary(taskId,epoch);
+      const callInput=attempt>0?{...input,validationRepair:`前次校验失败：${repairError??'输出中断'}。请按 JSON Schema 修正字段，证据必须为连续原文。`}:input;
+      const compiled=await compilePrompt(this.domain,t,prompt,callInput);this.boundary(taskId,epoch);
+      const request=beginRequest(this.domain.store,t,key,attempt+1,compiled);const env=macroEnvironment(this.domain,t,compiled.config,callInput);
       const desired=prompt==='write'?Math.min(24000,Math.ceil(t.targetWords*2.2)+1200):prompt==='bootstrap'?7500:prompt==='review'?7000:prompt==='assist'?4500:5000;
       const maxTokens=Math.min(desired,t.budget.outputTokens-t.usage.outputTokens);
       requireThat(t.usage.calls<t.budget.calls&&maxTokens>=500,'BUDGET_EXHAUSTED','任务模型预算已耗尽；已保留有效成果和检查点');
       const initial={...t};const calls=step?.calls??[];
       calls.push({attempt:attempt+1,reserved:maxTokens,outputTokens:maxTokens,estimated:true,status:'RUNNING',startedAt:now()});
-      step={key,name:label,inputHash,inputRevision:t.expectedRevision,status:'RUNNING',attempts:attempt+1,startedAt:now(),calls};
+      step={key,name:label,inputHash,inputRevision:t.expectedRevision,status:'RUNNING',attempts:attempt+1,startedAt:now(),calls,requestIds:[...(step?.requestIds??[]),request.id]};
       this.patch(taskId,t=>{t.currentStep=label;t.steps=t.steps.filter(s=>s.key!==key||s.inputHash!==inputHash);t.steps.push(step!);t.usage.calls++;t.usage.outputTokens+=maxTokens;t.usage.estimated=true;});
       this.domain.store.event(t.projectId,t.id,'step.started',`执行 ${label}（第 ${attempt+1} 次尝试）`,{key,inputRevision:t.expectedRevision,maxTokens});
       const controller=new AbortController();this.controllers.set(taskId,controller);let partial='',lastSaved=0;let timer:ReturnType<typeof setTimeout>|undefined;
       const model=t.provider==='demo'?this.demo:this.provider;
       try{
-        const generation=model.generate({prompt,input:attempt>0?{...input,validationRepair:`前次校验失败：${repairError??'输出中断'}。请严格按给定 JSON Schema 修正字段类型，只输出 JSON；证据必须是正文连续原文。`}:input,task:t,maxTokens,signal:controller.signal,onDelta:delta=>{
+        this.domain.store.event(t.projectId,t.id,'prompt.compiled',`${compiled.role} 已按固定配置编译；${compiled.estimatedTokens} token（估算）`,{requestId:request.id,configuration:compiled.config.hash,cache:compiled.localCompilationCache});
+        const generation=model.generate({prompt,input:callInput,compiled,onRequest:observed=>observeRequest(this.domain.store,request,observed),task:t,maxTokens,signal:controller.signal,onDelta:delta=>{
           if(controller.signal.aborted)return;
           partial+=delta;if(partial.length-lastSaved>=400){lastSaved=partial.length;this.patch(taskId,t=>{const s=t.steps.find(s=>s.key===key&&s.inputHash===inputHash&&s.attempts===attempt+1);if(s?.status==='RUNNING')s.partial=partial;});}
         }});
         // The domain never assumes that remote calls execute exactly once. A timed-out call is charged its reserved budget.
         const result=await Promise.race([generation,new Promise<never>((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(new DomainError('MODEL_TIMEOUT','模型调用超时，已保留部分输出',504));},this.timeoutMs);})]);
         partial=result.text;
+        if(timer)clearTimeout(timer);request.rawResponse=result.text;request.usage=result.usage??{serverCache:'UNKNOWN',elapsedMs:0};requestPut(this.domain.store,request);
         const actual=result.outputTokens!==undefined&&Number.isFinite(result.outputTokens)&&result.outputTokens>=0?result.outputTokens:maxTokens;
         this.patch(taskId,t=>{const s=t.steps.find(s=>s.key===key&&s.inputHash===inputHash);const call=s?.calls?.find(c=>c.attempt===attempt+1);if(call){call.outputTokens=actual;call.estimated=!!result.estimated||result.outputTokens===undefined;call.endedAt=now();call.model=result.model;}t.usage.outputTokens+=actual-maxTokens;t.usage.estimated=t.usage.calls>t.steps.reduce((n,s)=>n+(s.calls?.length??0),0)||t.steps.some(s=>s.calls?.some(c=>c.estimated));});
         let output:any=result.text;const schema=prompts[prompt].schema;
+        if(compiled.role==='Writer'&&compiled.config.config.enabled){const processed=await transformText(result.text,compiled.config.config.regex??[],'after','prose',{expand:env.expand});output=processed.text;request.transformations=processed.trace;}
+        request.candidate=typeof output==='string'?output:undefined;requestPut(this.domain.store,request);
         if(schema){const clean=result.text.trim().replace(/^```(?:json)?\s*/u,'').replace(/\s*```$/u,'');output=schema.parse(JSON.parse(clean));}
         if(validate)output=validate(output);
         this.patch(taskId,t=>{const s=t.steps.find(s=>s.key===key&&s.inputHash===inputHash);if(s){s.status='COMPLETED';s.output=output;s.partial=undefined;s.endedAt=now();s.usage={outputTokens:s.calls!.reduce((n,c)=>n+c.outputTokens,0),estimated:s.calls!.some(c=>c.estimated)};s.calls!.find(c=>c.attempt===attempt+1)!.status='COMPLETED';}});
@@ -80,11 +90,12 @@ export class Runner {
         const fresh=this.current(taskId);
         if(fresh.status!=='RUNNING'||fresh.expectedRevision!==initial.expectedRevision||fresh.epoch!==epoch||this.domain.project(t.projectId).revision!==initial.expectedRevision){
           const type=prompt==='write'?'chapter':prompt==='assist'?'edit':prompt==='bootstrap'?'setup':prompt==='replan'?'replan':prompt==='extract'?'extraction':'ideas';
-          const a=this.domain.putArtifact(initial,type,{content:typeof output==='string'?output:undefined,diagnostic:typeof output==='string'?undefined:output,late:true},input.chapterId?this.domain.object(t.projectId,input.chapterId):undefined);a.status='stale';this.domain.store.put('artifacts',a);throw new DomainError('STOPPED','调用晚到；已保留为过期成果');
+          const a=this.domain.putArtifact(initial,type,{content:typeof output==='string'?output:undefined,diagnostic:typeof output==='string'?undefined:output,late:true,requestId:request.id},input.chapterId?this.domain.object(t.projectId,input.chapterId):undefined);a.status='stale';this.domain.store.put('artifacts',a);request.status='STALE';requestPut(this.domain.store,request);throw new DomainError('STOPPED','调用晚到；已保留为过期成果');
         }
-        this.domain.store.event(t.projectId,t.id,'step.completed',`${label} 已完成并保存`,{key,outputTokens:actual});return output;
+        request.status='COMPLETED';requestPut(this.domain.store,request);this.domain.store.event(t.projectId,t.id,'step.completed',`${label} 已完成并保存`,{key,outputTokens:actual,requestId:request.id});return output;
       }catch(error){
         const e=publicError(error);repairError=e.message;const current=this.current(taskId);
+        if(request.status!=='STALE')request.status='FAILED';request.error=e;request.rawResponse=request.rawResponse??partial;request.transformations=(error as any)?.transformations??request.transformations;requestPut(this.domain.store,request);
         this.patch(taskId,t=>{const s=t.steps.find(s=>s.key===key&&s.inputHash===inputHash&&s.attempts===attempt+1);if(s&&s.status!=='COMPLETED'){s.status='FAILED';s.error=e.message;s.partial=partial||s.partial;s.endedAt=now();const call=s.calls?.find(c=>c.attempt===attempt+1);if(call){call.status='FAILED';call.error=e.message;call.diagnostic=partial;call.endedAt=now();}s.usage={outputTokens:s.calls!.reduce((n,c)=>n+c.outputTokens,0),estimated:s.calls!.some(c=>c.estimated)};}});
         this.domain.store.event(t.projectId,t.id,'step.failed',`${label}：${e.message}`,{key,code:e.code});
         const measured=(error as any)?.outputTokens;

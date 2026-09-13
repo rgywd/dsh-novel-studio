@@ -7,6 +7,12 @@ import { Runner, publicError } from './runtime.js';
 import { buildContext } from './context.js';
 import { DomainError, requireThat } from './contracts.js';
 import { prompts } from './prompts.js';
+import { binding,bindConfig,listConfigs,configVersion,importConfiguration,saveConfig,resolveConfig,adaptToNovel,nativePresets } from './config.js';
+import { configPatchSchema,regexRuleSchema } from './config-contracts.js';
+import { compilePrompt } from './compiler.js';
+import { transformText } from './text-pipeline.js';
+import { requestGet,requestList } from './requests.js';
+import { taskInputSchema,now,type CreativeTask } from './contracts.js';
 export const API='/api/novel-studio';
 const num=z.number().int().positive();
 export async function readJson(req:IncomingMessage){let size=0;const chunks:Buffer[]=[];for await(const chunk of req){const b=Buffer.from(chunk);size+=b.length;requireThat(size<=64*1024*1024,'BODY_LIMIT','请求超过 64 MiB',413);chunks.push(b);}try{return JSON.parse(Buffer.concat(chunks).toString('utf8')||'{}');}catch{throw new DomainError('INVALID_JSON','请求不是有效 JSON',400);}}
@@ -24,7 +30,7 @@ export class HttpApp {
         const download=url.pathname.slice(API.length).match(/^\/projects\/([^/]+)\/download$/);
         if(download&&method==='GET'){const project=this.domain.project(download[1]);const format=z.enum(['txt','md','backup']).parse(url.searchParams.get('format'));const name=project.title+(format==='backup'?'.novel.json':'.'+format);const content=format==='backup'?JSON.stringify(this.domain.backup(project.id),null,2):this.domain.exportText(project.id,format);res.writeHead(200,{'Content-Type':format==='backup'?'application/json; charset=utf-8':'text/plain; charset=utf-8','Content-Disposition':`attachment; filename="novel-studio.${format==='backup'?'json':format}"; filename*=UTF-8''${encodeURIComponent(name)}`});res.end(content);return;}
         if(!['GET','HEAD'].includes(method)){requireThat(req.headers['content-type']?.startsWith('application/json')&&req.headers['x-novel-studio']==='1','CONTENT_TYPE','写请求需要 JSON 和本地工作台标识',403);body=await readJson(req);}
-        const value=this.dispatch(method,url.pathname.slice(API.length),body,url.searchParams);res.writeHead(200,{'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(value));return;
+        const value=await this.dispatch(method,url.pathname.slice(API.length),body,url.searchParams);res.writeHead(200,{'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(value));return;
       }
       if(req.method!=='GET')throw new DomainError('NOT_FOUND','找不到页面',404);
       const files:Record<string,[string,string]>={'/novel-studio/':['index.html','text/html; charset=utf-8'],'/novel-studio/app.js':['app.js','text/javascript'],'/novel-studio/app.css':['app.css','text/css']};
@@ -36,12 +42,28 @@ export class HttpApp {
   }
   dispatch(method:string,path:string,body:any={},query=new URLSearchParams()):any{
     const segments=path.split('/').filter(Boolean);const [group,pid,resource,key,action]=segments;
-    if(method==='GET'&&path==='/health')return {version:'0.1.0',dsh:this.runner.provider.info(),demo:this.runner.demo.info(),schema:1,prompts:Object.values(prompts).map(p=>({id:p.id,version:p.version,purpose:p.purpose}))};
+    if(method==='GET'&&path==='/health')return {version:'0.2.0',dsh:this.runner.provider.info(),demo:this.runner.demo.info(),schema:2,prompts:Object.values(prompts).map(p=>({id:p.id,version:p.version,purpose:p.purpose}))};
     if(group==='projects'&&!pid){if(method==='GET')return this.domain.store.list('projects');if(method==='POST')return this.domain.createProject(body);}
     if(path==='/backups/restore'&&method==='POST')return this.domain.restoreBackup(body);
     requireThat(group==='projects'&&pid,'NOT_FOUND','未知接口',404);this.domain.project(pid);
     if(!resource){if(method==='GET')return this.domain.snapshot(pid);if(method==='PATCH')return this.domain.updateProject(pid,num.parse(body.revision),body.project);}
     if(resource==='status'&&method==='GET')return {project:this.domain.project(pid),tasks:this.domain.store.list('tasks',pid).map(t=>({...t,steps:[]}))};
+    if(resource==='configurations'){
+      if(method==='GET'&&!key)return {versions:listConfigs(this.domain.store),bindings:{global:binding(this.domain.store,'global'),project:binding(this.domain.store,'project:'+pid)},effective:resolveConfig(this.domain.store,pid),samples:nativePresets};
+      if(method==='GET'&&key)return configVersion(this.domain.store,key);
+      if(method==='POST'&&key==='preview')return importConfiguration(z.string().parse(body.raw),z.string().max(160).parse(body.name??'导入配置'),'本地文件',body.orderId);
+      if(method==='POST'&&!key){this.domain.guard(pid,this.domain.project(pid).revision);const raw=body.raw!==undefined?z.string().parse(body.raw):JSON.stringify({format:'dsh-novel-config',config:configPatchSchema.parse(body.config)});const v=importConfiguration(raw,z.string().trim().min(1).max(160).parse(body.name),'作者保存',body.orderId);if(body.parentId)v.parentId=configVersion(this.domain.store,z.string().parse(body.parentId)).id;return this.domain.store.transaction(()=>{saveConfig(this.domain.store,v);this.domain.store.event(pid,null,'config.saved','已保存独立配置版本；尚未自动应用',{versionId:v.id});return v;});}
+      if(method==='POST'&&key==='bind'){const scope=z.enum(['global','project']).parse(body.scope)==='global'?'global':'project:'+pid;return this.domain.store.transaction(()=>{this.domain.guard(pid,this.domain.project(pid).revision);bindConfig(this.domain.store,scope,z.string().nullable().parse(body.versionId),z.string().nullable().parse(body.expected));this.domain.store.event(pid,null,'config.bound','后续任务采用新配置；运行任务保持原配置版本',{scope,versionId:body.versionId});return resolveConfig(this.domain.store,pid);});}
+      if(method==='POST'&&key&&action==='adapt')return adaptToNovel(configVersion(this.domain.store,key));
+    }
+    if(resource==='regex-test'&&method==='POST')return transformText(z.string().max(100000).parse(body.input),z.array(regexRuleSchema).max(40).parse(body.rules),z.enum(['before','after','display']).parse(body.stage),z.enum(['goal','selection','world','prose']).parse(body.scope??'prose'),{test:true,edited:body.edited===true});
+    if(resource==='display'&&method==='POST'){const chapter=this.domain.object(pid,z.string().parse(body.chapterId));const config=resolveConfig(this.domain.store,pid);return transformText(chapter.body,config.config.enabled?config.config.regex??[]:[],'display','prose',{test:true});}
+    if(resource==='compile-preview'&&method==='POST'){
+      const prompt=z.enum(Object.keys(prompts) as [keyof typeof prompts,...(keyof typeof prompts)[]]).parse(body.prompt??'write');const data=taskInputSchema.parse(body.task??{kind:'write',goal:'继续当前章节'});const at=now();
+      const t:CreativeTask={...data,id:'preview',projectId:pid,status:'QUEUED',createdAt:at,updatedAt:at,inputRevision:this.domain.project(pid).revision,expectedRevision:this.domain.project(pid).revision,epoch:0,currentStep:'preview',completedChapters:0,steps:[],usage:{calls:0,outputTokens:0,estimated:false},contract:{scope:'预览，不执行',lockedIds:[],permitted:[],forbidden:[],deliverables:[],stop:[]},checkpoint:{committed:[]}};
+      t.configSnapshot=resolveConfig(this.domain.store,pid,data.configuration,'preview','2000-01-01T00:00:00.000Z');const pack=buildContext(this.domain,pid,{chapterId:data.chapterId,goal:data.goal,maxChars:data.budget.contextChars});return compilePrompt(this.domain,t,prompt,{goal:data.goal,targetWords:data.targetWords,constraints:data.constraints,context:pack.text,_contextPack:pack,chapterId:data.chapterId});
+    }
+    if(resource==='requests'&&method==='GET')return key?requestGet(this.domain.store,pid,key):requestList(this.domain.store,pid).map(r=>({id:r.id,taskId:r.taskId,stepKey:r.stepKey,createdAt:r.createdAt,status:r.status,role:r.compiled.role,configHash:r.compiled.config.hash,hash:r.compiled.hash,localCompilationCache:r.compiled.localCompilationCache,localPrefixReuse:r.localPrefixReuse,usage:r.usage,error:r.error}));
     if(resource==='objects'){
       if(method==='GET'&&!key){const q=query.get('q')??'';const kind=query.get('kind');const all=this.domain.store.objects(pid,kind??undefined).filter(o=>!q||`${o.title} ${o.body} ${JSON.stringify(o.fields)}`.toLowerCase().includes(q.toLowerCase()));const offset=Math.max(0,Number(query.get('offset'))||0);const limit=Math.min(300,Math.max(1,Number(query.get('limit'))||100));return {items:all.slice(offset,offset+limit),total:all.length};}
       if(method==='POST'&&!key)return this.domain.createObject(pid,num.parse(body.revision),body.object);

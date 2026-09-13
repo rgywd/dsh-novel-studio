@@ -1,5 +1,25 @@
 # Execution state — recovery entry
 
+## 当前增量升级：文风、记忆与提示词分层（2026-09-13）
+
+本轮新需求正在实施，不能将下方历史 V1 完成状态当作本轮完成。起点 `7839613`，工作树原本干净。升级前重新运行 typecheck 与完整 41 项测试通过，8 个已有作品已通过原备份 API 保存在 `.local/backups/upgrade-20260913/`；回执为 `evidence/upgrade-backup-receipt.json`。
+
+| 现状 → 缺口 | 最小修改 | 本轮验收 |
+|---|---|---|
+| 全部 AI 已共用 Runner.step，但适配器临时拼 system/JSON、只保存输出用量 | 统一确定性编译、任务固定配置快照、最终请求/usage 检查器 | A/B/F/G |
+| 项目只有 style 字符串，没有兼容预设或文本处理 | 版本化配置包、可见导入映射、原生组合、隔离宏、可终止 regex worker | B/C/H |
+| 来源和状态已有，但关系实体读取偏最新、世界召回较浅 | 按章/视角投影、有界世界触发、关系子图与历史 | D/G |
+| 只保留近四章摘要，早期细节难以召回 | 复用正文版本/事件/变更记录，增加派生记忆覆盖、封存段、证据召回及重建 | E/G |
+| DSH 已提供独立 cacheRead/cacheWrite 字段，当前丢失 | 复用 DeepSeek 隐式缓存，保存实际计量；本地编译复用与服务缓存分开 | F |
+
+当前：阶段 A/B 核心代码已接入，继续 C/D 关系世界与长篇记忆，随后真实模型、缓存和浏览器验收。schema 1→2 只增加配置/请求/派生记忆表，旧数据不回写；schema 1/2 备份均可恢复为独立副本。所有 AI 调用经 compilePrompt，任务固定配置版本，原始响应/生成后处理/候选/成果分别保存；DSH 最终可观察参数及独立 cache usage 已接入。配置/导入报告/正则测试台/检查器 UI 已构建，尚未做本轮浏览器验收。长篇记忆开关和总结入口正在后续切片接通，不能视为已完成。
+
+最近验证：typecheck、build、全部 47 项自动测试 PASS（原 41 + 升级 6）；`evidence/upgrade-configuration-tests.txt` 包含新增测试，覆盖编译、角色顺序/宏/固定版本、格式隔离、恶意正则实际 Worker 终止、schema 迁移和两代备份、生成后结果进入审校、缓存字段不重复计量。真实模型/浏览器仍 NOT_RUN。相关新代码 `config-contracts.ts/config.ts/compiler.ts/text-pipeline.ts/requests.ts/ui/CreativeConfig.tsx`；扩展 store/contracts/domain/runtime/provider/http/UI。新配置默认关闭。
+
+继续禁止修改独立 DSH checkout、既有 3080 实例、远端 push 或清库。只用当前授权 DSH 模型。SillyTavern release `8172dcd0ee672d3cd9a5e5f7af134f91a45cd2b8` 与 LittleWhiteBox `960b3233c90cdd7de7ac61becb7f00b05fa8a21b` 作为只读参考，源码/素材不复制。研究与兼容矩阵追加到现有 PRODUCT/ARCHITECTURE，测试追加到 ACCEPTANCE；不另建一套文档。
+
+## 历史 V1 交付记录
+
 2026-09-13（Asia/Shanghai）。目标：交付用户要求的完整双模式小说创作 V1。阶段 0–5 已完成，A–L 验收通过。实现、文档与证据已收口，无需重跑开书流程或重新设计架构。
 
 ## 完成状态与下一项

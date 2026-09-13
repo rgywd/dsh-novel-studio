@@ -1,0 +1,16 @@
+(node:57912) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ upgrade B/F: imported roles/order/macros and frozen scope are compiled; literature cannot change structured protocols (15.9871ms)
+✔ upgrade C: Chinese multiline captures, display isolation, clean replay, invalid regex and worker termination (239.9711ms)
+✔ upgrade B: config formats/credentials and readonly variables are explicit, previews never mutate (4.5529ms)
+✔ upgrade A: additive schema migration and v1/v2 backups preserve prose, versions and config isolation (63.8774ms)
+✔ upgrade G: pipeline preserves raw response, review sees candidate and late config updates cannot change running task (782.1452ms)
+✔ upgrade F: observable DSH request and disjoint cache accounting never invent missing cache writes (29.6048ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1528.2009

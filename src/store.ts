@@ -25,7 +25,17 @@ export class Store {
       CREATE TABLE IF NOT EXISTS changesets(id TEXT PRIMARY KEY,projectId TEXT NOT NULL,at TEXT NOT NULL,kind TEXT NOT NULL,data TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS imports(id TEXT PRIMARY KEY,projectId TEXT NOT NULL,name TEXT NOT NULL,raw TEXT NOT NULL,at TEXT NOT NULL);
       CREATE VIRTUAL TABLE IF NOT EXISTS search USING fts5(id UNINDEXED,projectId UNINDEXED,title,body,tokenize='unicode61');`);
-    if(this.db.prepare("SELECT value FROM meta WHERE key='schema'").get()?.value!=='1') throw new DomainError('SCHEMA','数据库版本不兼容',500);
+    const schema=this.db.prepare("SELECT value FROM meta WHERE key='schema'").get()?.value;
+    if(!['1','2'].includes(String(schema))) throw new DomainError('SCHEMA','数据库版本不兼容',500);
+    // Additive migration: existing rows, immutable prose and the host database are untouched.
+    if(schema==='1')this.transaction(()=>{this.db.exec(`
+      CREATE TABLE config_versions(id TEXT PRIMARY KEY,data TEXT NOT NULL);
+      CREATE TABLE config_bindings(scope TEXT PRIMARY KEY,versionId TEXT NOT NULL REFERENCES config_versions(id));
+      CREATE TABLE requests(id TEXT PRIMARY KEY,projectId TEXT NOT NULL REFERENCES projects(id),taskId TEXT NOT NULL,data TEXT NOT NULL);
+      CREATE INDEX requests_project ON requests(projectId);
+      CREATE TABLE memories(id TEXT PRIMARY KEY,projectId TEXT NOT NULL REFERENCES projects(id),data TEXT NOT NULL);
+      CREATE INDEX memories_project ON memories(projectId);
+      UPDATE meta SET value='2' WHERE key='schema';`);});
   }
   transaction<T>(fn:()=>T):T { this.db.exec('BEGIN IMMEDIATE');try{const value=fn();this.db.exec('COMMIT');return value;}catch(e){this.db.exec('ROLLBACK');throw e;} }
   get<K extends keyof Tables>(table:K,key:string):Tables[K] {

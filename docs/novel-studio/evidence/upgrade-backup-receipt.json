@@ -1,0 +1,70 @@
+{
+  "at": "2026-09-13T05:19:51.578Z",
+  "directory": ".local/backups/upgrade-20260913",
+  "projects": [
+    {
+      "port": 4317,
+      "id": "project_77717e50-8d31-4e7a-8e22-59adc6dd50ea",
+      "revision": 16,
+      "checksum": "33b80ec7766f00dd3393544ed595568904fcacb296f142ca59a0b2cde810d5dd",
+      "objects": 15,
+      "versions": 5
+    },
+    {
+      "port": 4317,
+      "id": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+      "revision": 2,
+      "checksum": "729b625fad286b8ff0e018143538c01ec1f231a9b3bddf862ff31428dabfe989",
+      "objects": 4,
+      "versions": 2
+    },
+    {
+      "port": 4317,
+      "id": "project_f875e365-e23c-4c68-9648-b56980d132d6",
+      "revision": 2,
+      "checksum": "ac7397323e6304bb7de9b0ff90d267859369da1b510f7346f503bb8d02d24ab8",
+      "objects": 4,
+      "versions": 2
+    },
+    {
+      "port": 4317,
+      "id": "project_c48e9145-8790-4c6a-a6a8-7bd281213d64",
+      "revision": 10,
+      "checksum": "3c3823a51f9f1a3a6eac00f04c6435dcf5f5489f95c6bc32ad28ea19056a5548",
+      "objects": 11,
+      "versions": 2
+    },
+    {
+      "port": 4318,
+      "id": "project_5c52031c-dabb-4fd5-9180-a5f5e6782aa8",
+      "revision": 8,
+      "checksum": "f22bbd28a2f4ac755b91f006129db18dfcda0d25b02b15584d50c2c70b9a45fe",
+      "objects": 36,
+      "versions": 3
+    },
+    {
+      "port": 4318,
+      "id": "project_08a514b1-1198-4741-9ac0-836da5d3764d",
+      "revision": 12,
+      "checksum": "383aae3e836548e3b2ab9d62b6bd7d74a1c350cadea3edb0789685d545a12284",
+      "objects": 96,
+      "versions": 6
+    },
+    {
+      "port": 4318,
+      "id": "project_a1bd5917-88f8-4b54-bc7b-f88fe5814a99",
+      "revision": 2,
+      "checksum": "975b2146d6c7fdfccea48130220175c3d14f18fa5e9caf3b3324ede9c4c9ac86",
+      "objects": 10,
+      "versions": 0
+    },
+    {
+      "port": 4318,
+      "id": "project_859081f7-7f04-4e57-ad4e-32ff3263a33f",
+      "revision": 4,
+      "checksum": "5911c2039c37771d2e63b738cb3dfd44fd586f81fa195aa13db54693742ee5a0",
+      "objects": 19,
+      "versions": 2
+    }
+  ]
+}
