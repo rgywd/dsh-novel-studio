@@ -16,6 +16,7 @@ import { taskInputSchema,now,type CreativeTask } from './contracts.js';
 import { memoryStatus,memoryGet,editMemory,recallMemory,rollingPlanning } from './memory.js';
 import { temporalObjects } from './temporal.js';
 import { previewLorebook,acceptLorebook } from './lorebook.js';
+import { sourceRoute } from './source-http.js';
 export const API='/api/novel-studio';
 const num=z.number().int().positive();
 export async function readJson(req:IncomingMessage){let size=0;const chunks:Buffer[]=[];for await(const chunk of req){const b=Buffer.from(chunk);size+=b.length;requireThat(size<=64*1024*1024,'BODY_LIMIT','请求超过 64 MiB',413);chunks.push(b);}try{return JSON.parse(Buffer.concat(chunks).toString('utf8')||'{}');}catch{throw new DomainError('INVALID_JSON','请求不是有效 JSON',400);}}
@@ -45,11 +46,13 @@ export class HttpApp {
   }
   async dispatch(method:string,path:string,body:any={},query=new URLSearchParams()):Promise<any>{
     const segments=path.split('/').filter(Boolean);const [group,pid,resource,key,action]=segments;
-    if(method==='GET'&&path==='/health')return {version:'0.2.0',dsh:this.runner.provider.info(),demo:this.runner.demo.info(),schema:2,prompts:Object.values(prompts).map(p=>({id:p.id,version:p.version,purpose:p.purpose}))};
-    if(group==='projects'&&!pid){if(method==='GET')return this.domain.store.list('projects');if(method==='POST')return this.domain.createProject(body);}
+    if(['sources','source-versions','source-runs','manifests'].includes(group))return sourceRoute(this.domain,this.runner,method,segments,body,query);
+    if(method==='GET'&&path==='/health')return {version:'0.3.0',dsh:this.runner.provider.info(),demo:this.runner.demo.info(),schema:3,prompts:Object.values(prompts).map(p=>({id:p.id,version:p.version,purpose:p.purpose}))};
+    if(group==='projects'&&!pid){if(method==='GET')return this.domain.store.list('projects').filter(p=>!p.sourceWorkspace);if(method==='POST')return this.domain.createProject(body);}
     if(path==='/backups/restore'&&method==='POST')return this.domain.restoreBackup(body);
-    requireThat(group==='projects'&&pid,'NOT_FOUND','未知接口',404);this.domain.project(pid);
+    requireThat(group==='projects'&&pid,'NOT_FOUND','未知接口',404);requireThat(!this.domain.project(pid).sourceWorkspace||method==='GET'&&['requests','tasks','events'].includes(resource),'SOURCE_SCOPE','原作分析空间只允许通过有范围的原作接口操作',403);
     if(!resource){if(method==='GET')return this.domain.snapshot(pid);if(method==='PATCH')return this.domain.updateProject(pid,num.parse(body.revision),body.project);}
+    if(resource==='source-baseline'&&method==='GET'){const row=this.domain.store.db.prepare("SELECT data FROM changesets WHERE projectId=? AND kind='source.activated' ORDER BY rowid LIMIT 1").get(pid);return row?JSON.parse(row.data as string):{assets:[]};}
     if(resource==='status'&&method==='GET')return {project:this.domain.project(pid),tasks:this.domain.store.list('tasks',pid).map(t=>({...t,steps:[]}))};
     if(resource==='planning-check'&&method==='GET')return rollingPlanning(this.domain,pid);
     if(resource==='memories'){

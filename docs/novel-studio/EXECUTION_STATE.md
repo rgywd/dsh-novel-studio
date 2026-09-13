@@ -1,5 +1,23 @@
 # Execution state — recovery entry
 
+## 当前任务：原作资料、选择性继承与衍生作品（0.3.0，实施中）
+
+起点 f271345，工作树干净。先读本节，不能把下方0.2.0完成状态当成本轮完成。56项旧测试与typecheck基线通过；10份旧项目备份在 `.local/backups/source-20260913/`，公开回执 `evidence/source-backup-receipt.json`，无正文/凭据。当前阶段A→B，正在实现源版本、截止范围、分段抽取和原子创建的纵向链路。
+
+现状→缺口→最小修改→验收：现有TXT/MD导入直接写小说，没有共享只读源/继承清单；增加SQLite schema3的源版本、覆盖段、素材和manifest，激活时复制成现有对象。既有Runner/step、编译器、usage/预算/恢复可复用；新增中性发现/抽取任务分支，密集段饱和就细分，预算不足保留缺口。原实体存储无总量上限，旧extract每次最多3章、提示实体列表前100、graph局部30；总量/批量/上下文/分页分别处理。创建后继续使用当前Writer/Director，不复刻工作台。
+
+参考已核对 HEAD 24832d5eb0ded8c39cfaab9971af2a57e1827a22（2026-09-12），源码只读不执行/复制：角色API max16、服务MAX_IDENTIFIED_CANDIDATES16及结果slice16、Prompt min16；具名输入slice8；source notes每段characters/worldbuilding等max5、evidence max3。不是作品数据库容量等价限制。许可证AGPL-3.0-only加独立商业授权声明，许可未合并；本轮按功能自主实现。
+
+关键边界：版本与章节稳定ID；严格前缀先过滤再抽取/召回，后期别名不反灌；独立分支复制映射，不共享可变角色。原文只读；原稿修订新建版本。书内覆盖与源证据分开。staging manifest固定选择/边界/版本，事务激活幂等；未就绪不冒充可写。资料包不要求完整小说。仅TXT/MD与本地文本资料包为首选，EPUB需另核运行能力；不做爬书/发布。
+
+阶段B服务端纵向链路已通过，C/D与UI仍在实现验收。新增 source-contracts/sources/source-runner/inheritance/source-http、SourceLibrary，接入现有Runner、编译器、书架、双模式、配置绑定和继承证据视图。当前 typecheck/build PASS，62项测试PASS（56旧回归+2 source unit+3 source integration+1 source HTTP E2E）。60章64角色经真实HTTP及确定性替身调度，不是直接插入；密集段拆分、20章截止点过滤、生成→接管→下一章通过。预算重启恢复、事务故障/幂等、选择引用、独立资料包、分支隔离、新版本不改旧书、备份恢复通过。证据 source-slice-tests.txt。
+
+下一步：补齐归并后下游依赖失效、状态时态投影/源记忆召回、千级分页局部图、深入档案任务可观测与选择接受；启动本项目4317/4318的新构建并验证10份旧项目哈希；真实模型有限原作抽取/接续（含召回质量回执）；实际浏览器操作及桌面/窄屏，修复UI与真实输出问题。此时浏览器、真实模型、性能、完整新A–L仍NOT_RUN/部分验证，不能宣称0.3完成。无外部阻塞。
+
+当前未提交均本轮任务，初始用户脏修改为空。最近代码位置还包括domain/shared来源标记、readonly引用保护、default文本导出排除继承前文。保存清单时冻结来源/边界/选择，原子激活；私人备份含所选原文和证据，不含来源库未来全文。源删除有引用保护，仅用户显式请求才执行。
+
+启动命令沿用README。验证 `npm run typecheck`、`npm test`；本轮新证据前缀 source-*。最新可靠提交f271345。
+
 ## 当前增量升级：文风、记忆与提示词分层（2026-09-13）
 
 本轮0.2.0增量升级已完成，A–H验收通过；与下方历史 V1 分开记录。起点 `7839613`，工作树原本干净。升级前重新运行typecheck与完整41项测试通过，8个已有作品通过原备份API保存在 `.local/backups/upgrade-20260913/`；回执为 `evidence/upgrade-backup-receipt.json`。

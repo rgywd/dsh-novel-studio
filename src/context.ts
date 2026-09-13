@@ -26,13 +26,14 @@ export function buildContext(domain:Domain,projectId:string,options:{chapterId?:
   const candidates:ContextItem[]=[];const omitted:ContextPack['omitted']=[...temporal.omitted,...worlds.omitted];const missing:string[]=[];
   const add=(id:string,version:string,kind:string,reason:string,priority:number,mandatory:boolean,text:string)=>{candidates.push({id,version,kind,reason,priority,mandatory,text});};
   add(p.id,String(p.revision),'project','故事承诺、风格和不可破坏约束',100,true,JSON.stringify({title:p.title,premise:p.premise,style:p.style,constraints:p.constraints}));
+  if(p.lineage)add(p.lineage.manifestId,String(p.lineage.manifestRevision),'inheritance-baseline','固定来源版本、严格前缀与作者已接受改编；原作后文不在本分支',100,true,JSON.stringify(p.lineage));
   for(const o of all.filter(o=>o.locked&&(['character','world'].includes(o.kind)&&o.status==='accepted'||o.kind==='fact'&&canonIds.has(o.id)||['book','volume'].includes(o.kind)&&o.status==='planned'))){add(o.id,String(o.revision),'locked','锁定约束完整保留',100,true,serialize(o));}
   if(!refreshing)for(const o of all.filter(o=>o.kind==='book'||o.id===current?.parentId)){if(!o.locked)add(o.id,String(o.revision),'plan','上层规划；未来内容不是既成事实',90,false,serialize(o));}
   if(current)add(current.id,String(current.revision),refreshing?'accepted-version':'chapter-plan',refreshing?'重建已接受正文状态；旧章纲不约束作者修改':'当前章目标、参与者、禁区、字数、揭示和结尾',98,true,JSON.stringify(refreshing?{id:current.id,title:current.title,version:current.fields.currentVersion}:{id:current.id,title:current.title,fields:current.fields,tags:current.tags,locked:current.locked}));
   if(prior.length===0)missing.push('没有上章正文；按开篇处理');
   for(const [n,c] of prior.slice(-4).reverse().entries()){
     if(options.audience==='character'&&options.viewpointId&&c.fields.viewpointId!==options.viewpointId&&c.fields.public!==true){omitted.push({id:c.id,reason:'其他视角的原文不直接传入当前角色；只召回明确知情证据'});continue;}
-    if(options.memory?.enabled)continue;
+    if(options.memory?.enabled&&!c.fields.referenceOnly)continue;
     if(c.fields.summary&&c.fields.summaryVersion===c.fields.currentVersion&&!c.fields.needsReview)add(`${c.id}:summary`,String(c.fields.currentVersion),'summary','近期已接受版本摘要',85-n*3,false,String(c.fields.summary));
     else if(c.body.trim())missing.push(`「${c.title}」摘要缺失或已失效；只使用最新正文片段`);
     if(n<2&&c.body.trim())add(`${c.id}:ending`,String(c.fields.currentVersion??c.revision),'accepted-body','上章最新正文连续性；只取结尾',95-n*3,false,c.body.slice(-2400));

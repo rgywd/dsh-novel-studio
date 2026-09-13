@@ -1,5 +1,20 @@
 # Architecture
 
+## 0.3 原作衍生升级（实施中）
+
+Schema3增量新增source_works/source_versions/source_runs/source_assets/source_decisions/import_manifests，保留旧项目所有JSON行；没有清库。SourceVersion保存原始文件字节（每份文件base64与SHA256）、解码文本、材料用途/版本、UTF-16章节和引文范围。目录修订是新版本。章节ID不依赖标题唯一性；卷/章前后边界明确解析，未知或缺章不补造。
+
+source-runner复用Runner.step/配置编译/Provider/usage/中断机制，以中性Extractor协议分两步覆盖每个片段。单批发现16（可4–32）、整理最多48是返回容量；饱和就分割，有重叠而按原文证据位置幂等。没有作品实体总量截断。任务最高1000次/300万输出token，默认24次/10万；普通创作仍保持40次/15万，预算只在作者暂停后明确增加。来源任务放在隐藏分析工作空间，只能通过带version/run/cutoff的来源API运行，通用AI工具不能把它当小说扩权。
+
+assetsAt先按run/version/reveal ordinal过滤观察，再归并与应用有效时点人工决定；绝不从全书档案过滤几个字段冒充前缀安全。缓存键包含版本哈希、片段、截止点、分析版本及前缀registry哈希；现阶段只复用同任务落盘步骤和既有全范围分析的允许前缀视图。原始来源不会进入文风/正则管线。原文中指令仅为数据。
+
+inheritance根据manifest的类别/实体/字段/依赖选择构建独立对象映射，默认有限背景引用补全。原作正文引用锁定，作者改编存独立来源和变更历史，覆盖相同属性的继承事实被撤销，不伪造源证据。本书的新增章节继续使用已有accept/review/memory/rollback路径。source.activated变化记录保存选中素材的证据快照，随项目备份恢复，即使原资料库不可用也能追溯。默认TXT/MD只导出新增或改编章节并保留来源说明；私人备份明确包含继承前文。
+
+参考审计：ExplosiveCoderflome/AI-Novel-Writing-Assistant @24832d5eb0ded8c39cfaab9971af2a57e1827a22。默认AGPL-3.0-only与独立商业授权声明，未复制代码或素材、未运行参考项目。角色API max16、Service MAX_IDENTIFIED_CANDIDATES16及slice16、具名输入slice8、Prompt min16是发现/批次路径限制；source notes每项characters/world等max5、evidence max3可能在上游损失候选。实际链路为原文分段→source notes缓存→identify候选→按规范化姓名upsert→逐候选profile→Prisma→CharacterPanel。cache.ts的键包含documentVersionId/sourceScopeKey/provider/model/temperature/token/segmentVersion；源码存在范围键，不能误称只有书名。publish.ts通过KnowledgePublishService发布成版本化知识文档并绑定novel，并非把原文自动激活为当前状态。本轮借鉴证据/分段/阶段产物，独立实现领域资产复制与严格截止，不机械复制知识发布链路。README宣传未作亲自运行通过的证据。
+
+实现位置：src/source-{contracts,runner,http}.ts、sources.ts、inheritance.ts；UI复用Modal/Field/Inspector，并从书架和侧栏进入SourceLibrary。测试source-{unit,integration,http}.test.ts，原创source-fixture.ts。当前不支持EPUB解析或原作采集；支持UTF-8/GB18030 TXT、Markdown、无连续正文的文本资料包（每版本20份/500万字符、单文件20MB）。这些是显式资源限制，不是角色容量限制。
+
+
 ## 2026-09-13 incremental upgrade — 0.2.0 verified
 
 Schema 2 adds immutable `config_versions`, scope bindings, last 100 local request snapshots per project, and derived memories. Migration is additive in one SQLite transaction. Legacy projects/versions are not rewritten. JSON backups support schema 1 and 2; restoration creates a separate project and freezes its restored effective configuration, without changing global defaults. Before migration, eight real project backups were saved privately; see the non-secret receipt in evidence.

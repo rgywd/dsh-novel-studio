@@ -4,6 +4,7 @@ export class DemoProvider implements ModelProvider {
   info(){return {available:true,name:'演示提供方 · 非真实 AI',detail:'使用原创固定样本，供检查界面和可靠性；不代表模型创作能力。建议目标 600 字。'};}
   async generate(r:ModelRequest){
     await new Promise<void>((resolve,reject)=>{const timer=setTimeout(resolve,180);r.signal.addEventListener('abort',()=>{clearTimeout(timer);reject(new Error('aborted'));},{once:true});});
+    if(r.prompt.startsWith('source'))throw new Error('原作抽取需要真实已配置模型；演示提供方不假装识别任意小说。');
     const objects=r.input.objects??[];const char=objects.find((x:any)=>x.kind==='character');const item=objects.find((x:any)=>x.kind==='world'&&x.title.includes('钥匙'));
     const lead=char?.title??'沈砚';const next=r.task.completedChapters>0||String(r.input.context??'').includes('【accepted-body ');
     let value:any;

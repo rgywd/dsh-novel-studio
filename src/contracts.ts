@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { memoryContentSchema } from './memory-contracts.js';
 import { configOverrideSchema,type ConfigSnapshot } from './config-contracts.js';
+import { sourceTaskSchema } from './source-contracts.js';
 
 export const id = (prefix: string) => `${prefix}_${crypto.randomUUID()}`;
 export const now = () => new Date().toISOString();
@@ -19,7 +20,8 @@ export const sourceSchema = z.object({
   quote: str.default(''), start: z.number().int().nonnegative().optional(), end: z.number().int().nonnegative().optional(),
   time: str.default('未知'), fromChapter: z.number().optional(), toChapter: z.number().optional(),
   inference: z.boolean().default(false), modality: z.enum(['objective','knowledge','rumor','memory','dream','uncertain']).default('objective'),
-  supersedes: z.string().optional(), taskId: z.string().optional(), policy: z.string().optional()
+  supersedes: z.string().optional(), taskId: z.string().optional(), policy: z.string().optional(),
+  sourceWorkId:z.string().optional(),sourceVersionId:z.string().optional(),sourceChapterId:z.string().optional(),sourceAssetId:z.string().optional(),manifestId:z.string().optional(),provenance:z.enum(['source','baseline','adaptation','branch']).optional()
 });
 export type Source = z.infer<typeof sourceSchema>;
 export const objectSchema = z.object({
@@ -40,17 +42,18 @@ export const projectSchema = z.object({
   style: str.default('克制、具体，以行动与对白推动故事。'), constraints: z.array(z.string().max(4000)).max(50).default([]),
   archived: z.boolean().default(false)
 }).strict();
-export interface Project extends z.infer<typeof projectSchema> { id: string; revision: number; createdAt: string; updatedAt: string; }
+export interface Project extends z.infer<typeof projectSchema> { id: string; revision: number; createdAt: string; updatedAt: string; sourceWorkspace?:boolean; lineage?:{workId:string;versionId:string;manifestId:string;manifestRevision:number;cutoff:number;mode:string;template:string;sourceTitle:string;author:string;origin:string;rights:string;contract:string;}; }
 export interface ChapterVersion { id: string; projectId: string; chapterId: string; content: string; chapterRevision: number; createdAt: string; actor: string; accepted: boolean; summary: string; restoredFrom?: string; commitKey?: string; }
 export const taskInputSchema = z.object({
-  kind: z.enum(['bootstrap','write','review','replan','extract','ideas','assist','summarize']), goal: z.string().trim().min(1).max(6000),
+  kind: z.enum(['bootstrap','write','review','replan','extract','ideas','assist','summarize','source-scan','source-profile']), goal: z.string().trim().min(1).max(6000),
+  sourceScan:sourceTaskSchema.optional(),
   chapterId: z.string().optional(), count: z.number().int().min(1).max(3).default(1), targetWords: z.number().int().min(300).max(8000).default(2000),
   constraints: z.array(z.string().max(2000)).max(30).default([]), autoAccept: z.boolean().default(false),
   provider: z.enum(['dsh','demo']).default('dsh'),
   reasoning: z.enum(['balanced','configured']).default('balanced'),
   configuration: configOverrideSchema.optional(),
   perspective: z.object({asOfChapter:z.number().int().nonnegative().optional(),viewpointId:z.string().optional(),audience:z.enum(['author','character','reader']).default('author'),branch:z.string().max(100).default('main')}).optional(),
-  budget: z.object({calls:z.number().int().min(1).max(40).default(18),outputTokens:z.number().int().min(500).max(150000).default(48000),contextChars:z.number().int().min(1000).max(48000).default(18000)}).default({}),
+  budget: z.object({calls:z.number().int().min(1).max(1000).default(18),outputTokens:z.number().int().min(500).max(3000000).default(48000),contextChars:z.number().int().min(1000).max(48000).default(18000)}).default({}),
   range: z.object({start:z.number().int().nonnegative(),end:z.number().int().nonnegative(),expectedText:str}).optional()
   ,draft: str.optional(), draftArtifactId:z.string().optional()
 }).strict();

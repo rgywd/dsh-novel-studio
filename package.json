@@ -1,6 +1,6 @@
 {
   "name": "@rgywd/dsh-novel-studio",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "A local, version-safe Writer and Director workbench for DSH",

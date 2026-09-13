@@ -9,7 +9,7 @@ import { transformText,type Transformation } from './text-pipeline.js';
 import type { ContextPack } from './context.js';
 export interface PromptBlock {id:string;layer:'P0'|'P1'|'P2'|'P3'|'P4'|'P5';source:string;version:string;purpose:string;trust:'runtime'|'author'|'data';role:'system'|'user'|'assistant';position:string;priority:number;dependencies:string[];stability:'fixed'|'snapshot'|'dynamic';optional:boolean;text:string;chars:number;}
 export interface CompiledPrompt {system:string;messages:{role:'system'|'user'|'assistant';text:string}[];blocks:PromptBlock[];role:TaskRole;config:ConfigSnapshot;warnings:string[];macros:{macro:string;value:string;dynamic:boolean;resolved:boolean}[];transformations:Transformation[];sampling:{temperature?:number;maxTokens?:number;stop?:string[]};hash:string;stableHash:string;estimatedTokens:number;budget:number;context?:Omit<ContextPack,'text'|'canon'>;localCompilationCache:'HIT'|'MISS';}
-const taskRole=(key:string):TaskRole=>['write','assist'].includes(key)?'Writer':['review','repair'].includes(key)?'Reviewer':key==='extract'?'Extractor':key==='summarize'?'Summarizer':'Planner';
+const taskRole=(key:string):TaskRole=>['write','assist'].includes(key)?'Writer':['review','repair'].includes(key)?'Reviewer':key==='extract'||key.startsWith('source')?'Extractor':key==='summarize'?'Summarizer':'Planner';
 const cache=new Map<string,CompiledPrompt>();
 export function macroEnvironment(domain:Domain,task:CreativeTask,snapshot:ConfigSnapshot,input:Record<string,any>){
   const p=domain.project(task.projectId),b=snapshot.config.bindings??{};const objects=domain.store.objects(task.projectId);const name=(id?:string)=>id?objects.find(o=>o.id===id&&o.kind==='character')?.title:undefined;
@@ -49,7 +49,7 @@ export async function compilePrompt(domain:Domain,task:CreativeTask,key:PromptKe
     }};emit('relative');
     if(pack){
       delete input.context;
-      const groups=[['P2','作品核心',pack.items.filter(i=>i.kind==='project'||i.kind==='locked')],['P3','封存历史记忆',pack.items.filter(i=>i.kind==='memory-checkpoint')],['P4','本次范围资料',pack.items.filter(i=>!['project','locked','memory-checkpoint'].includes(i.kind))]] as const;
+      const groups=[['P2','作品核心',pack.items.filter(i=>i.kind==='project'||i.kind==='locked'||i.kind==='inheritance-baseline')],['P3','封存历史记忆',pack.items.filter(i=>i.kind==='memory-checkpoint')],['P4','本次范围资料',pack.items.filter(i=>!['project','locked','inheritance-baseline','memory-checkpoint'].includes(i.kind))]] as const;
       for(const [layer,label,items] of groups)if(items.length){const content=[];for(const item of items){let text=item.text;if(item.kind==='project'){const core=JSON.parse(text);if(role!=='Writer'||config.config.native?.base){delete core.style;text=stable(core);}}
         if(item.kind==='world'&&!item.mandatory&&rules.some(r=>r.stage==='before'&&r.scope==='world'&&r.enabled)){const parsed=JSON.parse(text);if(typeof parsed.body==='string'){const result=await transformText(parsed.body,rules,'before','world',{expand:env.expand});parsed.body=result.text;transformations.push(...result.trace);text=stable(parsed);}}
         content.push(`【${item.kind} ${item.id}】\n${text}`);

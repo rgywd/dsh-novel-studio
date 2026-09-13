@@ -9,6 +9,7 @@ import { beginRequest,observeRequest,requestPut } from './requests.js';
 import { transformText } from './text-pipeline.js';
 import { sourceFor,memoryStatus,validateMemoryContent,rollingPlanning } from './memory.js';
 import { DemoProvider } from './demo.js';
+import { scanSource } from './source-runner.js';
 import { UnconfiguredProvider, type ModelProvider } from './provider.js';
 import { DomainError, activeStatuses, now, requireThat, type Artifact, type CreativeTask, type Review, type RunStep, type StoryObject } from './contracts.js';
 
@@ -26,9 +27,10 @@ export class Runner {
     try{
       this.domain.guard(t.projectId,t.expectedRevision);t=this.patch(taskId,t=>{t.status='RUNNING';t.error=undefined;});
       this.domain.store.event(t.projectId,t.id,'task.running','任务开始执行；进度来自实际落盘步骤');
-      if(!['assist','ideas'].includes(t.kind)&&t.contract.briefEpoch!==t.epoch){const brief=await this.step(taskId,'整理任务约定','brief',{goal:t.goal,kind:t.kind,count:t.count,targetWords:t.targetWords,constraints:t.constraints,contract:{scope:t.contract.scope,permitted:t.contract.permitted,forbidden:t.contract.forbidden},budget:t.budget});this.boundary(taskId);t=this.patch(taskId,t=>{t.contract.brief=brief;t.contract.briefEpoch=t.epoch;});this.domain.store.event(t.projectId,t.id,'task.brief',brief.objective,{approach:brief.approach,assumptions:brief.assumptions});}
+      if(!['assist','ideas','source-scan','source-profile'].includes(t.kind)&&t.contract.briefEpoch!==t.epoch){const brief=await this.step(taskId,'整理任务约定','brief',{goal:t.goal,kind:t.kind,count:t.count,targetWords:t.targetWords,constraints:t.constraints,contract:{scope:t.contract.scope,permitted:t.contract.permitted,forbidden:t.contract.forbidden},budget:t.budget});this.boundary(taskId);t=this.patch(taskId,t=>{t.contract.brief=brief;t.contract.briefEpoch=t.epoch;});this.domain.store.event(t.projectId,t.id,'task.brief',brief.objective,{approach:brief.approach,assumptions:brief.assumptions});}
       if(t.contract.brief?.question){this.patch(taskId,t=>{t.status='NEEDS_INPUT';t.error={code:'TASK_CLARIFICATION',message:t.contract.brief!.question!};});throw new DomainError('TASK_CLARIFICATION',t.contract.brief.question);}
-      if(t.kind==='write')await this.write(taskId);
+      if(t.kind==='source-scan'||t.kind==='source-profile')await scanSource(this,taskId);
+      else if(t.kind==='write')await this.write(taskId);
       else if(t.kind==='review')await this.reviewTask(taskId);
       else await this.oneShot(taskId);
       this.boundary(taskId);this.patch(taskId,t=>{t.status='COMPLETED';t.currentStep='completed';});this.domain.store.event(t.projectId,t.id,'task.completed','任务已完成；成果已落盘');
@@ -58,7 +60,7 @@ export class Runner {
       t=this.boundary(taskId,epoch);
       const callInput=attempt>0?{...input,validationRepair:`前次校验失败：${repairError??'输出中断'}。请按 JSON Schema 修正字段，证据必须为连续原文。`}:input;
       const compiled=await compilePrompt(this.domain,t,prompt,callInput);this.boundary(taskId,epoch);
-      const desired=prompt==='write'?Math.min(24000,Math.ceil(t.targetWords*2.2)+1200):prompt==='bootstrap'?7500:prompt==='review'?7000:prompt==='assist'?4500:5000;
+      const desired=prompt==='sourceDiscover'?8000:prompt==='sourceExtract'?12000:prompt==='write'?Math.min(24000,Math.ceil(t.targetWords*2.2)+1200):prompt==='bootstrap'?7500:prompt==='review'?7000:prompt==='assist'?4500:5000;
       const maxTokens=Math.min(desired,t.budget.outputTokens-t.usage.outputTokens);
       requireThat(t.usage.calls<t.budget.calls&&maxTokens>=500,'BUDGET_EXHAUSTED','任务模型预算已耗尽；已保留有效成果和检查点');
       const request=beginRequest(this.domain.store,t,key,attempt+1,compiled);const env=macroEnvironment(this.domain,t,compiled.config,callInput);
