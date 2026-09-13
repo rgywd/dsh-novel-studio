@@ -15,3 +15,6 @@ test('source parsing: exact offsets, repeat numbering, missing chapters, volume 
 test('source text package: original bytes, Chinese legacy decoding, excluded author-only materials and explicit format errors',()=>{
  const gb=Buffer.from([0xd6,0xd0,0xce,0xc4]);const v=parseSource({title:'资料包',files:[{name:'人物.txt',base64:gb.toString('base64'),encoding:'gb18030',kind:'character'},{name:'世界.md',raw:'规则：火焰需要空气。',kind:'world'},{name:'后期.txt',raw:'作者隔离参考秘密',scope:'author-reference'}]});assert.equal(v.raw.slice(0,2),'中文');assert.equal(v.materials[0].originalBase64,gb.toString('base64'));assert.equal(boundaryOf(v,{kind:'all-materials',id:null}).chapters.length,2);assert.ok(v.chapters[2].excluded);assert.throws(()=>parseSource({title:'空',files:[{name:'a.md',raw:''}]}),/为空/);assert.throws(()=>parseSource({title:'epub',files:[{name:'a.epub',raw:'x'}]}),/支持TXT/);
 });
+
+import { parseStructured } from '../src/runtime.js';
+test('source structured repair is bounded, preserves data, rejects truncation and multiple documents',()=>{assert.deepEqual(parseStructured('{\"items\":[]}}',true),{value:{items:[]},removed:1});assert.throws(()=>parseStructured('{\"items\":',true));assert.throws(()=>parseStructured('{}{}',true));assert.throws(()=>parseStructured('{\"items\":[]}}'));assert.throws(()=>parseStructured('{\"items\":[]}}}}',true));});

@@ -40,9 +40,23 @@ test('source F/G/H/I: selective references, field resets, retcon conflicts, inde
  const pack=createSource(f.domain,{title:'游戏同人原创资料包',files:[{name:'人物.md',raw:person(1),kind:'character'},{name:'世界.md',raw:'【物件 key】潮门钥匙，规则：只开启潮门。',kind:'world'}]});const run=startSourceRun(f.domain,pack.work.id,{versionId:pack.version.id,boundary:{kind:'all-materials',id:null},provider:'demo',budget});f.runner.start(run.task.id);await f.runner.idle(run.task.id);const project=activate(f,{versionId:pack.version.id,runId:run.run.id,title:'从资料包开书',mode:'independent',template:'parallel',boundary:{kind:'all-materials',id:null}});assert.equal(f.store.objects(project.id,'character').length,1);assert.equal(f.domain.chapters(project.id).length,1);
  }finally{await f.runner.close();f.store.close();}
 });
-test('source J: invalid JSON retains gap; canceled late responses never publish assets; author identity decisions supersede old registry',async()=>{
+test('source J: invalid JSON retains gap; canceled late responses never publish assets',async()=>{
  class Broken extends SourceFixtureProvider{override async generate(r:ModelRequest){if(r.prompt==='sourceExtract')return {text:'{"items":',outputTokens:20,estimated:true};return super.generate(r);}}
  const bad=await setup(person(1),':memory:',new Broken());try{assert.equal(bad.domain.task(bad.work.workspaceId,bad.run.task.id).status,'FAILED');assert.equal(assetsAt(bad.domain,bad.run.run.id).length,0);assert.ok(sourceGet(bad.store,'source_runs',bad.run.run.id).segments.some(s=>s.state!=='complete'));}finally{await bad.runner.close();bad.store.close();}
  let release:()=>void=()=>{},entered:()=>void=()=>{};const ready=new Promise<void>(r=>entered=r);class Late extends SourceFixtureProvider{override async generate(r:ModelRequest){if(r.prompt==='sourceDiscover'){entered();await new Promise<void>(r=>release=r);}return super.generate(r);}}
  const store=new Store(':memory:'),domain=new Domain(store),model=new Late(),runner=new Runner(domain,model,model);try{const s=createSource(domain,{title:'晚到隔离',files:[{name:'a.txt',raw:person(1)}]}),r=startSourceRun(domain,s.work.id,{versionId:s.version.id,boundary:{kind:'all-materials',id:null},provider:'demo',budget});runner.start(r.task.id);await ready;domain.controlTask(s.work.workspaceId,r.task.id,'cancel');release();await runner.idle(r.task.id);assert.equal(assetsAt(domain,r.run.id).length,0);assert.equal(domain.task(s.work.workspaceId,r.task.id).status,'CANCELED');assert.ok(store.list('artifacts',s.work.workspaceId).some(a=>a.status==='stale'));}finally{await runner.close();store.close();}
+});
+
+test('source G/H: an authorized divergent relationship and a text-only material package both enter normal chapter production',async()=>{
+ class BranchProvider extends SourceFixtureProvider{override async generate(r:ModelRequest){const out=await super.generate(r);if(r.prompt==='write'&&String(r.input.context).includes('合作搭档'))return {...out,text:`${names[0]}和${names[1]}作为合作搭档核对账本。\n`+out.text};return out;}}
+ const raw=`第1章 前夜\n${person(1)}${person(2)}【关系 r|c1|c2|敌对】${names[0]}与${names[1]}在原作中敌对。`;
+ const f=await setup(raw,':memory:',new BranchProvider());try{
+  const relation=assetsAt(f.domain,f.run.run.id).find(a=>a.kind==='relationship')!;
+  const p=activate(f,specFor(f,{mode:'divergence',template:'divergent',overrides:[{entityId:relation.id,property:'type',value:'合作',reason:'作者明确平行改编',retcon:true},{entityId:relation.id,property:'state',value:'合作搭档',reason:'作者明确平行改编',retcon:true}]}));
+  async function write(pid:string){const c=f.domain.chapters(pid).find(c=>!c.fields.referenceOnly)!;const t=f.domain.createTask(pid,{kind:'write',chapterId:c.id,goal:'从本书约定开始核对新账本',provider:'demo',autoAccept:true,targetWords:900,budget:{calls:8,outputTokens:16000,contextChars:24000}});f.runner.start(t.id);await f.runner.idle(t.id);assert.equal(f.domain.task(pid,t.id).status,'COMPLETED');assert.equal(f.domain.object(pid,c.id).status,'accepted');return f.domain.object(pid,c.id);}
+  const chapter=await write(p.id);assert.ok(chapter.body.includes('合作搭档'));
+  const call=f.model.seen.find(c=>c.prompt==='write')!;assert.ok(String(call.input.context).includes('合作搭档'));assert.ok(!JSON.stringify(call).includes(`${names[0]}与${names[1]}在原作中敌对。`));
+  const pack=createSource(f.domain,{title:'纯资料同人',files:[{name:'人物.md',raw:person(1),kind:'character'},{name:'世界.md',raw:'【物件 key】潮门钥匙，规则：只开潮门。',kind:'world'}]}),run=startSourceRun(f.domain,pack.work.id,{versionId:pack.version.id,boundary:{kind:'all-materials',id:null},provider:'demo',budget});f.runner.start(run.task.id);await f.runner.idle(run.task.id);
+  const independent=activate(f,{versionId:pack.version.id,runId:run.run.id,title:'另起故事',mode:'independent',template:'parallel',boundary:{kind:'all-materials',id:null}}),body=await write(independent.id);assert.ok(body.body.includes(names[0]));assert.equal(f.domain.chapters(independent.id).length,1);
+ }finally{await f.runner.close();f.store.close();}
 });

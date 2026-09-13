@@ -1,0 +1,38 @@
+{
+  "at": "2026-09-13T09:44:15.856Z",
+  "status": "PASS",
+  "fixture": "1000 directly seeded synthetic metadata rows; NOT an extraction benchmark",
+  "device": {
+    "cpu": "Intel(R) Core(TM) Ultra 5 225H",
+    "threads": 14,
+    "platform": "win32",
+    "arch": "x64",
+    "ramGiB": 31,
+    "node": "v24.14.0"
+  },
+  "entities": 1000,
+  "pageLimit": 40,
+  "graphLimit": 30,
+  "measurements": {
+    "page": {
+      "medianMs": 13.14,
+      "maxMs": 23.35,
+      "samples": 12
+    },
+    "search": {
+      "medianMs": 15.39,
+      "maxMs": 18.71,
+      "samples": 12
+    },
+    "allSelection": {
+      "medianMs": 13.53,
+      "maxMs": 19.01,
+      "samples": 12
+    },
+    "graph": {
+      "medianMs": 14.98,
+      "maxMs": 19.96,
+      "samples": 12
+    }
+  }
+}

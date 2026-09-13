@@ -11,7 +11,7 @@ export function temporalObjects(domain:Domain,pid:string,at:Perspective={}){
  const result=projected.filter(o=>o.kind!=='relationship').concat([...relations.values()]);const omitted:{id:string;reason:string}[]=[];
  const visible=result.filter(o=>{
    const known=Array.isArray(o.fields.knownByIds)?o.fields.knownByIds:[];const hidden=o.fields.visibility==='hidden'||o.source?.modality==='knowledge';
-   const allowed=at.audience!=='character'||!hidden||known.includes(at.viewpointId??'')||o.fields.entityId===at.viewpointId;
+   const allowed=at.audience!=='character'||!hidden||known.includes(at.viewpointId??'')||(!known.length&&(o.source?.modality!=='knowledge'||o.fields.property==='known')&&o.fields.entityId===at.viewpointId);
    if(!allowed){omitted.push({id:o.id,reason:'当前视角未获知的资料，不进入生成上下文'});return false;}
    if(at.audience==='reader'&&o.fields.readerKnown===false){omitted.push({id:o.id,reason:'读者尚未知晓'});return false;}
    if(at.audience==='character'){
@@ -19,6 +19,8 @@ export function temporalObjects(domain:Domain,pid:string,at:Perspective={}){
      if(o.kind==='relationship'){if(o.fields.fromId!==at.viewpointId)delete o.fields.perspectiveFrom;if(o.fields.toId!==at.viewpointId)delete o.fields.perspectiveTo;}
    }return true;
  });
+ const stateFacts=visible.filter(o=>o.kind==='fact'&&o.status==='accepted'&&!o.source?.inference&&['objective','knowledge'].includes(o.source?.modality??'objective')).sort((a,b)=>(a.source?.fromChapter??0)-(b.source?.fromChapter??0)||a.updatedAt.localeCompare(b.updatedAt));
+ const superseded=new Set(stateFacts.map(f=>f.source?.supersedes).filter(Boolean));for(const f of stateFacts.filter(f=>!superseded.has(f.id))){const target=visible.find(o=>o.id===f.fields.entityId);if(target&&typeof f.fields.property==='string'&&typeof f.fields.value==='string'){if(['known','alias'].includes(f.fields.property))continue;target.fields[f.fields.property]=f.fields.value;}}
  for(const o of current)if(!result.some(x=>x.id===o.id))omitted.push({id:o.id,reason:'尚未生效、其他分支、未接受或来源已失效'});
  return {objects:visible,omitted,asOf,branch};
 }

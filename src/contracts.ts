@@ -42,7 +42,7 @@ export const projectSchema = z.object({
   style: str.default('克制、具体，以行动与对白推动故事。'), constraints: z.array(z.string().max(4000)).max(50).default([]),
   archived: z.boolean().default(false)
 }).strict();
-export interface Project extends z.infer<typeof projectSchema> { id: string; revision: number; createdAt: string; updatedAt: string; sourceWorkspace?:boolean; lineage?:{workId:string;versionId:string;manifestId:string;manifestRevision:number;cutoff:number;mode:string;template:string;sourceTitle:string;author:string;origin:string;rights:string;contract:string;}; }
+export interface Project extends z.infer<typeof projectSchema> { id: string; revision: number; createdAt: string; updatedAt: string; sourceWorkspace?:boolean; lineage?:{workId:string;versionId:string;manifestId:string;manifestRevision:number;cutoff:number;mode:string;template:string;sourceTitle:string;author:string;origin:string;rights:string;contract:string;referenceTextAllowed?:boolean;}; }
 export interface ChapterVersion { id: string; projectId: string; chapterId: string; content: string; chapterRevision: number; createdAt: string; actor: string; accepted: boolean; summary: string; restoredFrom?: string; commitKey?: string; }
 export const taskInputSchema = z.object({
   kind: z.enum(['bootstrap','write','review','replan','extract','ideas','assist','summarize','source-scan','source-profile']), goal: z.string().trim().min(1).max(6000),

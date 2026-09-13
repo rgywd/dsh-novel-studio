@@ -9,8 +9,9 @@ export function buildContext(domain:Domain,projectId:string,options:{chapterId?:
   const p=domain.project(projectId);const budget=options.maxChars??18000;requireThat(Number.isInteger(budget)&&budget>=1000&&budget<=48000,'BUDGET','上下文预算必须在 1000–48000 字符内',422);
   const original=domain.store.objects(projectId);const chapters=domain.chapters(projectId);const current=options.chapterId?domain.object(projectId,options.chapterId):undefined;
   const index=Math.min(options.asOfChapter??Infinity,current?chapters.findIndex(c=>c.id===current.id):chapters.length);
+  requireThat(!current?.fields.referenceOnly||p.lineage?.referenceTextAllowed!==false,'SOURCE_SCOPE','回溯改编已隔离原作引用正文；只向模型提供选择的有效资料与改编契约');
   const temporal=temporalObjects(domain,projectId,{...options,asOfChapter:options.asOfChapter??index+1,evidenceThrough:index});const all=temporal.objects;
-  const prior=chapters.slice(0,index).filter(c=>c.status==='accepted'&&String(c.fields.branch??'main')===(options.branch??'main'));const ordinal=new Map(chapters.map((c,n)=>[c.id,n+1]));const byId=new Map(original.map(o=>[o.id,o]));
+  const prior=chapters.slice(0,index).filter(c=>(!c.fields.referenceOnly||p.lineage?.referenceTextAllowed!==false)&&c.status==='accepted'&&String(c.fields.branch??'main')===(options.branch??'main'));const ordinal=new Map(chapters.map((c,n)=>[c.id,n+1]));const byId=new Map(original.map(o=>[o.id,o]));
   const refreshing=options.purpose==='state-refresh';
   const relevant=new Set(options.entityIds??[]);const query=(refreshing?[current?.title,current?.body]:[options.goal,current?.title,current?.fields.goal,current?.fields.participants,current?.fields.events,prior.at(-1)?.body.slice(-2400)]).filter(Boolean).join(' ');
   for(const o of all.filter(o=>['character','world'].includes(o.kind))){const aliases=Array.isArray(o.fields.aliases)?o.fields.aliases:[];if(query.includes(o.id)||[o.title,...aliases].some(name=>query.includes(name)))relevant.add(o.id);}
@@ -54,6 +55,7 @@ export function buildContext(domain:Domain,projectId:string,options:{chapterId?:
     for(const hit of recallMemory(domain,projectId,{goal:query,asOf:index,branch:options.branch,entityIds:[...relevant],viewpointId:options.viewpointId,audience:options.audience,limit:options.memory.recallLimit??6}))add(hit.chapterId+':evidence:'+hit.start,hit.versionId,'memory-evidence',hit.reason,82,false,JSON.stringify(hit));
     for(const m of state.memories.filter(m=>m.status==='stale'))omitted.push({id:m.id,reason:'摘要来源版本/顺序已失效；不用于当前状态'});
   }
+  if(p.lineage&&!options.memory?.enabled)for(const hit of recallMemory(domain,projectId,{goal:query,asOf:index,branch:options.branch,entityIds:[...relevant],viewpointId:options.viewpointId,audience:options.audience,limit:4}).filter(h=>byId.get(h.chapterId)?.fields.referenceOnly))add(hit.chapterId+':source-evidence:'+hit.start,hit.versionId,'inherited-evidence','继承前缀内原文按目标召回；历史证据不是新计划',81,false,JSON.stringify(hit));
   for(const o of canon)if(!o.locked){const linked=relevant.has(String(o.fields.entityId));add(o.id,o.source?.versionId??String(o.revision),'canon',linked?'相关实体的有来源正式事实':'有限补充的正式事实',linked?92:60,false,serialize(o));}
   for(const o of all.filter(o=>o.kind==='event'&&o.status==='accepted'&&latest(o)&&(!o.source?.chapterId||(ordinal.get(o.source.chapterId)??Infinity)<=index))){add(o.id,o.source?.versionId??String(o.revision),'happened-event','已经发生且来源版本仍有效的事件',65,false,serialize(o));}
   for(const o of all.filter(o=>o.kind==='foreshadow'&&o.status!=='candidate'&&o.status!=='revoked')){const resolved=canon.some(f=>f.fields.entityId===o.id&&f.fields.property==='foreshadowState'&&f.fields.value==='resolved');if(!resolved)add(o.id,String(o.revision),'foreshadow-plan','活跃伏笔与计划回收；不是已发生事实',68,false,serialize(o));}

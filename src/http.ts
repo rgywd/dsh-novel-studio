@@ -95,6 +95,7 @@ export class HttpApp {
       if(method==='POST'&&!key){const task=this.domain.createTask(pid,body);this.runner.start(task.id);return task;}
       if(method==='GET'&&key){const t=this.domain.task(pid,key);return {...t,events:this.domain.store.events(pid,key),artifacts:this.domain.store.list('artifacts',pid).filter(a=>a.taskId===key).map(a=>({...a,data:{title:a.data.title,content:a.data.content,review:a.data.review,context:a.data.context,late:a.data.late}}))};}
       if(method==='POST'&&key&&action==='clarify'){const t=this.domain.clarifyTask(pid,key,z.string().parse(body.answer));this.runner.start(t.id);return t;}
+      if(method==='POST'&&key&&action==='budget')return this.domain.grantTaskBudget(pid,key,body);
       if(method==='POST'&&key&&action){const parsed=z.enum(['pause','resume','redelegate','cancel']).parse(action);const task=this.domain.controlTask(pid,key,parsed);if(task.status==='QUEUED')this.runner.start(task.id);return task;}
     }
     if(resource==='artifacts'&&key){

@@ -25,16 +25,16 @@ export class SourceFixtureProvider extends DemoProvider {
   if(!r.prompt.startsWith('source')&&r.prompt!=='write')return super.generate(r);
   const text=String(r.input.text??''),evidence=(quote:string)=>({quote,modality:'objective',inference:false,storyTime:'本章',knownBy:[]});let value:any;
   if(r.prompt==='sourceDiscover'){
-   const all=[...text.matchAll(/【人物 (c\d+)】([^，]+)，身份：([^。]+)。/gu)].map(m=>({key:m[1],name:m[2],kind:'character',identity:m[3],aliases:[],evidence:evidence(m[0])}));
-   for(const m of text.matchAll(/【物件 (\w+)】([^，]+)，规则：([^。]+)。/gu))all.push({key:m[1],name:m[2],kind:'world',identity:m[3],aliases:[],evidence:evidence(m[0])});
+   const all=[...text.matchAll(/【人物 (c\d+)】([^，]+)，身份：([^。]+)。/gu)].map(m=>({key:m[1],name:m[2],kind:'character',identity:m[3],aliases:[],evidence:{...evidence(m[0]),start:m.index}}));
+   for(const m of text.matchAll(/【物件 (\w+)】([^，]+)，规则：([^。]+)。/gu))all.push({key:m[1],name:m[2],kind:'world',identity:m[3],aliases:[],evidence:{...evidence(m[0]),start:m.index}});
    value={entities:all.slice(0,r.input.batchSize),saturated:all.length>=r.input.batchSize};
   }else if(r.prompt==='sourceExtract'){
    const items:any[]=[];
-   for(const m of text.matchAll(/【事实 ([^|]+)\|([^|]+)\|([^|]+)\|([^】]+)】([^。]+)。/gu))items.push({key:m[1],kind:'fact',name:m[1],description:m[5],fields:{property:m[3],value:m[4]},refs:{entityId:m[2]},evidence:evidence(m[0])});
-   for(const m of text.matchAll(/【关系 ([^|]+)\|([^|]+)\|([^|]+)\|([^】]+)】([^。]+)。/gu))items.push({key:m[1],kind:'relationship',name:m[4],description:m[5],fields:{type:m[4],state:'有效'},refs:{fromId:m[2],toId:m[3]},evidence:evidence(m[0])});
-   for(const m of text.matchAll(/【伏笔 (\w+)】([^，]+)，([^。]+)。/gu))items.push({key:m[1],kind:'foreshadow',name:m[2],description:m[3],fields:{state:'open'},refs:{},evidence:evidence(m[0])});
+   for(const m of text.matchAll(/【事实 ([^|]+)\|([^|]+)\|([^|]+)\|([^】]+)】([^。]+)。/gu))items.push({key:m[1],kind:'fact',name:m[1],description:m[5],fields:{property:m[3],value:m[4]},refs:{entityId:m[2]},evidence:{...evidence(m[0]),start:m.index}});
+   for(const m of text.matchAll(/【关系 ([^|]+)\|([^|]+)\|([^|]+)\|([^】]+)】([^。]+)。/gu))items.push({key:m[1],kind:'relationship',name:m[4],description:m[5],fields:{type:m[4],state:'有效'},refs:{fromId:m[2],toId:m[3]},evidence:{...evidence(m[0]),start:m.index}});
+   for(const m of text.matchAll(/【伏笔 (\w+)】([^，]+)，([^。]+)。/gu))items.push({key:m[1],kind:'foreshadow',name:m[2],description:m[3],fields:{state:'open'},refs:{},evidence:{...evidence(m[0]),start:m.index}});
    value={summary:'已处理片段：'+text.slice(0,160),items:items.slice(0,r.input.batchSize),saturated:items.length>=r.input.batchSize};
-  }else if(r.prompt==='sourceProfile')value={identity:'依据已提供证据的身份',appearance:'未知',voice:'未知',desire:'未知',boundaries:'未知',uncertainties:['没有证据的特征不补写'],evidence:[]};
+  }else if(r.prompt==='sourceProfile')value={identity:r.input.asset.identity,appearance:'未知',voice:'未知',desire:'未知',boundaries:'未知',uncertainties:['没有证据的特征不补写'],evidence:[evidence(r.input.evidence[0].quote)]};
   else {const lead=r.input.objects?.find((o:any)=>o.kind==='character')?.title??names[0];value=`${lead}在渡口打开新账本。`+ (String(r.input.context).includes('蓝色缎带')?'蓝色缎带仍系在门边。':'门边只有一盏灯。')+'\n'+Array.from({length:16},(_,i)=>`第${i+1}次核对时，潮位比昨天低了一寸。他逐个记下经过的船，遇到不确定的名字就留下空格，请同伴补证。岸边的风吹起纸角，他用石头压稳，等对岸回信才继续。`).join('\n');}
   const response=typeof value==='string'?value:JSON.stringify(value);r.onRequest?.({system:r.compiled?.system,messages:r.compiled?.messages,model:'fixture'});r.onDelta(response);return {text:response,outputTokens:Math.ceil(response.length/3),estimated:true};
  }

@@ -15,7 +15,7 @@ export async function scanSource(runner:Runner,taskId:string){
   for(const assetId of config.profileIds??[]){
    boundary();const asset=assetsAt(domain,run.id).find(a=>a.id===assetId);requireThat(asset?.kind==='character','SOURCE_SCOPE','深入档案仅针对选定范围内角色');
    const evidence=asset.evidence.map(e=>({quote:e.quote,start:e.start,end:e.end,chapterId:e.chapterId,ordinal:e.ordinal}));
-   const result=await runner.step(taskId,'档案-'+assetId,'sourceProfile',{asset:{id:asset.id,name:asset.name,identity:asset.identity},evidence,scope:{versionId:version.id,runId:run.id,cutoff:run.cutoff,analysisRevision:config.analysisRevision}},output=>{for(const e of output.evidence)requireThat(evidence.some(x=>x.quote.includes(e.quote)),'SOURCE_EVIDENCE','档案引用必须在所选角色的允许证据内');return output;});
+   const result=await runner.step(taskId,'档案-'+assetId,'sourceProfile',{asset:{id:asset.id,name:asset.name,identity:asset.identity},evidence,scope:{versionId:version.id,runId:run.id,cutoff:run.cutoff,analysisRevision:config.analysisRevision}},output=>{requireThat(output.evidence.length||['identity','appearance','voice','desire','boundaries'].every(k=>/^(未知|未证实)$/.test(output[k])),'SOURCE_EVIDENCE','有实质内容的档案必须引用允许证据');for(const e of output.evidence)requireThat(evidence.some(x=>x.quote.includes(e.quote)),'SOURCE_EVIDENCE','档案引用必须在所选角色的允许证据内');return output;});
    boundary();requireThat(sourceGet(store,'source_runs',run.id).revision===config.analysisRevision,'STALE','晚到档案依赖的分析已失效');
    sourcePut(store,'source_decisions',{id:'profile_'+hash([t.id,assetId]),workId:work.id,versionId:version.id,runId:run.id,assetId,ordinal:run.cutoff,action:'profile',profile:result,createdAt:now(),taskId:t.id});
    store.event(t.projectId,t.id,'source.profile','所选角色档案已保存，不覆盖其他截止点或人工决定',{assetId});
@@ -34,6 +34,7 @@ export async function scanSource(runner:Runner,taskId:string){
   const text=version.raw.slice(segment.start,segment.end);
   const known=assetsAt(domain,run.id,chapter.ordinal).filter(a=>['character','world'].includes(a.kind)&&a.evidence.some(e=>e.start<segment.start)&&[a.name,...a.aliases].some(n=>n&&text.includes(n))).sort((a,b)=>a.id.localeCompare(b.id));
   const registry=known.slice(0,32).map(a=>({id:a.id,key:a.key,name:a.name,kind:a.kind,identity:a.identity,aliases:a.aliases}));
+  segment.registryIds=registry.map(a=>a.id);segment.registryHash=hash(registry);
   const scope={workId:work.id,versionId:version.id,sourceHash:version.hash,runId:run.id,cutoff:run.cutoff,chapterId:chapter.id,ordinal:chapter.ordinal,segmentId:segment.id,start:segment.start,end:segment.end,analysisVersion:run.analysisVersion,registryHash:hash(registry)};
   store.event(t.projectId,t.id,'source.scanning',`扫描 ${chapter.title} · ${segment.start}–${segment.end}`,scope);
   try{
@@ -45,7 +46,12 @@ export async function scanSource(runner:Runner,taskId:string){
    const entities=discovered.entities.map((e:any)=>({...e,description:'',fields:{identity:e.identity,aliases:e.aliases},refs:{}}));
    const available=new Set([...registry.map(x=>x.id),...registry.map(x=>x.key),...entities.map((x:any)=>x.key),...extraction.items.map((x:any)=>x.key)]);
    for(const e of extraction.items)for(const ref of Object.values(e.refs).flat())requireThat(available.has(String(ref)),'SOURCE_REFERENCE','抽取引用无法定位到本片段或已有前缀实体；保存缺口而不生成悬空引用');
-   const records:SourceAsset[]=[...entities,...extraction.items].map((x:any)=>{const evidence=resolveEvidence(version,segment,x.evidence,run.id),discovery=entities.find((e:any)=>e.key===x.key&&e.kind===x.kind);return {id:'asset_'+hash([run.id,x.kind,x.key,evidence.start,evidence.end]).slice(0,32),workId:work.id,versionId:version.id,runId:run.id,revision:1,key:x.key,kind:x.kind,name:x.name,identity:x.identity??x.fields.identity??discovery?.identity??'',aliases:x.aliases??x.fields.aliases??discovery?.aliases??[],description:x.description??'',fields:{...discovery?.fields,...x.fields},refs:x.refs,evidence:[evidence],status:evidence.inference||!['objective','knowledge'].includes(evidence.modality)?'unverified':'verified',manual:false};});
+   const records:SourceAsset[]=[...entities,...extraction.items].map((x:any)=>{const evidence=resolveEvidence(version,segment,x.evidence,run.id),discovery=entities.find((e:any)=>e.key===x.key&&e.kind===x.kind);const refs={...x.refs};
+    // A statement's owner and the people who know it are different. Unresolved knowledge stays quarantined.
+    const known=(evidence.knownBy??[]).map(k=>available.has(k)?k:registry.find(r=>r.name===k)?.id??entities.find((r:any)=>r.name===k)?.key).filter(Boolean);
+    if(evidence.modality==='knowledge')refs.knownByIds=[...new Set([...(Array.isArray(refs.knownByIds)?refs.knownByIds:[]),...known])];
+    const uncertainKnowledge=evidence.modality==='knowledge'&&(!refs.knownByIds.length||known.length<(evidence.knownBy??[]).length);
+    return {id:'asset_'+hash([run.id,x.kind,x.key,evidence.start,evidence.end]).slice(0,32),workId:work.id,versionId:version.id,runId:run.id,revision:1,key:x.key,kind:x.kind,name:x.name,identity:x.identity??x.fields.identity??discovery?.identity??'',aliases:x.aliases??x.fields.aliases??discovery?.aliases??[],description:x.description??'',fields:{...discovery?.fields,...x.fields},refs,evidence:[evidence],status:evidence.inference||uncertainKnowledge||!['objective','knowledge'].includes(evidence.modality)?'unverified':'verified',manual:false};});
    store.transaction(()=>{boundary();for(const a of records)sourcePut(store,'source_assets',a);segment.state='complete';segment.error=undefined;segment.summary=extraction.summary;persist();store.event(t.projectId,t.id,'source.covered',`${chapter.title} 当前片段已保存；发现不等于保证语义全召回`,{segmentId:segment.id,entities:discovered.entities.length,items:extraction.items.length});});
   }catch(error){const latest=sourceGet(store,'source_runs',run.id);const s=latest.segments.find(s=>s.id===segment.id)!;if(!['complete','split'].includes(s.state)){s.error=error instanceof Error?error.message:'处理失败';sourcePut(store,'source_runs',latest);}throw error;}
  }

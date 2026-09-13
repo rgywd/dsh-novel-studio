@@ -86,7 +86,7 @@ export class Runner {
         let output:any=result.text;const schema=prompts[prompt].schema;
         if(compiled.role==='Writer'&&compiled.config.config.enabled){const processed=await transformText(result.text,compiled.config.config.regex??[],'after','prose',{expand:env.expand});output=processed.text;request.transformations=processed.trace;}
         request.candidate=typeof output==='string'?output:undefined;requestPut(this.domain.store,request);
-        if(schema){const clean=result.text.trim().replace(/^```(?:json)?\s*/u,'').replace(/\s*```$/u,'');output=schema.parse(JSON.parse(clean));}
+        if(schema){const clean=result.text.trim().replace(/^```(?:json)?\s*/u,'').replace(/\s*```$/u,'');const parsed=parseStructured(clean,prompt.startsWith('source'));output=schema.parse(parsed.value);if(parsed.removed){request.syntaxRepair={removedTrailingClosers:parsed.removed};requestPut(this.domain.store,request);this.domain.store.event(t.projectId,t.id,'source.syntax-repair',`移除响应末尾 ${parsed.removed} 个多余闭括号；原始响应保留并重新校验Schema`,{requestId:request.id});}}
         if(validate)output=validate(output);
         this.patch(taskId,t=>{const s=t.steps.find(s=>s.key===key&&s.inputHash===inputHash);if(s){s.status='COMPLETED';s.output=output;s.partial=undefined;s.endedAt=now();s.usage={outputTokens:s.calls!.reduce((n,c)=>n+c.outputTokens,0),estimated:s.calls!.some(c=>c.estimated)};s.calls!.find(c=>c.attempt===attempt+1)!.status='COMPLETED';}});
         requireThat(actual<=maxTokens,'BUDGET_EXHAUSTED','提供方实际输出超过预留预算；成果已保存，等待人工检查');
@@ -120,7 +120,7 @@ export class Runner {
       const status=memoryStatus(this.domain,t.projectId);const selected=chapter?[chapter]:status.gaps.filter(g=>!g.needsReview).slice(0,t.count).map(g=>this.domain.object(t.projectId,g.chapterId));
       requireThat(selected.length,'MEMORY_COVERED','当前范围没有可总结的缺口；受上游改文影响的章节需先审查');
       for(const c of selected){const source=sourceFor(this.domain,c);requireThat(c.status==='accepted'&&c.body.length<=t.budget.contextChars,'MEMORY_SOURCE','只总结预算内的已接受正文；长章请增加预算或拆分');
-        const memory=await this.step(taskId,'总结作品记忆-'+source.ordinal,'summarize',{goal:'从已接受原文建立有证据的章节记忆',draft:c.body,source,chapterId:c.id,objects:this.domain.store.objects(t.projectId).filter(o=>['character','world'].includes(o.kind)).map(o=>({id:o.id,title:o.title})).slice(0,100)},o=>validateMemoryContent(this.domain,t.projectId,o,[source]));
+        const memory=await this.step(taskId,'总结作品记忆-'+source.ordinal,'summarize',{goal:'从已接受原文建立有证据的章节记忆',draft:c.body,source,chapterId:c.id,objects:this.domain.store.objects(t.projectId).filter(o=>['character','world'].includes(o.kind)&&[o.title,...Array.isArray(o.fields.aliases)?o.fields.aliases:[]].some(n=>c.body.includes(n))).map(o=>({id:o.id,title:o.title}))},o=>validateMemoryContent(this.domain,t.projectId,o,[source]));
         t=this.boundary(taskId);const existing=this.domain.store.list('artifacts',t.projectId).find(a=>a.taskId===t.id&&a.type==='memory'&&a.data.source?.versionId===source.versionId&&['pending','accepted'].includes(a.status));const a=existing??this.domain.putArtifact(t,'memory',{memory,source,versionId:source.versionId},c);if(t.autoAccept&&a.status==='pending')this.domain.acceptArtifact(t.projectId,a.id,'auto');
       }
       const awaiting=this.domain.store.list('artifacts',t.projectId).find(a=>a.taskId===t.id&&a.type==='memory'&&a.status==='pending');if(awaiting)this.awaitReview(taskId,awaiting);return;
@@ -130,11 +130,11 @@ export class Runner {
       t=this.boundary(taskId);const a=this.domain.putArtifact(t,'edit',{content,original:chapter!.body,context:pack},chapter);this.awaitReview(taskId,a);
     }
     if(t.kind==='extract'){
-      const selected=chapter?[chapter]:this.domain.chapters(t.projectId).filter(c=>c.body.trim()).slice(0,t.count);
+      const selected=chapter?[chapter]:this.domain.chapters(t.projectId).filter(c=>c.body.trim()&&!c.fields.referenceOnly).slice(0,t.count);
       requireThat(selected.length>0,'EMPTY','没有可抽取的正文',422);
       for(const [n,c] of selected.entries()){
         requireThat(c.body.length<=t.budget.contextChars,'CONTEXT_LOCK_OVERFLOW','本章超过抽取上下文预算，请先拆分章节');
-        const output=await this.step(taskId,`提取资料-${n}`,'extract',{goal:t.goal,draft:c.body,chapterId:c.id,objects:this.domain.store.objects(t.projectId).filter(o=>['character','world'].includes(o.kind)).slice(0,100).map(o=>({id:o.id,title:o.title,kind:o.kind}))},o=>{for(const [index,x] of o.objects.entries()){requireThat(['character','world','fact','event'].includes(x.kind),'EXTRACTION',`objects[${index}].kind 只支持 character/world/fact/event`,422);requireThat(x.source?.quote&&c.body.includes(x.source.quote),'EVIDENCE',`objects[${index}].source.quote（${x.title}）不在当前章正文，请逐字复制连续原句，不拼接或改标点`,422);}return o;});
+        const output=await this.step(taskId,`提取资料-${n}`,'extract',{goal:t.goal,draft:c.body,chapterId:c.id,objects:this.domain.store.objects(t.projectId).filter(o=>['character','world'].includes(o.kind)&&[o.title,...Array.isArray(o.fields.aliases)?o.fields.aliases:[]].some(n=>c.body.includes(n))).map(o=>({id:o.id,title:o.title,kind:o.kind}))},o=>{for(const [index,x] of o.objects.entries()){requireThat(['character','world','fact','event'].includes(x.kind),'EXTRACTION',`objects[${index}].kind 只支持 character/world/fact/event`,422);requireThat(x.source?.quote&&c.body.includes(x.source.quote),'EVIDENCE',`objects[${index}].source.quote（${x.title}）不在当前章正文，请逐字复制连续原句，不拼接或改标点`,422);}return o;});
         t=this.boundary(taskId);let a=this.domain.store.list('artifacts',t.projectId).find(a=>a.taskId===t.id&&a.type==='extraction'&&a.chapterId===c.id&&a.data.versionId===c.fields.currentVersion&&['pending','accepted'].includes(a.status));
         if(!a)a=this.domain.putArtifact(t,'extraction',{...output,versionId:c.fields.currentVersion,context:pack},c);if(t.autoAccept&&a.status==='pending')this.domain.acceptArtifact(t.projectId,a.id,'auto');
       }
@@ -171,7 +171,8 @@ export class Runner {
   private async reviewed(taskId:string,c:StoryObject,content:string,pack:ReturnType<typeof buildContext>,target?:number,plan?:unknown):Promise<{content:string;review:Review}>{
     let t=this.boundary(taskId);const planSourceId=plan?`task-plan:${t.id}:${c.id}`:undefined;const sources=this.reviewSources(t.projectId);if(planSourceId)sources.push({...c,id:planSourceId,body:'',fields:plan as StoryObject['fields'],source:undefined});
     const requiredStates=sources.filter(o=>o.kind==='world'&&o.status==='accepted'&&(o.fields.unique===true||String(o.fields.type).includes('物品'))&&content.includes(o.title)).map(o=>({entityId:o.id,title:o.title,property:'holder'}));
-    const reviewInput=()=>{const input=this.input(t,pack,{draft:content,chapterId:c.id,plan,planSourceId,requiredStates});if(planSourceId)input.sourceIds.push(planSourceId);return input;};
+    const contractSourceId=`task-contract:${t.id}`;const contractSource={...c,id:contractSourceId,body:t.goal,fields:{constraints:[...t.constraints,...(t.contract.brief?.constraints??[])],scope:t.contract.scope},source:undefined};sources.push(contractSource);
+    const reviewInput=()=>{const input=this.input(t,pack,{draft:content,chapterId:c.id,plan,planSourceId,requiredStates,contractSourceId,contractEvidence:contractSource.fields});if(planSourceId)input.sourceIds.push(planSourceId);input.sourceIds.push(contractSourceId);return input;};
     let review:Review=await this.step(taskId,'审校与候选事实','review',reviewInput(),o=>validateReview(o,content,sources,pack.canon,target));
     for(let round=0;round<2&&review.issues.some(i=>i.blocks&&i.status==='open');round++){
       this.boundary(taskId);const draft=content;
@@ -214,4 +215,12 @@ export function publicError(error:unknown):{code:string;message:string}{
   if(error instanceof ZodError)return {code:'INVALID_OUTPUT',message:'结构化输出校验失败：'+error.issues.slice(0,5).map(i=>`${i.path.join('.')}: ${i.message}`).join('；')};
   if(error instanceof SyntaxError)return {code:'INVALID_JSON',message:'模型没有返回有效 JSON；已保留诊断并限制重试次数'};
   return {code:'FAILED',message:'操作失败；有效成果已保留，请检查模型连接或本地存储后重试'};
+}
+
+// Only excess trailing closing braces may be removed. Never invent missing JSON or change values.
+export function parseStructured(text:string,allowTrailingRepair=false):{value:any;removed:number}{
+ try{return {value:JSON.parse(text),removed:0};}catch(error){
+  if(allowTrailingRepair)for(let removed=1;removed<=2;removed++){if(!/^[}\]\s]+$/.test(text.slice(-removed)))break;try{const value=JSON.parse(text.slice(0,-removed));if(value&&typeof value==='object'&&!Array.isArray(value))return {value,removed};}catch{}}
+  throw error;
+ }
 }

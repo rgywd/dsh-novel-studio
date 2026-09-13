@@ -1,5 +1,5 @@
 import { readFile,writeFile } from 'node:fs/promises';
-const path='docs/novel-studio/evidence/upgrade-runtime';
+const path=process.env.NOVEL_RUNTIME_EVIDENCE??'docs/novel-studio/evidence/upgrade-runtime';
 const mode=process.argv[2];
 if(!['capture','verify'].includes(mode))throw Error('Use capture before restarting the owned services, then verify.');
 const api=async(port,path)=>{const response=await fetch(`http://127.0.0.1:${port}/api/novel-studio${path}`,{signal:AbortSignal.timeout(10000)});if(!response.ok)throw Error(`HTTP ${response.status}: ${path}`);return response.json();};
