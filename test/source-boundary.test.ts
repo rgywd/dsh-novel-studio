@@ -106,3 +106,11 @@ test('source invalid claims remain visible candidates, never auto accepted as da
  class Invalid extends SourceFixtureProvider{override async generate(r:ModelRequest){const out=await super.generate(r);if(r.prompt!=='sourceExtract')return out;return {...out,text:JSON.stringify({summary:'原文可回查，结构错误须处理',saturated:false,items:[{key:'self',kind:'fact',name:'错误自引用',fields:{property:'health',value:'健康'},refs:{entityId:'self'},evidence:{quote:person(1),modality:'objective',inference:false}}]})};}}
  const f=await scan(person(1),new Invalid());try{const bad=assetsAt(f.domain,f.state.run.id).find(x=>x.kind==='fact')!;assert.equal(bad.status,'unverified');assert.throws(()=>activate(f),/未证实/);const p=activate(f,{selection:{[bad.id]:{mode:'omit'}}});assert.equal(f.store.objects(p.id,'fact').length,0);}finally{await f.runner.close();f.store.close();}
 });
+
+test('field selection cannot activate an uninterpretable fact or relationship',async()=>{
+ const f=await scan(`第1章 初遇\n${person(1)}${person(2)}【关系 trust|c1|c2|信任】共同守门。`);try{
+  const edge=assetsAt(f.domain,f.state.run.id).find(a=>a.kind==='relationship')!;assert.ok(edge);
+  assert.throws(()=>activate(f,{selection:{[edge.id]:{mode:'main',fields:['type']}}}),/必须保留type、state/);
+  const p=activate(f,{selection:{[edge.id]:{mode:'omit'}}});assert.equal(f.store.objects(p.id,'relationship').length,0);
+ }finally{await f.runner.close();f.store.close();}
+});

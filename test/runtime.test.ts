@@ -14,3 +14,14 @@ test('G: actual pause during chapter two, disk restart reuses checkpoint without
   assert.equal(result.status,'COMPLETED',JSON.stringify(result.error));assert.deepEqual(result.budget,t.budget);assert.equal(result.completedChapters,2);assert.ok(store.events(f.p.id,t.id).some(e=>e.type==='step.reused'));assert.equal(store.list('versions',f.p.id).filter(v=>v.chapterId===first.chapterId).length,1);assert.equal(store.list('versions',f.p.id).length,2);
   const facts=store.objects(f.p.id,'fact');assert.equal(new Set(facts.map(f=>f.source?.versionId+':'+f.fields.entityId+':'+f.fields.property)).size,facts.length);await resumed.close();store.close();rmSync(dir,{recursive:true});
 });
+
+test('review-only repair gets blocking issues and no implicit writing-length target',async()=>{
+ const f=fixture();const body='他核对水尺，把三尺伍改为三尺五。';let calls=0;const seen:ModelRequest[]=[];
+ const provider={info:()=>({available:true,name:'bounded-review-fixture',detail:'deterministic'}),async generate(r:ModelRequest){seen.push(r);if(r.prompt==='review')return {text:JSON.stringify({summary:'度量已核对',claims:[],events:[],issues:calls++?[]:[{category:'typo',severity:'critical',quote:'三尺伍',message:'错字',sourceQuote:'',rationale:'本次局部修复',suggestion:'改成五',blocks:true},{category:'voice',severity:'advice',quote:'他核对水尺',message:'可以更细腻',sourceQuote:'',rationale:'文学建议',suggestion:'无需改动',blocks:false}]}),outputTokens:100,estimated:true};if(r.prompt==='repair')return {text:JSON.stringify({edits:[{quote:'三尺伍',replacement:'三尺五'}],summary:'一处错字'}),outputTokens:50,estimated:true};return new DemoProvider().generate(r);}};
+ const runner=new Runner(f.domain,provider,provider);try{
+  f.domain.saveChapter(f.p.id,f.chapter.id,f.chapter.revision,body);const t=f.task({kind:'review',chapterId:f.chapter.id,goal:'只核对本章错字',targetWords:4000});runner.start(t.id);await runner.idle(t.id);
+  assert.equal(f.domain.task(f.p.id,t.id).status,'COMPLETED');const repair=seen.find(r=>r.prompt==='repair')!;
+  assert.equal(repair.input.issues.length,1);assert.equal(repair.input.issues[0].category,'typo');assert.equal(repair.input.targetWords,undefined);
+  assert.ok(seen.filter(r=>r.prompt==='review').every(r=>r.input.targetWords===undefined));assert.equal(f.domain.object(f.p.id,f.chapter.id).body,body.replace('三尺伍','三尺五'));
+ }finally{await runner.close();f.store.close();}
+});

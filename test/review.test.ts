@@ -10,3 +10,13 @@ test('inherited obligations cannot be reattributed to a new chapter memory; diag
  review.memory.obligations[0].quote=body;assert.ok(validateReview(review,body,f.store.objects(f.p.id),[]).memory);
  }finally{f.store.close();}
 });
+
+test('task evidence diagnostics identify the actual source without accepting a wrong chapter attribution',()=>{
+ const f=fixture();try{
+  const goal='核对度量，不改写已经接受的上一章。',source={...f.chapter,id:'task-contract:test',body:goal,fields:{goal}};
+  const issue={category:'scope',severity:'warning',quote:'他核对水尺。',message:'范围核对',sourceId:f.chapter.id,sourceQuote:goal,rationale:'需引用任务约定',suggestion:'核对出处',blocks:false};
+  const raw={summary:'核对',claims:[],events:[],issues:[issue]};const objects=[...f.store.objects(f.p.id),source];
+  assert.throws(()=>validateReview(raw,issue.quote,objects,[]),/实际存在于以下来源.*task-contract:test/);
+  issue.sourceId=source.id;assert.equal(validateReview(raw,issue.quote,objects,[]).issues[0].sourceId,source.id);
+ }finally{f.store.close();}
+});

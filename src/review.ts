@@ -7,7 +7,11 @@ export function validateReview(raw:unknown,body:string,objects:StoryObject[],can
   const issues:ReviewIssue[]=parsed.issues.map((i,n)=>{
     requireThat(i.quote===''||body.includes(i.quote),'INVALID_EVIDENCE',`issues[${n}].quote 不是本章连续原文：${i.quote.slice(0,70)}`,422);
     if(i.sourceId)requireThat(byId.has(i.sourceId),'INVALID_EVIDENCE',`issues[${n}].sourceId=${i.sourceId} 不在已有资料中；请从 sourceIds 选择或省略 sourceId`,422);
-    if(i.sourceId&&i.sourceQuote){const o=byId.get(i.sourceId)!;requireThat([o.body,o.source?.quote,...Object.values(o.fields).flat().filter((x):x is string=>typeof x==='string')].some(x=>x?.includes(i.sourceQuote)),'INVALID_EVIDENCE',`issues[${n}].sourceQuote 不在 sourceId=${i.sourceId} 的原始资料中：${i.sourceQuote.slice(0,110)}。请精确引用该来源字段；本次调整规划应引用 supplied planSourceId，而不是旧章纲。`,422);}
+    if(i.sourceId&&i.sourceQuote){
+      const contains=(o:StoryObject)=>[o.body,o.source?.quote,...Object.values(o.fields).flat().filter((x):x is string=>typeof x==='string')].some(x=>x?.includes(i.sourceQuote));
+      const matches=objects.filter(contains).map(o=>o.id);
+      requireThat(contains(byId.get(i.sourceId)!),'INVALID_EVIDENCE',`issues[${n}].sourceQuote 不在 sourceId=${i.sourceId} 中：${i.sourceQuote.slice(0,110)}。${matches.length?'该逐字引文实际存在于以下来源，请重新核对 sourceId：'+matches.join('、'):'所有允许来源均未匹配，请改用真实连续引文。'} 任务约定用 contractSourceId；本次规划用 planSourceId；不能冒用章节ID。`,422);
+    }
     const start=i.quote?body.indexOf(i.quote):0;return {...i,blocks:i.blocks||i.severity==='critical',id:id('issue'),start,end:start+i.quote.length,status:'open',engine:'ai'};
   });
   for(const [n,c] of parsed.claims.entries()){claimSchema.parse(c);requireThat(['character','world','relationship','foreshadow'].includes(byId.get(c.entityId)?.kind??''),'INVALID_ENTITY',`claims[${n}].entityId=${c.entityId} 不是已有实体`,422);requireThat(body.includes(c.quote),'INVALID_EVIDENCE',`claims[${n}].quote 不是本章连续原文：${c.quote.slice(0,70)}`,422);}

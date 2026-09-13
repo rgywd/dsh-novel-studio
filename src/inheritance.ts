@@ -27,6 +27,10 @@ export function previewInheritance(domain:Domain,input:unknown){
  }}
  // Explicit include may have its own dependencies: ask, rather than unbounded closure.
  for(const [sid,item] of selected)if(item.mode==='main')for(const ref of Object.values(item.asset.refs).flat()){const decision=spec.dependencies[`${sid}:${ref}`]??spec.dependencies[sid];if(!selected.has(ref)&&decision?.action!=='replace')conflicts.push({id:sid,code:'DEPENDENCY',message:'完整补入的实体仍有未选择依赖；请显式选择背景引用或取消该关联。'});}
+ for(const {asset:a,mode} of selected.values())if(mode==='main'){
+  const fields=inheritedFields(a,spec),required=a.kind==='fact'?['property','value']:a.kind==='relationship'?['type','state']:[];
+  if(required.some(key=>fields[key]===undefined||fields[key]===null||String(fields[key]).trim()===''))conflicts.push({id:a.id,code:'REQUIRED_FIELDS',message:`「${a.name}」必须保留${required.join('、')}字段以解释事实或关系；请勾回必要字段或不继承该条目。`});
+ }
  for(const o of spec.overrides){requireThat(selected.has(o.entityId),'OVERRIDE','改编目标必须已选择');const a=byId.get(o.entityId)!;const prior=[a.fields[o.property],...assets.filter(f=>f.kind==='fact'&&f.refs.entityId===a.id&&f.fields.property===o.property).map(f=>f.fields.value)].filter(v=>v!==undefined);if(spec.template==='canonical')conflicts.push({id:a.id,code:'CANONICAL_OVERRIDE',message:'原作相容模板不改变继承事实；请选择指定分歧或平行设定。'});else if(spec.inheritPrefix&&prior.some(v=>String(v)!==o.value)&&!o.retcon)conflicts.push({id:a.id,code:'RETCON_REQUIRED',message:`「${a.name}」的${o.property}已在前缀中成立；前移分歧点或明确确认回溯改编及影响。`});}
  if(gaps.length&&!spec.allowGaps)conflicts.push({id:run.id,code:'COVERAGE_GAP',message:`还有${gaps.length}个片段未处理；可继续抽取，或明确接受带缺口启动。`});
  if(pending.length&&!spec.allowGaps)conflicts.push({id:run.id,code:'AMBIGUITY',message:'存在待消歧或未证实条目；先处理、排除，或明确带警告启动（不会接受这些结论）。'});

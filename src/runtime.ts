@@ -172,11 +172,11 @@ export class Runner {
     let t=this.boundary(taskId);const planSourceId=plan?`task-plan:${t.id}:${c.id}`:undefined;const sources=this.reviewSources(t.projectId);if(planSourceId)sources.push({...c,id:planSourceId,body:'',fields:plan as StoryObject['fields'],source:undefined});
     const requiredStates=sources.filter(o=>o.kind==='world'&&o.status==='accepted'&&(o.fields.unique===true||String(o.fields.type).includes('物品'))&&content.includes(o.title)).map(o=>({entityId:o.id,title:o.title,property:'holder'}));
     const contractSourceId=`task-contract:${t.id}`;const contractSource={...c,id:contractSourceId,body:t.goal,fields:{constraints:[...t.constraints,...(t.contract.brief?.constraints??[])],scope:t.contract.scope},source:undefined};sources.push(contractSource);
-    const reviewInput=()=>{const input=this.input(t,pack,{draft:content,chapterId:c.id,plan,planSourceId,requiredStates,contractSourceId,contractEvidence:contractSource.fields});if(planSourceId)input.sourceIds.push(planSourceId);input.sourceIds.push(contractSourceId);return input;};
+    const reviewInput=()=>{const input=this.input(t,pack,{draft:content,chapterId:c.id,targetWords:target,plan,planSourceId,requiredStates,contractSourceId,contractEvidence:{goal:t.goal,...contractSource.fields}});if(planSourceId)input.sourceIds.push(planSourceId);input.sourceIds.push(contractSourceId);return input;};
     let review:Review=await this.step(taskId,'审校与候选事实','review',reviewInput(),o=>validateReview(o,content,sources,pack.canon,target));
     for(let round=0;round<2&&review.issues.some(i=>i.blocks&&i.status==='open');round++){
       this.boundary(taskId);const draft=content;
-      const repair=await this.step(taskId,`局部修复-${round+1}`,'repair',this.input(t,pack,{draft,issues:review.issues.filter(i=>i.status==='open'),chapterId:c.id}),o=>{
+      const repair=await this.step(taskId,`局部修复-${round+1}`,'repair',this.input(t,pack,{draft,targetWords:target,issues:review.issues.filter(i=>i.blocks&&i.status==='open'),chapterId:c.id}),o=>{
         const ranges=o.edits.map((e:any)=>{const start=draft.indexOf(e.quote);requireThat(start>=0&&draft.indexOf(e.quote,start+e.quote.length)<0,'REPAIR_RANGE','局部修复引用必须唯一',422);return {start,end:start+e.quote.length,replacement:e.replacement};}).sort((a:any,b:any)=>a.start-b.start);
         for(let i=1;i<ranges.length;i++)requireThat(ranges[i].start>=ranges[i-1].end,'REPAIR_RANGE','局部修复不能重叠',422);return {...o,ranges};
       });

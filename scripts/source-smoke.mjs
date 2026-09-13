@@ -47,5 +47,6 @@ try{
   check('two_source_continuations',!!second&&second.status==='COMPLETED'&&report.branch.chapters.length===2&&report.branch.chapters.every(c=>c.status==='accepted'),{secondTask:second?.id});
   const allRequests=[...report.requests,...report.branch.requests],reported=allRequests.filter(r=>r.usage?.serverCache==='REPORTED');report.cache={requests:allRequests.length,reported:reported.length,positiveReads:reported.filter(r=>r.usage.cacheReadTokens>0).length,readTokens:reported.reduce((n,r)=>n+(r.usage.cacheReadTokens??0),0),writeTokens:allRequests.some(r=>r.usage?.cacheWriteTokens!==undefined)?allRequests.reduce((n,r)=>n+(r.usage?.cacheWriteTokens??0),0):'UNKNOWN',cost:'UNKNOWN',meaning:'实际DSH提供方usage，含失败/重试，不是固定负载命中率；本地编译复用单独记录。'};
  }
- await save();console.log(JSON.stringify({command,projectId:report.projectId,manifest:report.manifestId,scan:report.scan,preview:report.preview,checks:report.checks},null,2));
+ if(report.branch&&report.humanReview){const fresh=report.branch.chapters.every(c=>report.humanReview.chapterHashes[c.id]===c.contentHash);check('human_review_matches_current_text',fresh,{method:report.humanReview.method});report.status=report.checks.every(c=>c.status==='PASS')&&report.humanReview.status==='PASS'?'PASS':'FAIL';}
+ await save();console.log(JSON.stringify({command,status:report.status,projectId:report.projectId,manifest:report.manifestId,scan:report.scan,preview:report.preview,checks:report.checks},null,2));
 }catch(error){report.error=error.message;await save();console.error(error.message);process.exitCode=1;}

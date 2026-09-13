@@ -1,28 +1,30 @@
 # Execution state — recovery entry
 
-## 当前任务：原作资料、选择性继承与衍生作品（0.3.0，实施中）
+## 当前任务：原作资料、选择性继承与衍生作品（0.3.0）
 
-起点 f271345，工作树干净。先读本节，不能把下方0.2.0完成状态当成本轮完成。56项旧测试与typecheck基线通过；10份旧项目备份在 `.local/backups/source-20260913/`，公开回执 `evidence/source-backup-receipt.json`，无正文/凭据。当前阶段A→B，正在实现源版本、截止范围、分段抽取和原子创建的纵向链路。
+2026-09-13，阶段 A–E 实现与验收已通过，正在整理最终交付文档与本地提交。原始 A–L 条件保留在 PRODUCT/ACCEPTANCE。起点 f271345，原有工作树干净；本轮代码切片 2a6ef26、ae30dba，最近收口提交请以 git log 核对。此前 0.2/V1 记录是历史，不代表本轮验证。
 
-现状→缺口→最小修改→验收：现有TXT/MD导入直接写小说，没有共享只读源/继承清单；增加SQLite schema3的源版本、覆盖段、素材和manifest，激活时复制成现有对象。既有Runner/step、编译器、usage/预算/恢复可复用；新增中性发现/抽取任务分支，密集段饱和就细分，预算不足保留缺口。原实体存储无总量上限，旧extract每次最多3章、提示实体列表前100、graph局部30；总量/批量/上下文/分页分别处理。创建后继续使用当前Writer/Director，不复刻工作台。
+现状→缺口→修改→验收：旧TXT/MD导入直接写小说，没有独立只读源/截止点/继承清单；在既有SQLite、Domain、Runner、编译器、图谱、记忆和双模式上增加源版本、分段覆盖、证据素材、manifest原子复制激活。没有另起应用或修改DSH Core。没有作品总角色硬上限；批次、上下文、分页和任务预算各自保留边界。
 
-参考已核对 HEAD 24832d5eb0ded8c39cfaab9971af2a57e1827a22（2026-09-12），源码只读不执行/复制：角色API max16、服务MAX_IDENTIFIED_CANDIDATES16及结果slice16、Prompt min16；具名输入slice8；source notes每段characters/worldbuilding等max5、evidence max3。不是作品数据库容量等价限制。许可证AGPL-3.0-only加独立商业授权声明，许可未合并；本轮按功能自主实现。
+已实现：原作/文本资料包和目录修订版本；章/卷前后明确边界；全选定范围分段发现→抽取、饱和细分、覆盖缺口和预算授权恢复；有时点的身份归并/拆分/撤销和依赖失效；来源精确引文及单方知情；三种创作方式、三个模板、字段选择、背景引用、依赖丢弃/替代、明确回溯改编；事务激活/幂等、只读前缀、独立角色映射；新正文继承作者状态、记忆失效重建、版本/取消晚到保护；来源版本比较不自动改书；默认导出不带原作、私人备份保留选中证据。最新修复包括关系/事实必要字段不能取消后仍激活、审校来源诊断、稳定规则与场景事件分开抽取、局部修复只接收阻塞项、继承视图标明已撤销历史。
 
-关键边界：版本与章节稳定ID；严格前缀先过滤再抽取/召回，后期别名不反灌；独立分支复制映射，不共享可变角色。原文只读；原稿修订新建版本。书内覆盖与源证据分开。staging manifest固定选择/边界/版本，事务激活幂等；未就绪不冒充可写。资料包不要求完整小说。仅TXT/MD与本地文本资料包为首选，EPUB需另核运行能力；不做爬书/发布。
+验证结果：16 unit +55 integration +3 deterministic HTTP E2E =74 PASS、0 FAIL/skip；typecheck/build PASS。source-final.json再次读取10/10升级前作品完整备份校验和未变；最终两服务重启11/11作品及7组原作/分析/清单记录校验和相同。60章64人通过真实HTTP和确定性抽取调度，密集段拆分/17、33、64搜索入书及上下文已验证。千级元数据性能中位13–16ms，仅性能用途，不冒充抽取。
 
-阶段B服务端纵向链路已通过，C/D与UI仍在实现验收。新增 source-contracts/sources/source-runner/inheritance/source-http、SourceLibrary，接入现有Runner、编译器、书架、双模式、配置绑定和继承证据视图。当前 typecheck/build PASS，62项测试PASS（56旧回归+2 source unit+3 source integration+1 source HTTP E2E）。60章64角色经真实HTTP及确定性替身调度，不是直接插入；密集段拆分、20章截止点过滤、生成→接管→下一章通过。预算重启恢复、事务故障/幂等、选择引用、独立资料包、分支隔离、新版本不改旧书、备份恢复通过。证据 source-slice-tests.txt。
+真实DSH：原创test/fixtures/source-real.md五章24具名角色，严格截止第三章；18次调用覆盖6/6段，24/24已知人物发现、77/77引文精确存在；重复身份10项作者证据归并，9项不明结构条目未继承。后续真实两章1027/1251字，作者第一章接管后1128字；第二章实际请求使用作者归还钥匙的新版本。两章记忆覆盖2/2。最终错字复核7次累计调用后完成，包含早期失败与未采用修复；最终正文与原候选仅两处错字不同，未扩写。总40次DSH请求（含失败/重试），33次实际缓存读量>0，合计62592 token；写入/费用UNKNOWN。详见source-real.json及完整样本，不能把元数据或替身计为真实能力。
 
-恢复断点（阶段C–E）：归并/拆分/撤销及依赖失效、按章状态投影、单方知情、来源证据召回、深入档案候选接受、千级列表/局部图已实现。最近71项测试PASS，typecheck/build PASS；source-expanded-tests.txt。1000条合成元数据分页/搜索/筛选全选/局部图中位数13–16ms，source-scale.json（只测性能，不冒充抽取）。4317/4318升级前后10/10旧项目完整备份校验和相同，source-runtime.json。
+浏览器：13张已查看截图，真实上传/目录/截止点/证据/图、来源创建和双模式；64人跨页批量选择及字段重置后建立第二个独立作品；1280x900/390x844的Writer/Director/Inspector/继承历史无水平溢出。一次测试自动化误读CodeMirror虚拟化DOM造成部分编辑，已通过实际版本UI完整恢复，最终1581字符精确核对，错误中间版本仍保留。最终error console为空，viewport已reset，tab2保留真实第二章导演任务，4320临时服务和tab3已关闭。
 
-真实原作验收：test/fixtures/source-real.md为原创5章24人，严格截止3章；6/6片段、18次DSH调用完成，已知24人均发现，引文77/77精确存在。10项作者证据归并处理重复身份；9项结构不明条目明确未继承。source-real.json保留失败、召回和实际缓存字段。原作工作source_7a667157-8c93-49e5-af20-910906b722a0；run scan_dbc256bf-9e2a-4910-969e-e930fdc18330；真实衍生作品project_c7a60811-f25f-4c64-a320-9af9293da507。
+当前正式实例：4318 DSH PID67928，4317离线PID26452；用户既有3080 PID10956原样未动。PID会变化，只按serve.ps1进程回执验证后操作。不操作D:\workspace\DSH脏工作树、不推送远端、不清库。原作源分析无待运行任务，真实三任务均COMPLETED；历史V1/0.2失败任务保留暂停，不在后台续跑。
 
-浏览器实际上传、选择截止点、恢复清单、关系图/证据阅读、原子创建作品已操作。第4章真实任务task_d54ab4ae-46ec-42fe-8daf-1e8c545ca499已COMPLETED，正文1027字；先前审校错误/输出预算耗尽保留，修复证据诊断与任务约定来源后，显式将输出预算36000→58000（调用仍12），只重跑审校，最终10次调用42109输出token。未重生成成功的规划/正文。作者已在Writer接管，修改一句病句并追加钥匙从陆初禾交还岑初禾，保存version_152189ba-2757-487e-8b07-e371c3a0d92b；旧摘要失效，extractionPending=true。随后实际UI委派task_6e33fa3c-d4d7-4626-a591-dd35310685b7，5次调用14065输出token，COMPLETED；同步作者新正文→规划→生成→审校，均一次通过。第5章version_d0e2a12a-2c43-4cf1-b887-b810bc0f0a77明确继承岑初禾持钥匙。两章记忆覆盖2/2，实际请求包含作者版本，15条分支请求无被隔离的未来。
+可复核作品：project_c7a60811-f25f-4c64-a320-9af9293da507（潮门之后 · 原作接续验收）；原作source_7a667157-8c93-49e5-af20-910906b722a0，sourceversion_15e7babd-f4c3-4bcf-a31b-fea1290c336e，scan_dbc256bf-9e2a-4910-969e-e930fdc18330。作者第4章version_152189ba-2757-487e-8b07-e371c3a0d92b；第5章最终version_9e1c153a-1bde-4b4a-94ae-43f1edb53c7f。第二章任务task_6e33fa3c-d4d7-4626-a591-dd35310685b7。
 
-仍待完成：真人读稿发现第5章“三星五”错字，待作者局部修正与记忆刷新；G/H分歧和资料包生成、字段继承/动态历史、自引用隔离已补测试通过；窄屏/桌面视觉复核和最终UI回执；分类测试脚本已加入source测试，需最终运行；README、四份执行文档和最终验收状态更新。此时不能宣称0.3完成。没有外部阻塞。只操作本项目4317/4318，3080保持不动；当前4318 PID38136，已无运行任务；最近UI字段/只读文案修改尚待新构建。
+恢复入口：本节→PRODUCT/ACCEPTANCE→ARCHITECTURE→git status→git log→diff。下一项：完成README和0.3验收文档收口、提交本地更改；无需继续调用模型或重写已通过的功能。未完成的核心功能/外部阻塞：无。兼容边界：TXT/MD/UTF-8与GB18030文本资料包；EPUB未实现，来源采集/自动发布不在范围。摘要语义/实体发现仍会遗漏或误归类，所有引文可回查，深度档案不是创建前置。
 
-当前未提交均本轮任务，初始用户脏修改为空。最近代码位置还包括domain/shared来源标记、readonly引用保护、default文本导出排除继承前文。保存清单时冻结来源/边界/选择，原子激活；私人备份含所选原文和证据，不含来源库未来全文。源删除有引用保护，仅用户显式请求才执行。
+启动：npm run start:dsh（4318）或npm run start:local（4317）；改代码后npm run build，powershell -NoProfile -ExecutionPolicy Bypass -File scripts/serve.ps1 -Dsh -Restart。分类测试npm run test:unit / test:integration / test:e2e；只读复核node scripts/source-smoke.mjs capture、node scripts/source-final.mjs。性能npm run test:source-scale。运行快照：设置NOVEL_RUNTIME_EVIDENCE=docs/novel-studio/evidence/source-final-runtime、NOVEL_SOURCE_RUNTIME=1，再node scripts/upgrade-runtime.mjs capture→重启两个本项目实例→verify，必须capture成功才重启。
 
-启动命令沿用README。验证 `npm run typecheck`、`npm test`；本轮新证据前缀 source-*。最新可靠代码切片2a6ef26；之后全部未提交内容均为本轮，继续前先看git status/diff。测试/凭据/原始日志在.local不提交，公开证据仅原创Fixture及用量回执。
+最近文件：src/source-{contracts,runner,http}.ts、sources.ts、inheritance.ts、context/temporal/domain/runtime/review/prompts、ui/SourceLibrary与现有入口；test/source-*、scripts/source-*。schema3加6张来源表，无新增依赖；源文件/凭据/数据库均在.local私有保存。10份迁移前备份在.local/backups/source-20260913，JSON恢复为独立作品；完整来源库冷备先停止所属进程，保留整个SQLite库后再启动。证据均在docs/novel-studio/evidence/source-*，仅原创材料/无密钥回执。当前未提交均本任务，无用户原始脏内容。
+
+参考核对：ExplosiveCoderflome/AI-Novel-Writing-Assistant @24832d5eb0ded8c39cfaab9971af2a57e1827a22；实际API/Service/Prompt/notes的16/8/5/3限制与发布/缓存代码已读，AGPL-3.0-only与商业声明已核对；不运行、不复制参考实现，独立实现允许范围资产继承。
 
 ## 当前增量升级：文风、记忆与提示词分层（2026-09-13）
 
