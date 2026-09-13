@@ -1,19 +1,50 @@
 # Architecture
 
-## 0.3 原作衍生升级（实施中）
+## 0.3 原作衍生升级（已验证）
 
-Schema3增量新增source_works/source_versions/source_runs/source_assets/source_decisions/import_manifests，保留旧项目所有JSON行；没有清库。SourceVersion保存原始文件字节（每份文件base64与SHA256）、解码文本、材料用途/版本、UTF-16章节和引文范围。目录修订是新版本。章节ID不依赖标题唯一性；卷/章前后边界明确解析，未知或缺章不补造。
+在既有 Domain + UI + DSH Adapter 上增量扩展，DSH Core及独立脏checkout均未改动，npm没有新增依赖。schema2→3在事务内新增 `source_works/source_versions/source_runs/source_assets/source_decisions/import_manifests` 六表及版本索引。旧项目JSON行不迁移重写；升级前10项目私人备份，最终校验和10/10相同。完整数据恢复：项目JSON备份恢复为独立副本；来源库冷备先停对应服务，再复制整个SQLite库，不在线覆盖或清库。
 
-source-runner复用Runner.step/配置编译/Provider/usage/中断机制，以中性Extractor协议分两步覆盖每个片段。单批发现16（可4–32）、整理最多48是返回容量；饱和就分割，有重叠而按原文证据位置幂等。没有作品实体总量截断。任务最高1000次/300万输出token，默认24次/10万；普通创作仍保持40次/15万，预算只在作者暂停后明确增加。来源任务放在隐藏分析工作空间，只能通过带version/run/cutoff的来源API运行，通用AI工具不能把它当小说扩权。
+`SourceVersion`不可变，保存每份原文件base64、SHA256、编码、解码正文、材料类型/阶段/用途、稳定章节ID和UTF-16范围。UTF-8/BOM/GB18030按明确选择解析；无连续正文也可以人物/世界文本组成资料包。目录校正创建新版本，不能回写旧证据；序章、卷重编号、重名与缺章展示实际目录。界面“章之后”含本章，“从章重写”不含本章；卷前后解析为真实位置，不靠标题排序。文件整体哈希用于身份，不作为唯一上下文缓存键。
 
-assetsAt先按run/version/reveal ordinal过滤观察，再归并与应用有效时点人工决定；绝不从全书档案过滤几个字段冒充前缀安全。缓存键包含版本哈希、片段、截止点、分析版本及前缀registry哈希；现阶段只复用同任务落盘步骤和既有全范围分析的允许前缀视图。原始来源不会进入文风/正则管线。原文中指令仅为数据。
+`source-runner.ts`复用Runner.step、配置快照、编译器、DSH、usage、epoch/修订fence、中断和重启恢复。每段先直接原文发现实体，再整理事实/事件/关系/世界。发现容量默认16，可配置4–32；结构化整理每次最多48项。达到容量/报告饱和继续细分并保留重叠；太密无法可靠分割或结构无效就留缺口，不冒称完整。一步最多两次自动重试；同来源工作空间串行写入。当前来源总预算默认24调用/10万输出token、最高1000/300万，UI需明确授权增加，历史用量不重置。每个片段、重试、已完成副作用和未覆盖原因落盘；源扫描成功也不等价语义全召回。
 
-inheritance根据manifest的类别/实体/字段/依赖选择构建独立对象映射，默认有限背景引用补全。原作正文引用锁定，作者改编存独立来源和变更历史，覆盖相同属性的继承事实被撤销，不伪造源证据。本书的新增章节继续使用已有accept/review/memory/rollback路径。source.activated变化记录保存选中素材的证据快照，随项目备份恢复，即使原资料库不可用也能追溯。默认TXT/MD只导出新增或改编章节并保留来源说明；私人备份明确包含继承前文。
+`assetsAt`按run/version/揭露章节先裁允许范围，再聚合有证据观察和生效时点的人工归并。身份和别名不因字符串相似自动合并；不相容同名作为待确认，支持定点merge/split/resolve/undo。源实体深度档案是独立候选，作者接受后才继承；晚到档案必须匹配analysisRevision。人工更改影响registry中的解析依赖时，重置相应后续覆盖、隔离原产物并暂停；已激活分支保持独立。引文必须实际存在，重复引文要求准确段内偏移或更长唯一证据，不能虚构位置；传闻/梦/推断/角色知情分层，knownBy映射到真实实体。
 
-参考审计：ExplosiveCoderflome/AI-Novel-Writing-Assistant @24832d5eb0ded8c39cfaab9971af2a57e1827a22。默认AGPL-3.0-only与独立商业授权声明，未复制代码或素材、未运行参考项目。角色API max16、Service MAX_IDENTIFIED_CANDIDATES16及slice16、具名输入slice8、Prompt min16是发现/批次路径限制；source notes每项characters/world等max5、evidence max3可能在上游损失候选。实际链路为原文分段→source notes缓存→identify候选→按规范化姓名upsert→逐候选profile→Prisma→CharacterPanel。cache.ts的键包含documentVersionId/sourceScopeKey/provider/model/temperature/token/segmentVersion；源码存在范围键，不能误称只有书名。publish.ts通过KnowledgePublishService发布成版本化知识文档并绑定novel，并非把原文自动激活为当前状态。本轮借鉴证据/分段/阶段产物，独立实现领域资产复制与严格截止，不机械复制知识发布链路。README宣传未作亲自运行通过的证据。
+范围隔离覆盖正文、段摘要、实体别名/历史状态、图关系、召回、编译及请求：检索前就形成允许素材集合，不能整库top-K后删未来。完整来源分析可按证据重建早期视图；来源段摘要只由此前已处理registry和当前允许原文形成。每一步hash含Prompt版本、sourceVersion、cutoff、片段、analysisRevision及registry版本/哈希；这里只复用已有任务落盘步骤和同一分析的安全前缀视图，不宣称跨所有任务免重复付费。模型预训练信息无法物理删除，任务明确要求来源约束，审校引文/实体必须可查。
 
-实现位置：src/source-{contracts,runner,http}.ts、sources.ts、inheritance.ts；UI复用Modal/Field/Inspector，并从书架和侧栏进入SourceLibrary。测试source-{unit,integration,http}.test.ts，原创source-fixture.ts。当前不支持EPUB解析或原作采集；支持UTF-8/GB18030 TXT、Markdown、无连续正文的文本资料包（每版本20份/500万字符、单文件20MB）。这些是显式资源限制，不是角色容量限制。
+`inheritance.ts`保存staging manifest，固定版本、边界、字段选择、关系依赖、排除、覆盖、配置版本和analysisRevision。preview给出数量、背景补全理由、缺口、前缀冲突及回溯改编影响；激活在同一SQLite事务内复制已有Novel/Chapter/Character/World/Canon/Event对象、版本、映射和来源证据，再标active。幂等重试返回同一projectId；中途索引或写入失败整个创建回滚，不暴露半本就绪作品。源和其他分支从不共享可变人物记录。
 
+继承正文为locked/referenceOnly，不能通过编辑器、unlock、takeover、review/extract/summarize任务绕过写保护。世界/角色动态状态按允许证据保留历史投影；knowledge的主体不是知情者本人时，必须按knownByIds隔离。独立同人使用静态字段白名单，未知动态字段默认重置；显式勾选优先且可包含自定义字段。取消事实property/value或关系type/state将产生可见冲突，不能生成不可解释的正式对象。最小背景不携带完整档案、别名/秘密或无限关系依赖。
+
+源事实、继承基线、作者改编、本书正文事实和AI候选使用同一source元数据，provenance分别标记。改编覆盖独立保留原证据并撤销同属性基线投影；回溯改编/明确排除时参考前文不再作为当前生成事实证据。`source.activated` changeset包含选择清单、映射、引用证据副本；书内编辑/回滚继续用Domain既有版本、派生失效与任务保护。本书接受新章仅改变本项目。来源升级生成新version，可比较并新建选择清单或副本，既有同人正文不自动改写。来源删除有引用保护，归档不会影响分支。
+
+Context Engine向新书提供基线契约、允许的必要原文末段、参与状态/关系、规则及未决义务；源证据即使未启用记忆也可有限召回。源任务隐藏在分析工作空间，通用读写工具不能自行扩大来源范围；专用HTTP与共享服务验证版本/截止点。新书Director默认创作现有起点，跳过重新开书；Writer查看原文和证据、编辑新稿、接管后下一任务先重建同版本状态。所有新正文继续使用已有文风/regex/raw→candidate→accept→memory管线；来源Extractor强制中性配置。
+
+审校可靠性修正：Reviewer v15要求稳定规则无变化时不重复抽取，不把测量事件作为规则value。虚拟任务约定证据源包含完整goal与constraints；错引sourceId时报告实际匹配来源，仍拒绝错误引用。记忆引文只可来自本次draft。只有源结构化解析允许删除末尾1–2个多余闭括号，并保留raw、重新Schema校验和记录修复；不补缺失JSON。局部修复只接收阻塞问题，review-only无默认整章字数要求。自由文本语义差异仍可能触发保守冲突，不能宣称永不误报。
+
+本书默认TXT/MD导出只包含新稿和来源说明；私人备份显式包含所继承前缀/证据，不附带资料库隔离后文。恢复创建副本并保留来源关联、配置与记忆历史；源库不随作品删除。原作不会自动上传；云抽取必须明确同意选定范围及预算，真实调用仅走已配置DSH。
+
+### 数量与资源分层
+
+| 层级 | 当前边界 |
+|---|---|
+| 作品/来源实体总量 | 无16/32/128等业务截断，受存储/设备资源约束 |
+| 发现/整理批次 | 默认16个发现（4–32），整理48项；满批细分或明确缺口 |
+| 文件/请求 | TXT/MD与文本包；每版本20份、500万解码字符，单文件20MB；HTTP请求64MiB含base64/JSON |
+| 扫描片段 | 默认4000字符，可200–10000；最小可靠细分120字符、深度10、60字符重叠 |
+| 列表/图 | HTTP页面最多200，UI素材30、继承40；筛选全选/导出覆盖全部；局部图30一跳 |
+| 生成上下文 | 独立有界召回，核心材料放不下则显式暂停；不发送全部角色 |
+| 请求记录 | 每项目最近100次本地快照；更早正文及处理链保存在成果/版本/步骤，来源证据另存 |
+
+### 参考审计与实现边界
+
+只读核对 [AI-Novel-Writing-Assistant @24832d5](https://github.com/ExplosiveCoderflome/AI-Novel-Writing-Assistant/tree/24832d5eb0ded8c39cfaab9971af2a57e1827a22)，提交日期2026-09-12。LICENSE为AGPL-3.0-only加独立商业授权说明；未复制实现/素材、未运行该项目，也不把README宣称计为本项目验证。按用户提供路径读取bookAnalysis路由、BookAnalysisCharacterService、schemas/prompts/shared types、notes缓存与发布/前端链路。实际角色API max16、Service MAX_IDENTIFIED_CANDIDATES16/slice16、具名输入slice8、Prompt min16；source notes每段characters/world等max5、evidence max3，可在上游造成候选损失，均不等价数据库作品总容量。
+
+实际参考流为原文段→notes/cache→identify→规范化姓名upsert→逐候选profile→Prisma/CharacterPanel；cache键包含documentVersionId/sourceScopeKey/provider/model/temperature/token/segmentVersion，不能误称仅按书名。publish通过KnowledgePublishService形成版本化知识文档并绑定novel，不是本轮所需原子基线。这里仅借鉴分阶段、证据与恢复思路，以现有领域服务自主实现。
+
+实现入口：`source-contracts.ts/sources.ts/source-runner.ts/source-http.ts/inheritance.ts`；既有`context/temporal/domain/runtime/review`扩展；`ui/SourceLibrary.tsx`共享Modal/Field/graph/Inspector，从书架及侧栏进入。专用unit/integration/boundary/HTTP测试及原创Fixture、source-scale/smoke/final脚本可复核。74自动测试PASS；真实24/24已知人及77/77有效引文、两次接续与人工交接，40次DSH实际请求中33次缓存读取>0、合计62592，写入/金额UNKNOWN。实测与失败详情见ACCEPTANCE，元数据性能与替身不得充当真实召回。
+
+未实现可选EPUB解析，未做爬书/DRM/发布。author-reference材料目前仅作者隔离阅读，不送规划模型；版本升级以比较+新清单/独立副本进行，不提供自动多分支合并。无其他本轮核心未完成项。
 
 ## 2026-09-13 incremental upgrade — 0.2.0 verified
 

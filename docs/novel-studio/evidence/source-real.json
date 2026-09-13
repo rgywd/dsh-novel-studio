@@ -1,6 +1,6 @@
 {
   "at": "2026-09-13T09:45:43.968Z",
-  "status": "RUNNING",
+  "status": "PASS",
   "workId": "source_7a667157-8c93-49e5-af20-910906b722a0",
   "versionId": "sourceversion_15e7babd-f4c3-4bcf-a31b-fea1290c336e",
   "runId": "scan_dbc256bf-9e2a-4910-969e-e930fdc18330",
@@ -42,7 +42,7 @@
     {
       "name": "branch_requests_exclude_future",
       "status": "PASS",
-      "count": 15
+      "count": 22
     },
     {
       "name": "memory_same_accepted_versions",
@@ -54,6 +54,11 @@
       "name": "two_source_continuations",
       "status": "PASS",
       "secondTask": "task_6e33fa3c-d4d7-4626-a591-dd35310685b7"
+    },
+    {
+      "name": "human_review_matches_current_text",
+      "status": "PASS",
+      "method": "Complete reading of raw outputs and accepted versions; no AI quality score"
     }
   ],
   "manualDecisions": [
@@ -959,7 +964,7 @@
   "projectId": "project_c7a60811-f25f-4c64-a320-9af9293da507",
   "configuration": "config_56d2c6f6-e2df-40b6-95dc-4af1b30da37c",
   "branch": {
-    "revision": 7,
+    "revision": 12,
     "lineage": {
       "workId": "source_7a667157-8c93-49e5-af20-910906b722a0",
       "versionId": "sourceversion_15e7babd-f4c3-4bcf-a31b-fea1290c336e",
@@ -1005,11 +1010,35 @@
         "title": "第5章",
         "status": "accepted",
         "words": 1251,
-        "currentVersion": "version_d0e2a12a-2c43-4cf1-b887-b810bc0f0a77",
-        "summaryVersion": "version_d0e2a12a-2c43-4cf1-b887-b810bc0f0a77",
+        "currentVersion": "version_9e1c153a-1bde-4b4a-94ae-43f1edb53c7f",
+        "summaryVersion": "version_9e1c153a-1bde-4b4a-94ae-43f1edb53c7f",
         "extractionPending": false,
-        "contentHash": "a96cddd58139d6e641e40e41d6972444e9ef8a6fe73dc345f2db1ef03afea986",
+        "contentHash": "a3aefa77daf681cc0d927f1b6177f991bf48f1933eaa54bb960f691f1ed51249",
         "versions": [
+          {
+            "id": "version_9e1c153a-1bde-4b4a-94ae-43f1edb53c7f",
+            "actor": "auto:task_3c8e3bdf-27f7-4d57-8071-ea77434b9591:qualified-v1",
+            "words": 1251,
+            "hash": "a3aefa77daf681cc0d927f1b6177f991bf48f1933eaa54bb960f691f1ed51249"
+          },
+          {
+            "id": "version_e91d126b-8856-4f52-8c75-f00ec45639ab",
+            "actor": "author",
+            "words": 1251,
+            "hash": "a3aefa77daf681cc0d927f1b6177f991bf48f1933eaa54bb960f691f1ed51249"
+          },
+          {
+            "id": "version_79663f35-49df-4fa7-8042-37e8bc1ddb1d",
+            "actor": "author-rollback",
+            "words": 1251,
+            "hash": "a96cddd58139d6e641e40e41d6972444e9ef8a6fe73dc345f2db1ef03afea986"
+          },
+          {
+            "id": "version_869d621f-cdcb-412d-a28d-12a88e0c87a1",
+            "actor": "author",
+            "words": 484,
+            "hash": "7bb8a6fb725b48a9c0d082c37aa96aca3595d959679431e8c2403995e7b86d6d"
+          },
           {
             "id": "version_d0e2a12a-2c43-4cf1-b887-b810bc0f0a77",
             "actor": "auto:task_6e33fa3c-d4d7-4626-a591-dd35310685b7:qualified-v1",
@@ -1056,7 +1085,7 @@
         },
         {
           "id": "memory_c4f400af-c9d0-4aa2-99f1-cd2b7da71a73",
-          "status": "valid",
+          "status": "stale",
           "sources": [
             {
               "chapterId": "chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc",
@@ -1068,6 +1097,21 @@
             }
           ],
           "sourceHash": "e698277801a4771a85b6850bee954048bde95a08d3311224f9fd1928fcf9bfad"
+        },
+        {
+          "id": "memory_4659c573-b30e-465e-bc9f-ed106a33d615",
+          "status": "valid",
+          "sources": [
+            {
+              "chapterId": "chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc",
+              "versionId": "version_9e1c153a-1bde-4b4a-94ae-43f1edb53c7f",
+              "hash": "a3aefa77daf681cc0d927f1b6177f991bf48f1933eaa54bb960f691f1ed51249",
+              "ordinal": 5,
+              "parentId": "volume_6cb060ab-fd1d-4c19-bcbb-44f613178278",
+              "branch": "main"
+            }
+          ],
+          "sourceHash": "5eb8c9a68c093bcfa3d38b20e6868924c63f2025be1d1630f033e8d8c6bf25bf"
         }
       ]
     },
@@ -1212,9 +1256,1871 @@
             ]
           }
         ]
+      },
+      {
+        "id": "task_3c8e3bdf-27f7-4d57-8071-ea77434b9591",
+        "kind": "review",
+        "status": "COMPLETED",
+        "usage": {
+          "calls": 7,
+          "outputTokens": 28662,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 8,
+          "outputTokens": 43000,
+          "contextChars": 36000
+        },
+        "configHash": "a6a05d93a908673f30abcde5b39825b2a47afb79ebd968b974b7b612bb0512d0",
+        "steps": [
+          {
+            "name": "整理任务约定",
+            "status": "COMPLETED",
+            "inputHash": "a8d781ef26f653d5c249a11dfadb726eb905a41897351c205e1597f85e35e7a8",
+            "attempts": 1,
+            "requestIds": [
+              "request_a5ac79f6-989a-4139-80f3-5757ed38c349"
+            ]
+          },
+          {
+            "name": "审校与候选事实",
+            "status": "FAILED",
+            "inputHash": "b15f623ff102318d808ecf92bf396e4a1b1a0954518cf9016bc7b0e2976b4043",
+            "attempts": 3,
+            "requestIds": [
+              "request_74c70e9d-64f4-49b4-a634-0bee957f1056",
+              "request_705fd511-8d2d-4ea1-97f0-6cf413cd1b73",
+              "request_b71066f5-ffed-4af9-ab41-0b2e1141e050"
+            ],
+            "error": "issues[0].sourceQuote 不在 sourceId=chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc 的原始资料中：作者已将度量错字三星五改为三尺五。核对当前完整正文，重建同版本的事实、关系和记忆；保持钥匙归属和已经完成的实测，不改变已接受的上一章。。请精确引用该来源字段；本次调整规划应引用 supplied planSourceId，而不是旧章纲。"
+          },
+          {
+            "name": "审校与候选事实",
+            "status": "COMPLETED",
+            "inputHash": "963cfb53b616a249f69c54311baee00a4361e9aea61b545576699b32f5c7065c",
+            "attempts": 1,
+            "requestIds": [
+              "request_4f6799f4-d7e5-4857-8a70-ac346275f624"
+            ]
+          },
+          {
+            "name": "局部修复-1",
+            "status": "COMPLETED",
+            "inputHash": "f761fae115c431c74a5063cca56aed62d6da583d06b2a6aa583233c162a27f54",
+            "attempts": 1,
+            "requestIds": [
+              "request_d2d1c900-3b4e-48f7-b6ad-d0fedcc28ab6"
+            ]
+          },
+          {
+            "name": "审校与候选事实",
+            "status": "COMPLETED",
+            "inputHash": "2fd16fc1643309a72d1c3fa6bcee871d0867e63f110e5b7fb9114040434dd048",
+            "attempts": 1,
+            "requestIds": [
+              "request_5d7baf04-339e-4209-a16a-518950a9ba3a"
+            ]
+          }
+        ]
       }
     ],
     "requests": [
+      {
+        "id": "request_5d7baf04-339e-4209-a16a-518950a9ba3a",
+        "taskId": "task_3c8e3bdf-27f7-4d57-8071-ea77434b9591",
+        "role": "Reviewer",
+        "status": "COMPLETED",
+        "usage": {
+          "uncachedInputTokens": 24418,
+          "inputTokens": 24418,
+          "outputTokens": 5495,
+          "cacheReadTokens": 0,
+          "totalTokens": 29913,
+          "serverCache": "REPORTED",
+          "elapsedMs": 19559,
+          "firstTokenMs": 1422
+        },
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "hash": "bc15cb3bd298233eec81e29335d0558e65994e3c230c800e17839e051fae5ab1",
+        "stableHash": "7e0cb0d2e80c38d10a695dbd57ae13c852fce94cac0d1da13a3126d5c960b04b",
+        "configHash": "a6a05d93a908673f30abcde5b39825b2a47afb79ebd968b974b7b612bb0512d0",
+        "localCompilationCache": "MISS",
+        "localPrefixReuse": false,
+        "observedHash": "6d8fa9c90ed08c7f4f22dc057b881068cfe9cd20733cf9cf49b3824be92cfa2d",
+        "diff": {
+          "firstChangedPath": "$.maxTokens",
+          "commonPrefixChars": 13,
+          "identical": false
+        },
+        "context": [
+          {
+            "id": "project_c7a60811-f25f-4c64-a320-9af9293da507",
+            "kind": "project",
+            "version": "11",
+            "reason": "故事承诺、风格和不可破坏约束"
+          },
+          {
+            "id": "manifest_c2488f72-d88c-402f-94ef-f3171c1d7a3f",
+            "kind": "inheritance-baseline",
+            "version": "2",
+            "reason": "固定来源版本、严格前缀与作者已接受改编；原作后文不在本分支"
+          },
+          {
+            "id": "volume_bca2a17a-3925-4df5-bbb1-b013cd452183",
+            "kind": "locked",
+            "version": "1",
+            "reason": "锁定约束完整保留"
+          },
+          {
+            "id": "chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc",
+            "kind": "chapter-plan",
+            "version": "6",
+            "reason": "当前章目标、参与者、禁区、字数、揭示和结尾"
+          },
+          {
+            "id": "chapter_8a508e55-adc2-4407-96c4-502045a306a2:recent",
+            "kind": "accepted-body",
+            "version": "version_c7d7b622-c0fd-4aca-83a7-06807e78edb3",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:recent",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_912ddd15-f4ec-45e6-9111-f61184d43a8b:recent",
+            "kind": "accepted-body",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:ending",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "上章最新正文连续性；只取结尾"
+          },
+          {
+            "id": "fact_d024bee0-2ccc-443c-9720-b5428a7bda24",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_328d9e4d-777b-445b-8ef8-f4297f7c227a",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_18fb3ff6-d703-4f1c-93dc-533ee29150a5",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_2db5402e-0fdb-4023-b090-d3df41ef735b",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_dead6c33-c695-4d67-adcc-6c775c711692",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_d66b3a91-4c00-480c-b7e5-a2368e540c58",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_55c645ac-494d-4200-a091-4d025afa4b38",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_bbba3241-d090-4bb7-b735-1e625f286784",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_e2af2340-23e2-48da-b72c-58880fee2356",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_7a58f292-28a7-4e62-94cb-b616983f5e1f",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b8929656-5289-4c6b-970a-161860e97c6e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b1cb4fda-8ab4-4b8f-ae37-263252f4fd48",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_60ca98e4-9c2a-4ac5-b70a-8df9516e8d13",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_a30aa023-23ea-4c8d-8e69-a1ac3a28f557",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_fe8a01e3-f9e4-4b41-a1a6-2571214c9b4a",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_c0a37999-a30f-483b-a781-4ceee25177d8",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b97a892b-9a4b-496d-bda2-9ef02542fc8e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_033535dc-4d5e-4ccb-8ae1-c8f910951acb",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "book_94fcc9d6-5af6-4cea-89ef-5910b679e8ff",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "volume_6cb060ab-fd1d-4c19-bcbb-44f613178278",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "character_b9b7a3e7-575b-43e6-aa61-baec3eac145f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_e59e5e43-282d-4243-bdc9-fc2fa2dceb08",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_c5978eda-d8dd-4483-a22e-bf01c997551f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_669657ad-98ce-462e-817b-e98440770330",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_8d0eb1aa-6bff-4725-8d8d-51dc8116cbc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f3d23eb8-d5f3-469c-a51a-4a966df86bca",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_6d6a4928-9701-4c0d-8f9e-716a3093968a",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_d364fce9-873b-4ca1-8d83-bc134f300ad0",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5b9c541-b658-4434-89fe-17190ff09c9c",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f724178b-f2c7-48ac-a2ca-e81dbf943fc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5a4bb9f-408e-4568-8097-ab4a4d85b897",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_b7632c7a-d3c7-4784-9f08-2883e4648615",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_07e06f10-9a0e-45a6-91a0-ff67d7f4e311",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_3b1aafbe-99db-4ef8-a07f-237d55b7d231",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_566feb43-0362-47ce-bb13-ae96cf6a8dc5",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          }
+        ],
+        "rawHash": "8052dfcd7b09ae91ceb87e1c44e57a9c10eb2a4e33d8be5e341fee865d19df78",
+        "candidateHash": "8052dfcd7b09ae91ceb87e1c44e57a9c10eb2a4e33d8be5e341fee865d19df78",
+        "forbidden": []
+      },
+      {
+        "id": "request_d2d1c900-3b4e-48f7-b6ad-d0fedcc28ab6",
+        "taskId": "task_3c8e3bdf-27f7-4d57-8071-ea77434b9591",
+        "role": "Reviewer",
+        "status": "COMPLETED",
+        "usage": {
+          "uncachedInputTokens": 21822,
+          "inputTokens": 21950,
+          "outputTokens": 1291,
+          "cacheReadTokens": 128,
+          "totalTokens": 23241,
+          "serverCache": "REPORTED",
+          "elapsedMs": 5829,
+          "firstTokenMs": 660
+        },
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "hash": "4da467b9ad06a70235fb5401ac978659f89862af7321ef4dbf2ec7d0e503b2be",
+        "stableHash": "64db55915fd0f629c736b9eafe6bbf49ec3ba09741955a1604e62699572a2c66",
+        "configHash": "a6a05d93a908673f30abcde5b39825b2a47afb79ebd968b974b7b612bb0512d0",
+        "localCompilationCache": "MISS",
+        "localPrefixReuse": false,
+        "observedHash": "8958370ef4e1624663ab4a9d58dd8acf34a54ebf0fbeca16e3b2b8f7af06c8a7",
+        "diff": {
+          "firstChangedPath": "$.maxTokens",
+          "commonPrefixChars": 13,
+          "identical": false
+        },
+        "context": [
+          {
+            "id": "project_c7a60811-f25f-4c64-a320-9af9293da507",
+            "kind": "project",
+            "version": "11",
+            "reason": "故事承诺、风格和不可破坏约束"
+          },
+          {
+            "id": "manifest_c2488f72-d88c-402f-94ef-f3171c1d7a3f",
+            "kind": "inheritance-baseline",
+            "version": "2",
+            "reason": "固定来源版本、严格前缀与作者已接受改编；原作后文不在本分支"
+          },
+          {
+            "id": "volume_bca2a17a-3925-4df5-bbb1-b013cd452183",
+            "kind": "locked",
+            "version": "1",
+            "reason": "锁定约束完整保留"
+          },
+          {
+            "id": "chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc",
+            "kind": "chapter-plan",
+            "version": "6",
+            "reason": "当前章目标、参与者、禁区、字数、揭示和结尾"
+          },
+          {
+            "id": "chapter_8a508e55-adc2-4407-96c4-502045a306a2:recent",
+            "kind": "accepted-body",
+            "version": "version_c7d7b622-c0fd-4aca-83a7-06807e78edb3",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:recent",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_912ddd15-f4ec-45e6-9111-f61184d43a8b:recent",
+            "kind": "accepted-body",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:ending",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "上章最新正文连续性；只取结尾"
+          },
+          {
+            "id": "fact_d024bee0-2ccc-443c-9720-b5428a7bda24",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_328d9e4d-777b-445b-8ef8-f4297f7c227a",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_18fb3ff6-d703-4f1c-93dc-533ee29150a5",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_2db5402e-0fdb-4023-b090-d3df41ef735b",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_dead6c33-c695-4d67-adcc-6c775c711692",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_d66b3a91-4c00-480c-b7e5-a2368e540c58",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_55c645ac-494d-4200-a091-4d025afa4b38",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_bbba3241-d090-4bb7-b735-1e625f286784",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_e2af2340-23e2-48da-b72c-58880fee2356",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_7a58f292-28a7-4e62-94cb-b616983f5e1f",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b8929656-5289-4c6b-970a-161860e97c6e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b1cb4fda-8ab4-4b8f-ae37-263252f4fd48",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_60ca98e4-9c2a-4ac5-b70a-8df9516e8d13",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_a30aa023-23ea-4c8d-8e69-a1ac3a28f557",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_fe8a01e3-f9e4-4b41-a1a6-2571214c9b4a",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_c0a37999-a30f-483b-a781-4ceee25177d8",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b97a892b-9a4b-496d-bda2-9ef02542fc8e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_033535dc-4d5e-4ccb-8ae1-c8f910951acb",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "book_94fcc9d6-5af6-4cea-89ef-5910b679e8ff",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "volume_6cb060ab-fd1d-4c19-bcbb-44f613178278",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "character_b9b7a3e7-575b-43e6-aa61-baec3eac145f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_e59e5e43-282d-4243-bdc9-fc2fa2dceb08",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_c5978eda-d8dd-4483-a22e-bf01c997551f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_669657ad-98ce-462e-817b-e98440770330",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_8d0eb1aa-6bff-4725-8d8d-51dc8116cbc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f3d23eb8-d5f3-469c-a51a-4a966df86bca",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_6d6a4928-9701-4c0d-8f9e-716a3093968a",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_d364fce9-873b-4ca1-8d83-bc134f300ad0",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5b9c541-b658-4434-89fe-17190ff09c9c",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f724178b-f2c7-48ac-a2ca-e81dbf943fc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5a4bb9f-408e-4568-8097-ab4a4d85b897",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_b7632c7a-d3c7-4784-9f08-2883e4648615",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_07e06f10-9a0e-45a6-91a0-ff67d7f4e311",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_3b1aafbe-99db-4ef8-a07f-237d55b7d231",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_566feb43-0362-47ce-bb13-ae96cf6a8dc5",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          }
+        ],
+        "rawHash": "a9bb5bc2f3fe81b6554d56b4b7bd39546013ed81d3f19ad5f917b0ce47f8516b",
+        "candidateHash": "a9bb5bc2f3fe81b6554d56b4b7bd39546013ed81d3f19ad5f917b0ce47f8516b",
+        "forbidden": []
+      },
+      {
+        "id": "request_4f6799f4-d7e5-4857-8a70-ac346275f624",
+        "taskId": "task_3c8e3bdf-27f7-4d57-8071-ea77434b9591",
+        "role": "Reviewer",
+        "status": "COMPLETED",
+        "usage": {
+          "uncachedInputTokens": 24370,
+          "inputTokens": 24370,
+          "outputTokens": 5723,
+          "cacheReadTokens": 0,
+          "totalTokens": 30093,
+          "serverCache": "REPORTED",
+          "elapsedMs": 19671,
+          "firstTokenMs": 1249
+        },
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "hash": "c875170cd91bc501041d541a18753e63f92196c2631f0e8f1f4c7fb544979ae2",
+        "stableHash": "77bfcaf209e928f6989d085ef6d464e3ca880e3a128d26c05c2666d30aacfd91",
+        "configHash": "a6a05d93a908673f30abcde5b39825b2a47afb79ebd968b974b7b612bb0512d0",
+        "localCompilationCache": "MISS",
+        "localPrefixReuse": false,
+        "observedHash": "5710c4c6d02a2146b8ceb7359bb5536580f5c80102dbea5c81309d14322ac5a0",
+        "diff": {
+          "firstChangedPath": "$.messages.3.content.0.text",
+          "commonPrefixChars": 40126,
+          "identical": false
+        },
+        "context": [
+          {
+            "id": "project_c7a60811-f25f-4c64-a320-9af9293da507",
+            "kind": "project",
+            "version": "11",
+            "reason": "故事承诺、风格和不可破坏约束"
+          },
+          {
+            "id": "manifest_c2488f72-d88c-402f-94ef-f3171c1d7a3f",
+            "kind": "inheritance-baseline",
+            "version": "2",
+            "reason": "固定来源版本、严格前缀与作者已接受改编；原作后文不在本分支"
+          },
+          {
+            "id": "volume_bca2a17a-3925-4df5-bbb1-b013cd452183",
+            "kind": "locked",
+            "version": "1",
+            "reason": "锁定约束完整保留"
+          },
+          {
+            "id": "chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc",
+            "kind": "chapter-plan",
+            "version": "6",
+            "reason": "当前章目标、参与者、禁区、字数、揭示和结尾"
+          },
+          {
+            "id": "chapter_8a508e55-adc2-4407-96c4-502045a306a2:recent",
+            "kind": "accepted-body",
+            "version": "version_c7d7b622-c0fd-4aca-83a7-06807e78edb3",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:recent",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_912ddd15-f4ec-45e6-9111-f61184d43a8b:recent",
+            "kind": "accepted-body",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:ending",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "上章最新正文连续性；只取结尾"
+          },
+          {
+            "id": "fact_d024bee0-2ccc-443c-9720-b5428a7bda24",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_328d9e4d-777b-445b-8ef8-f4297f7c227a",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_18fb3ff6-d703-4f1c-93dc-533ee29150a5",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_2db5402e-0fdb-4023-b090-d3df41ef735b",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_dead6c33-c695-4d67-adcc-6c775c711692",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_d66b3a91-4c00-480c-b7e5-a2368e540c58",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_55c645ac-494d-4200-a091-4d025afa4b38",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_bbba3241-d090-4bb7-b735-1e625f286784",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_e2af2340-23e2-48da-b72c-58880fee2356",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_7a58f292-28a7-4e62-94cb-b616983f5e1f",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b8929656-5289-4c6b-970a-161860e97c6e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b1cb4fda-8ab4-4b8f-ae37-263252f4fd48",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_60ca98e4-9c2a-4ac5-b70a-8df9516e8d13",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_a30aa023-23ea-4c8d-8e69-a1ac3a28f557",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_fe8a01e3-f9e4-4b41-a1a6-2571214c9b4a",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_c0a37999-a30f-483b-a781-4ceee25177d8",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b97a892b-9a4b-496d-bda2-9ef02542fc8e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_033535dc-4d5e-4ccb-8ae1-c8f910951acb",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "book_94fcc9d6-5af6-4cea-89ef-5910b679e8ff",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "volume_6cb060ab-fd1d-4c19-bcbb-44f613178278",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "character_b9b7a3e7-575b-43e6-aa61-baec3eac145f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_e59e5e43-282d-4243-bdc9-fc2fa2dceb08",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_c5978eda-d8dd-4483-a22e-bf01c997551f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_669657ad-98ce-462e-817b-e98440770330",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_8d0eb1aa-6bff-4725-8d8d-51dc8116cbc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f3d23eb8-d5f3-469c-a51a-4a966df86bca",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_6d6a4928-9701-4c0d-8f9e-716a3093968a",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_d364fce9-873b-4ca1-8d83-bc134f300ad0",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5b9c541-b658-4434-89fe-17190ff09c9c",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f724178b-f2c7-48ac-a2ca-e81dbf943fc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5a4bb9f-408e-4568-8097-ab4a4d85b897",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_b7632c7a-d3c7-4784-9f08-2883e4648615",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_07e06f10-9a0e-45a6-91a0-ff67d7f4e311",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_3b1aafbe-99db-4ef8-a07f-237d55b7d231",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_566feb43-0362-47ce-bb13-ae96cf6a8dc5",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          }
+        ],
+        "rawHash": "77b17f3e8ab95899c6ba9473035a79fbbb3be6180728136ed5c624da9e20bf24",
+        "candidateHash": "77b17f3e8ab95899c6ba9473035a79fbbb3be6180728136ed5c624da9e20bf24",
+        "forbidden": []
+      },
+      {
+        "id": "request_b71066f5-ffed-4af9-ab41-0b2e1141e050",
+        "taskId": "task_3c8e3bdf-27f7-4d57-8071-ea77434b9591",
+        "role": "Reviewer",
+        "status": "FAILED",
+        "usage": {
+          "uncachedInputTokens": 22283,
+          "inputTokens": 24587,
+          "outputTokens": 5141,
+          "cacheReadTokens": 2304,
+          "totalTokens": 29728,
+          "serverCache": "REPORTED",
+          "elapsedMs": 17754,
+          "firstTokenMs": 915
+        },
+        "error": {
+          "code": "INVALID_EVIDENCE",
+          "message": "issues[0].sourceQuote 不在 sourceId=chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc 的原始资料中：作者已将度量错字三星五改为三尺五。核对当前完整正文，重建同版本的事实、关系和记忆；保持钥匙归属和已经完成的实测，不改变已接受的上一章。。请精确引用该来源字段；本次调整规划应引用 supplied planSourceId，而不是旧章纲。"
+        },
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "hash": "1ec1d07790b5ce55cc0010c8ef82814aed640de3153f976354cd092e717c50ea",
+        "stableHash": "c3dd4233204cfe2c31ab358d4bfe0e41c494505604a6635ca3fc9b30cec9933d",
+        "configHash": "a6a05d93a908673f30abcde5b39825b2a47afb79ebd968b974b7b612bb0512d0",
+        "localCompilationCache": "MISS",
+        "localPrefixReuse": false,
+        "observedHash": "4152e904ff98ba3ee0f8f8d16bf1a7bb9155e84ac2a5c6cbad55364f821402c0",
+        "diff": {
+          "firstChangedPath": "$.messages.3.content.0.text",
+          "commonPrefixChars": 45930,
+          "identical": false
+        },
+        "context": [
+          {
+            "id": "project_c7a60811-f25f-4c64-a320-9af9293da507",
+            "kind": "project",
+            "version": "11",
+            "reason": "故事承诺、风格和不可破坏约束"
+          },
+          {
+            "id": "manifest_c2488f72-d88c-402f-94ef-f3171c1d7a3f",
+            "kind": "inheritance-baseline",
+            "version": "2",
+            "reason": "固定来源版本、严格前缀与作者已接受改编；原作后文不在本分支"
+          },
+          {
+            "id": "volume_bca2a17a-3925-4df5-bbb1-b013cd452183",
+            "kind": "locked",
+            "version": "1",
+            "reason": "锁定约束完整保留"
+          },
+          {
+            "id": "chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc",
+            "kind": "chapter-plan",
+            "version": "6",
+            "reason": "当前章目标、参与者、禁区、字数、揭示和结尾"
+          },
+          {
+            "id": "chapter_8a508e55-adc2-4407-96c4-502045a306a2:recent",
+            "kind": "accepted-body",
+            "version": "version_c7d7b622-c0fd-4aca-83a7-06807e78edb3",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:recent",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_912ddd15-f4ec-45e6-9111-f61184d43a8b:recent",
+            "kind": "accepted-body",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:ending",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "上章最新正文连续性；只取结尾"
+          },
+          {
+            "id": "fact_d024bee0-2ccc-443c-9720-b5428a7bda24",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_328d9e4d-777b-445b-8ef8-f4297f7c227a",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_18fb3ff6-d703-4f1c-93dc-533ee29150a5",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_2db5402e-0fdb-4023-b090-d3df41ef735b",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_dead6c33-c695-4d67-adcc-6c775c711692",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_d66b3a91-4c00-480c-b7e5-a2368e540c58",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_55c645ac-494d-4200-a091-4d025afa4b38",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_bbba3241-d090-4bb7-b735-1e625f286784",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_e2af2340-23e2-48da-b72c-58880fee2356",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_7a58f292-28a7-4e62-94cb-b616983f5e1f",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b8929656-5289-4c6b-970a-161860e97c6e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b1cb4fda-8ab4-4b8f-ae37-263252f4fd48",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_60ca98e4-9c2a-4ac5-b70a-8df9516e8d13",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_a30aa023-23ea-4c8d-8e69-a1ac3a28f557",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_fe8a01e3-f9e4-4b41-a1a6-2571214c9b4a",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_c0a37999-a30f-483b-a781-4ceee25177d8",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b97a892b-9a4b-496d-bda2-9ef02542fc8e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_033535dc-4d5e-4ccb-8ae1-c8f910951acb",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "book_94fcc9d6-5af6-4cea-89ef-5910b679e8ff",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "volume_6cb060ab-fd1d-4c19-bcbb-44f613178278",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "character_b9b7a3e7-575b-43e6-aa61-baec3eac145f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_e59e5e43-282d-4243-bdc9-fc2fa2dceb08",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_c5978eda-d8dd-4483-a22e-bf01c997551f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_669657ad-98ce-462e-817b-e98440770330",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_8d0eb1aa-6bff-4725-8d8d-51dc8116cbc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f3d23eb8-d5f3-469c-a51a-4a966df86bca",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_6d6a4928-9701-4c0d-8f9e-716a3093968a",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_d364fce9-873b-4ca1-8d83-bc134f300ad0",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5b9c541-b658-4434-89fe-17190ff09c9c",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f724178b-f2c7-48ac-a2ca-e81dbf943fc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5a4bb9f-408e-4568-8097-ab4a4d85b897",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_b7632c7a-d3c7-4784-9f08-2883e4648615",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_07e06f10-9a0e-45a6-91a0-ff67d7f4e311",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_3b1aafbe-99db-4ef8-a07f-237d55b7d231",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_566feb43-0362-47ce-bb13-ae96cf6a8dc5",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          }
+        ],
+        "rawHash": "27b7780a7844b68996aacd7276d270d0104cdede2103997c9a116c937b8abfba",
+        "candidateHash": "27b7780a7844b68996aacd7276d270d0104cdede2103997c9a116c937b8abfba",
+        "forbidden": []
+      },
+      {
+        "id": "request_705fd511-8d2d-4ea1-97f0-6cf413cd1b73",
+        "taskId": "task_3c8e3bdf-27f7-4d57-8071-ea77434b9591",
+        "role": "Reviewer",
+        "status": "FAILED",
+        "usage": {
+          "uncachedInputTokens": 22219,
+          "inputTokens": 24523,
+          "outputTokens": 5387,
+          "cacheReadTokens": 2304,
+          "totalTokens": 29910,
+          "serverCache": "REPORTED",
+          "elapsedMs": 18359,
+          "firstTokenMs": 909
+        },
+        "error": {
+          "code": "INVALID_EVIDENCE",
+          "message": "issues[0].sourceQuote 不在 sourceId=chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc 的原始资料中：作者已将度量错字三星五改为三尺五。核对当前完整正文，重建同版本的事实、关系和记忆；保持钥匙归属和已经完成的实测，不改变已接受的上一章。。请精确引用该来源字段；本次调整规划应引用 supplied planSourceId，而不是旧章纲。"
+        },
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "hash": "32f918fc7bc065597f97105ecffa7d87a69e2be6f7767fb90d319934ec5cc7b4",
+        "stableHash": "900e3d86252c20060a67830038a1f3607d9138e5287c0769a2f33452d5e6e401",
+        "configHash": "a6a05d93a908673f30abcde5b39825b2a47afb79ebd968b974b7b612bb0512d0",
+        "localCompilationCache": "MISS",
+        "localPrefixReuse": false,
+        "observedHash": "d8a29b5088fc8ed4b41287147d3853245563283f49befb8f25734198787f6598",
+        "diff": {
+          "firstChangedPath": "$.messages.3.content.0.text",
+          "commonPrefixChars": 45892,
+          "identical": false
+        },
+        "context": [
+          {
+            "id": "project_c7a60811-f25f-4c64-a320-9af9293da507",
+            "kind": "project",
+            "version": "11",
+            "reason": "故事承诺、风格和不可破坏约束"
+          },
+          {
+            "id": "manifest_c2488f72-d88c-402f-94ef-f3171c1d7a3f",
+            "kind": "inheritance-baseline",
+            "version": "2",
+            "reason": "固定来源版本、严格前缀与作者已接受改编；原作后文不在本分支"
+          },
+          {
+            "id": "volume_bca2a17a-3925-4df5-bbb1-b013cd452183",
+            "kind": "locked",
+            "version": "1",
+            "reason": "锁定约束完整保留"
+          },
+          {
+            "id": "chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc",
+            "kind": "chapter-plan",
+            "version": "6",
+            "reason": "当前章目标、参与者、禁区、字数、揭示和结尾"
+          },
+          {
+            "id": "chapter_8a508e55-adc2-4407-96c4-502045a306a2:recent",
+            "kind": "accepted-body",
+            "version": "version_c7d7b622-c0fd-4aca-83a7-06807e78edb3",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:recent",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_912ddd15-f4ec-45e6-9111-f61184d43a8b:recent",
+            "kind": "accepted-body",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:ending",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "上章最新正文连续性；只取结尾"
+          },
+          {
+            "id": "fact_d024bee0-2ccc-443c-9720-b5428a7bda24",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_328d9e4d-777b-445b-8ef8-f4297f7c227a",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_18fb3ff6-d703-4f1c-93dc-533ee29150a5",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_2db5402e-0fdb-4023-b090-d3df41ef735b",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_dead6c33-c695-4d67-adcc-6c775c711692",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_d66b3a91-4c00-480c-b7e5-a2368e540c58",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_55c645ac-494d-4200-a091-4d025afa4b38",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_bbba3241-d090-4bb7-b735-1e625f286784",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_e2af2340-23e2-48da-b72c-58880fee2356",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_7a58f292-28a7-4e62-94cb-b616983f5e1f",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b8929656-5289-4c6b-970a-161860e97c6e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b1cb4fda-8ab4-4b8f-ae37-263252f4fd48",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_60ca98e4-9c2a-4ac5-b70a-8df9516e8d13",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_a30aa023-23ea-4c8d-8e69-a1ac3a28f557",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_fe8a01e3-f9e4-4b41-a1a6-2571214c9b4a",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_c0a37999-a30f-483b-a781-4ceee25177d8",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b97a892b-9a4b-496d-bda2-9ef02542fc8e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_033535dc-4d5e-4ccb-8ae1-c8f910951acb",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "book_94fcc9d6-5af6-4cea-89ef-5910b679e8ff",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "volume_6cb060ab-fd1d-4c19-bcbb-44f613178278",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "character_b9b7a3e7-575b-43e6-aa61-baec3eac145f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_e59e5e43-282d-4243-bdc9-fc2fa2dceb08",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_c5978eda-d8dd-4483-a22e-bf01c997551f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_669657ad-98ce-462e-817b-e98440770330",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_8d0eb1aa-6bff-4725-8d8d-51dc8116cbc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f3d23eb8-d5f3-469c-a51a-4a966df86bca",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_6d6a4928-9701-4c0d-8f9e-716a3093968a",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_d364fce9-873b-4ca1-8d83-bc134f300ad0",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5b9c541-b658-4434-89fe-17190ff09c9c",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f724178b-f2c7-48ac-a2ca-e81dbf943fc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5a4bb9f-408e-4568-8097-ab4a4d85b897",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_b7632c7a-d3c7-4784-9f08-2883e4648615",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_07e06f10-9a0e-45a6-91a0-ff67d7f4e311",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_3b1aafbe-99db-4ef8-a07f-237d55b7d231",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_566feb43-0362-47ce-bb13-ae96cf6a8dc5",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          }
+        ],
+        "rawHash": "2f2e42323faa8496f4124a0ca6ae25cd9a242dcbc7975360b0329d2242ccf8df",
+        "candidateHash": "2f2e42323faa8496f4124a0ca6ae25cd9a242dcbc7975360b0329d2242ccf8df",
+        "forbidden": []
+      },
+      {
+        "id": "request_74c70e9d-64f4-49b4-a634-0bee957f1056",
+        "taskId": "task_3c8e3bdf-27f7-4d57-8071-ea77434b9591",
+        "role": "Reviewer",
+        "status": "FAILED",
+        "usage": {
+          "uncachedInputTokens": 19460,
+          "inputTokens": 24324,
+          "outputTokens": 5294,
+          "cacheReadTokens": 4864,
+          "totalTokens": 29618,
+          "serverCache": "REPORTED",
+          "elapsedMs": 18401,
+          "firstTokenMs": 658
+        },
+        "error": {
+          "code": "INVALID_EVIDENCE",
+          "message": "issues[1].sourceQuote 不在 sourceId=chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc 的原始资料中：保持已经完成的实测情节不变。。请精确引用该来源字段；本次调整规划应引用 supplied planSourceId，而不是旧章纲。"
+        },
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "hash": "e5773aced73e2f779e13bf98f44408b944b0936cbd79d0ae82c7408f72cfd4ca",
+        "stableHash": "2582897b4ecfe2c6334d8a1dd03e1b37ef4b6b9d6c11065bff5198ae6d11c837",
+        "configHash": "a6a05d93a908673f30abcde5b39825b2a47afb79ebd968b974b7b612bb0512d0",
+        "localCompilationCache": "MISS",
+        "localPrefixReuse": true,
+        "observedHash": "9d248a02dcee454817004d5744e852b69dc61e91ba7e05cbad749500eb4b7c2b",
+        "diff": {
+          "firstChangedPath": "$.messages.2.content.0.text",
+          "commonPrefixChars": 1580,
+          "identical": false
+        },
+        "context": [
+          {
+            "id": "project_c7a60811-f25f-4c64-a320-9af9293da507",
+            "kind": "project",
+            "version": "11",
+            "reason": "故事承诺、风格和不可破坏约束"
+          },
+          {
+            "id": "manifest_c2488f72-d88c-402f-94ef-f3171c1d7a3f",
+            "kind": "inheritance-baseline",
+            "version": "2",
+            "reason": "固定来源版本、严格前缀与作者已接受改编；原作后文不在本分支"
+          },
+          {
+            "id": "volume_bca2a17a-3925-4df5-bbb1-b013cd452183",
+            "kind": "locked",
+            "version": "1",
+            "reason": "锁定约束完整保留"
+          },
+          {
+            "id": "chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc",
+            "kind": "chapter-plan",
+            "version": "6",
+            "reason": "当前章目标、参与者、禁区、字数、揭示和结尾"
+          },
+          {
+            "id": "chapter_8a508e55-adc2-4407-96c4-502045a306a2:recent",
+            "kind": "accepted-body",
+            "version": "version_c7d7b622-c0fd-4aca-83a7-06807e78edb3",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:recent",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_912ddd15-f4ec-45e6-9111-f61184d43a8b:recent",
+            "kind": "accepted-body",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "近期必要原文，不用摘要替代全部证据"
+          },
+          {
+            "id": "chapter_4ef8d48c-9b15-4264-bf23-f88f2cfa532f:ending",
+            "kind": "accepted-body",
+            "version": "version_d63749bb-2659-46ca-a9e7-84adfb4c7071",
+            "reason": "上章最新正文连续性；只取结尾"
+          },
+          {
+            "id": "fact_d024bee0-2ccc-443c-9720-b5428a7bda24",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_328d9e4d-777b-445b-8ef8-f4297f7c227a",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_18fb3ff6-d703-4f1c-93dc-533ee29150a5",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_2db5402e-0fdb-4023-b090-d3df41ef735b",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_dead6c33-c695-4d67-adcc-6c775c711692",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_d66b3a91-4c00-480c-b7e5-a2368e540c58",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_55c645ac-494d-4200-a091-4d025afa4b38",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_bbba3241-d090-4bb7-b735-1e625f286784",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_e2af2340-23e2-48da-b72c-58880fee2356",
+            "kind": "canon",
+            "version": "1",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_7a58f292-28a7-4e62-94cb-b616983f5e1f",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b8929656-5289-4c6b-970a-161860e97c6e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b1cb4fda-8ab4-4b8f-ae37-263252f4fd48",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_60ca98e4-9c2a-4ac5-b70a-8df9516e8d13",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_a30aa023-23ea-4c8d-8e69-a1ac3a28f557",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_fe8a01e3-f9e4-4b41-a1a6-2571214c9b4a",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_c0a37999-a30f-483b-a781-4ceee25177d8",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_b97a892b-9a4b-496d-bda2-9ef02542fc8e",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "fact_033535dc-4d5e-4ccb-8ae1-c8f910951acb",
+            "kind": "canon",
+            "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+            "reason": "相关实体的有来源正式事实"
+          },
+          {
+            "id": "book_94fcc9d6-5af6-4cea-89ef-5910b679e8ff",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "volume_6cb060ab-fd1d-4c19-bcbb-44f613178278",
+            "kind": "plan",
+            "version": "1",
+            "reason": "上层规划；未来内容不是既成事实"
+          },
+          {
+            "id": "character_b9b7a3e7-575b-43e6-aa61-baec3eac145f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_e59e5e43-282d-4243-bdc9-fc2fa2dceb08",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_c5978eda-d8dd-4483-a22e-bf01c997551f",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_669657ad-98ce-462e-817b-e98440770330",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_8d0eb1aa-6bff-4725-8d8d-51dc8116cbc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f3d23eb8-d5f3-469c-a51a-4a966df86bca",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_6d6a4928-9701-4c0d-8f9e-716a3093968a",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_d364fce9-873b-4ca1-8d83-bc134f300ad0",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5b9c541-b658-4434-89fe-17190ff09c9c",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f724178b-f2c7-48ac-a2ca-e81dbf943fc4",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_f5a4bb9f-408e-4568-8097-ab4a4d85b897",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_b7632c7a-d3c7-4784-9f08-2883e4648615",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_07e06f10-9a0e-45a6-91a0-ff67d7f4e311",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_3b1aafbe-99db-4ef8-a07f-237d55b7d231",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          },
+          {
+            "id": "character_566feb43-0362-47ce-bb13-ae96cf6a8dc5",
+            "kind": "character",
+            "version": "1",
+            "reason": "当前参与实体或一跳关系"
+          }
+        ],
+        "rawHash": "647727b81d2e25c599b17c2d3f7cf9b64d5d3cb6031b269de343872c97f56f59",
+        "candidateHash": "647727b81d2e25c599b17c2d3f7cf9b64d5d3cb6031b269de343872c97f56f59",
+        "forbidden": []
+      },
+      {
+        "id": "request_a5ac79f6-989a-4139-80f3-5757ed38c349",
+        "taskId": "task_3c8e3bdf-27f7-4d57-8071-ea77434b9591",
+        "role": "Planner",
+        "status": "COMPLETED",
+        "usage": {
+          "uncachedInputTokens": 303,
+          "inputTokens": 1071,
+          "outputTokens": 331,
+          "cacheReadTokens": 768,
+          "totalTokens": 1402,
+          "serverCache": "REPORTED",
+          "elapsedMs": 2381,
+          "firstTokenMs": 990
+        },
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "hash": "78aba6ce81e71cb310cc190ebdc2a5403dae97814c7f5d406f5e4b4b1ce4cb06",
+        "stableHash": "5f11e67b7def4bcda51d5db49fce4dd085d10b2fbc1617dcdd08ffc34c03eab4",
+        "configHash": "a6a05d93a908673f30abcde5b39825b2a47afb79ebd968b974b7b612bb0512d0",
+        "localCompilationCache": "MISS",
+        "localPrefixReuse": false,
+        "observedHash": "949ba096ffb05dc682143da76dce85c1cd6e08656632f1e5adbefcdb3ca73bca",
+        "diff": {
+          "firstChangedPath": "$.messages.0.content.0.text",
+          "commonPrefixChars": 51,
+          "identical": false
+        },
+        "rawHash": "3b64c6f8077e557b0bd42c1c4eefbf853f17648eaf74c5f1c44166036c69d023",
+        "candidateHash": "3b64c6f8077e557b0bd42c1c4eefbf853f17648eaf74c5f1c44166036c69d023",
+        "forbidden": []
+      },
       {
         "id": "request_4d0723bd-ad6c-4251-8d70-f9f05dbeed8b",
         "taskId": "task_6e33fa3c-d4d7-4626-a591-dd35310685b7",
@@ -5262,12 +7168,34 @@
     ]
   },
   "cache": {
-    "requests": 33,
-    "reported": 33,
-    "positiveReads": 28,
-    "readTokens": 52224,
+    "requests": 40,
+    "reported": 40,
+    "positiveReads": 33,
+    "readTokens": 62592,
     "writeTokens": "UNKNOWN",
     "cost": "UNKNOWN",
     "meaning": "实际DSH提供方usage，含失败/重试，不是固定负载命中率；本地编译复用单独记录。"
-  }
+  },
+  "humanReview": {
+    "status": "PASS",
+    "method": "Complete reading of raw outputs and accepted versions; no AI quality score",
+    "at": "2026-09-13T10:42:54.601565+00:00",
+    "chapterHashes": {
+      "chapter_912ddd15-f4ec-45e6-9111-f61184d43a8b": "8d081fdc6f7c638de3bf00729ffe008e98e1ba3315a04e105c9b02dcb6166804",
+      "chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc": "a3aefa77daf681cc0d927f1b6177f991bf48f1933eaa54bb960f691f1ed51249"
+    },
+    "findings": [
+      "Source chapter3: key held by Lu Chuhe, purple paper with Cen Chuhe, missing page unresolved; first continuation uses those states.",
+      "Author returns unique key to Cen Chuhe with both signatures; second chapter explicitly checks key, returns it to Cen, finishes with Cen as holder.",
+      "Cen reports measured numbers and admits mistaken calculation; Lu insists on checking before conclusions; Lu Jianchuan marks lines. Voices are observably distinct and restrained style is retained.",
+      "First generated1027 words; author version1128. Second1251 words against1000 target, no mechanical padding.",
+      "Fixed one awkward phrase and two occurrences of 三星五 to 三尺五 through author versions. Final1581-character chapter equals the preserved candidate with exactly those two replacements; unnecessary repair expansions were not accepted."
+    ],
+    "remainingQualityRisks": [
+      "Repeated checking and recordkeeping make the scene deliberately slow. Literary quality is not guaranteed.",
+      "Reviewer may report equivalent prose states as warnings or misclassify a stable rule; exact evidence and blocking checks remain, and author review is available.",
+      "Unknown-person/group candidates and duplicate profiles in extraction require evidence-based resolution."
+    ]
+  },
+  "completedAt": "2026-09-13T10:42:54.601565+00:00"
 }

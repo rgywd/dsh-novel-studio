@@ -1,0 +1,352 @@
+{
+  "at": "2026-09-13T10:40:35.087Z",
+  "status": "PASS",
+  "provider": "deterministic SourceFixtureProvider",
+  "notRealModel": true,
+  "via": "Actual HTTP source import, persistent runner, UI cross-page bulk selection and atomic creation. No direct insertion of 64 assets.",
+  "source": {
+    "workId": "source_699a726b-b209-41ad-af87-fb9d53b3bdb3",
+    "versionId": "sourceversion_9f34f42a-9a0a-4060-8cde-f33579a79f45",
+    "runId": "scan_1024b0dd-58a0-42d6-bd0f-4e30e55a02c6",
+    "status": "COMPLETED"
+  },
+  "projects": [
+    {
+      "id": "project_05b10f90-e462-43a1-a884-419084ec7ab8",
+      "title": "浏览器验收 · 原创60章64人（确定性替身） · 新的篇章",
+      "mode": "continuation",
+      "template": "canonical",
+      "sourceVersion": "sourceversion_9f34f42a-9a0a-4060-8cde-f33579a79f45",
+      "cutoff": 20,
+      "characters": 64,
+      "world": 1,
+      "chapters": [
+        {
+          "title": "第1章 潮位1",
+          "referenceOnly": true
+        },
+        {
+          "title": "第2章 潮位2",
+          "referenceOnly": true
+        },
+        {
+          "title": "第3章 潮位3",
+          "referenceOnly": true
+        },
+        {
+          "title": "第4章 潮位4",
+          "referenceOnly": true
+        },
+        {
+          "title": "第5章 潮位5",
+          "referenceOnly": true
+        },
+        {
+          "title": "第6章 潮位6",
+          "referenceOnly": true
+        },
+        {
+          "title": "第7章 潮位7",
+          "referenceOnly": true
+        },
+        {
+          "title": "第8章 潮位8",
+          "referenceOnly": true
+        },
+        {
+          "title": "第9章 潮位9",
+          "referenceOnly": true
+        },
+        {
+          "title": "第10章 潮位10",
+          "referenceOnly": true
+        },
+        {
+          "title": "第11章 潮位11",
+          "referenceOnly": true
+        },
+        {
+          "title": "第12章 潮位12",
+          "referenceOnly": true
+        },
+        {
+          "title": "第13章 潮位13",
+          "referenceOnly": true
+        },
+        {
+          "title": "第14章 潮位14",
+          "referenceOnly": true
+        },
+        {
+          "title": "第15章 潮位15",
+          "referenceOnly": true
+        },
+        {
+          "title": "第16章 潮位16",
+          "referenceOnly": true
+        },
+        {
+          "title": "第17章 潮位17",
+          "referenceOnly": true
+        },
+        {
+          "title": "第18章 潮位18",
+          "referenceOnly": true
+        },
+        {
+          "title": "第19章 潮位19",
+          "referenceOnly": true
+        },
+        {
+          "title": "第20章 潮位20",
+          "referenceOnly": true
+        },
+        {
+          "title": "第21章 · 新的起点",
+          "referenceOnly": false
+        }
+      ],
+      "selection": {
+        "asset_197fa96042fff2ad8a19fefd94456348": {
+          "mode": "main"
+        },
+        "asset_4375c62afd9f572eb42f40d1b5b8c7bb": {
+          "mode": "main"
+        },
+        "asset_357b955c9886fc34a9b0aa3ceeee6ff2": {
+          "mode": "main"
+        },
+        "asset_32497d380d7cad976081f01451effc34": {
+          "mode": "main"
+        },
+        "asset_d6d11bff46748ebf5f9f023486563e4f": {
+          "mode": "main"
+        },
+        "asset_e73a70a0676758c08b28862716c48f7c": {
+          "mode": "main"
+        },
+        "asset_d5972377a3283aba0eeef09d38c6ca47": {
+          "mode": "main"
+        },
+        "asset_d009e4910bf9e36e68ba5f1abf6ec954": {
+          "mode": "main"
+        },
+        "asset_82e5cf5026820987e861fbe63525da1f": {
+          "mode": "main"
+        },
+        "asset_586a54af725f28e6a32b49da1acb948b": {
+          "mode": "main"
+        },
+        "asset_fb2ed72002bc82d653dbf24f01f0347f": {
+          "mode": "main"
+        },
+        "asset_35899cf9b332372a167f2545a7ebf22e": {
+          "mode": "main"
+        },
+        "asset_5cddf62bc3be8f3c42d45a57135a1298": {
+          "mode": "main"
+        },
+        "asset_ecbfa934bd7d472aa9178f316ec500ab": {
+          "mode": "main"
+        },
+        "asset_775e2c355bab53341999bee95e27e4c2": {
+          "mode": "main"
+        },
+        "asset_4a05265b811b2f81ad7c457afb3bb60a": {
+          "mode": "main"
+        },
+        "asset_c5f76a4d148b3fa1801377a7bdb56150": {
+          "mode": "main"
+        },
+        "asset_1871d39f73ba4497c5982116f3f36cb6": {
+          "mode": "main"
+        },
+        "asset_0961e6dcfbd8b1482cc53a782e898246": {
+          "mode": "main"
+        },
+        "asset_39bbcbe926dd17c7c72873d8396c5a47": {
+          "mode": "main"
+        },
+        "asset_bf40a06c1cc48392e4baa0828948502f": {
+          "mode": "main"
+        },
+        "asset_5059bd2e6af81863cbd5b9a9ddb3a13a": {
+          "mode": "main"
+        },
+        "asset_bb1c12d5262230eeb71bc6ffdf7ad7df": {
+          "mode": "main"
+        },
+        "asset_cc6b8ec865297ae53f5fa224fbce3b86": {
+          "mode": "main"
+        },
+        "asset_0a185a48c622ea80f9f362fe4554f523": {
+          "mode": "main"
+        },
+        "asset_95a88e4889be7477d9ca431c2bb37290": {
+          "mode": "main"
+        },
+        "asset_20da0a8ee8eb8a89c411342ea7cb5acf": {
+          "mode": "main"
+        },
+        "asset_a0e8fe40a77a0068327f578207cb17db": {
+          "mode": "main"
+        },
+        "asset_63d3da39871eb6105e0520d3eebffd5e": {
+          "mode": "main"
+        },
+        "asset_8c36687a7bb006cbf56c8ad686bfc067": {
+          "mode": "main"
+        },
+        "asset_6bbc1b7002f5a1cb5b47d2f3ac37cb09": {
+          "mode": "main"
+        },
+        "asset_49da0f7e7c95ee5f8f82687068e2ae0b": {
+          "mode": "main"
+        },
+        "asset_7fbb26ba95069afa1039aee4db101085": {
+          "mode": "main"
+        },
+        "asset_0c95d765a16880b182b34b1f77312ada": {
+          "mode": "main"
+        },
+        "asset_c4817b66844d58c69a9a7198f6826b7c": {
+          "mode": "main"
+        },
+        "asset_33e588c577703009734269cd1760c599": {
+          "mode": "main"
+        },
+        "asset_27381c40c722bf6e4b62ae39ece59eab": {
+          "mode": "main"
+        },
+        "asset_0c187330f644fe1988c7fbb81d5b75ba": {
+          "mode": "main"
+        },
+        "asset_971b7587f740b69fef16ae1f04779d93": {
+          "mode": "main"
+        },
+        "asset_5f48fb6bd07b363427b29690c83dbba0": {
+          "mode": "main"
+        },
+        "asset_1c744c7d093903f6bf56c883a39d025f": {
+          "mode": "main"
+        },
+        "asset_ecfe8c9629ab47fcf111a213a5a519ef": {
+          "mode": "main"
+        },
+        "asset_985e1febdede1fc8d2f58cd0fbec787c": {
+          "mode": "main"
+        },
+        "asset_e135392c6c399adfd553c0b1a5a505c3": {
+          "mode": "main"
+        },
+        "asset_6eb9744c07d21d26e84c596d52bc58b2": {
+          "mode": "main"
+        },
+        "asset_96ff9f60fdabe1596be48fd9e8c53e7d": {
+          "mode": "main"
+        },
+        "asset_8b98b7f98cd5a22f43cf5efec276f64f": {
+          "mode": "main"
+        },
+        "asset_07621e29b7c5f1d8782694c4b0725978": {
+          "mode": "main"
+        },
+        "asset_76bd7af834fec22deb1f986f867f8dcd": {
+          "mode": "main"
+        },
+        "asset_000f0654af1c630b204d43b8c71081fe": {
+          "mode": "main"
+        },
+        "asset_3a0f5c3b6f62c5c491c2fb644dc4b92e": {
+          "mode": "main"
+        },
+        "asset_7f12aaf2699def9bf9ecb6f3d59aac17": {
+          "mode": "main"
+        },
+        "asset_1311c36717c165bdf19d399b3680069e": {
+          "mode": "main"
+        },
+        "asset_44adbbabf4b37ceb512880a86d49bc0c": {
+          "mode": "main"
+        },
+        "asset_99b2a899aaad3c852a578f9bac6c2b73": {
+          "mode": "main"
+        },
+        "asset_9c11e4c5540d22c2683f3b718e4832e9": {
+          "mode": "main"
+        },
+        "asset_39c630c693f4cb794efd19d7bdbb3df9": {
+          "mode": "main"
+        },
+        "asset_4803d76d0266a2d19800b97b6b4cf164": {
+          "mode": "main"
+        },
+        "asset_b94ea7e2be2971e601a182519c2b8663": {
+          "mode": "main"
+        },
+        "asset_5339f40e44b2837482c9351e11b6b9ce": {
+          "mode": "main"
+        },
+        "asset_387e832bb10d82e189428823d6837bec": {
+          "mode": "main"
+        },
+        "asset_8dc4473b66a1b58c89595cdadde9e405": {
+          "mode": "main"
+        },
+        "asset_10b5fc2457597deaa881781a40daaf27": {
+          "mode": "main"
+        },
+        "asset_5125a8f0499e9e5b48726a72baf7daba": {
+          "mode": "main"
+        }
+      },
+      "characters64": [
+        {
+          "id": "character_2dc4a3f2-184b-4194-b609-a4777f0e6651",
+          "title": "顾南星",
+          "fields": {
+            "identity": "渡口记录员64",
+            "aliases": [],
+            "sourceKey": "c64",
+            "inheritanceMode": "main"
+          }
+        }
+      ]
+    },
+    {
+      "id": "project_8ea50026-054f-464f-b325-b61f10e1646d",
+      "title": "平行渡口 · 64人字段继承验收",
+      "mode": "independent",
+      "template": "parallel",
+      "sourceVersion": "sourceversion_9f34f42a-9a0a-4060-8cde-f33579a79f45",
+      "cutoff": 60,
+      "characters": 64,
+      "world": 1,
+      "chapters": [
+        {
+          "title": "第1章 · 新的起点",
+          "referenceOnly": false
+        }
+      ],
+      "selection": {
+        "asset_5125a8f0499e9e5b48726a72baf7daba": {
+          "mode": "main",
+          "fields": [
+            "identity"
+          ]
+        }
+      },
+      "characters64": [
+        {
+          "id": "character_4a5286cd-053c-4382-a7ee-7ad157ac98fb",
+          "title": "顾南星",
+          "fields": {
+            "identity": "渡口记录员64",
+            "sourceKey": "c64",
+            "inheritanceMode": "main"
+          }
+        }
+      ]
+    }
+  ]
+}

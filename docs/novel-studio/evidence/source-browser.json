@@ -1,0 +1,172 @@
+{
+  "at": "2026-09-13T10:42:54.601565+00:00",
+  "status": "PASS",
+  "method": "Actual CUA in-app browser, live application. Screenshots viewed; no simulated HTML.",
+  "actualViewports": [
+    [
+      1280,
+      900
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "screenshots": [
+    {
+      "file": "source-64-selection.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "71f8ceb3ce2187b8fc530be8ee936f670411bb447de31770488547c562c47d87",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-budget-recovery.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "5900f2d8c840ba7ea87679cb123de48686f27f07e53afc71080d01afda62b0c9",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-director-desktop.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "dde19e90aff671dc35c1ce9a30c0db5d0f5f532f5172f8303c0528154e61f8a7",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-director-narrow.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "e4603bd7c393a729bb81fdb15b8808130fc86b297a14a18f8126e8d7cd192ccd",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-evidence-desktop.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "a57960966e7200b9b5b93d9f991118cb5e46f25f7d240104fe3d7f27b1337340",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-fields-narrow.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "e215f7e337e2c3ef6d04a5a189ffefa256e392694859bd97a74b971e07f4f6c1",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-graph-desktop.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "b92669c3f58af0329ebb09e14b3a0911e18200f60f04b5dbe6a249d917f2d890",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-inspector-desktop.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "e6056b089b95fd941db78ba9a74232d24b4e9d92703e3fc0e868a453a5587339",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-library-narrow.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "740158a4c9241318906aee68b48a802445144a512edd523c8216a08cd374f0c3",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-lineage-narrow.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "d303b417c9b2930acf0df4ec7dd44b99bfe3af5d91a7f6d020bbf6ea97838e79",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-proof-narrow.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "7ded9d0e1e619ac3e4585a493395fea9817e587128f42f8f69448e12fe06aa7e",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-writer-desktop.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "2d7d20acb94c2ec53e0f289838e43eadaf3051ac9a7eac7e8bf730e4fe5047ea",
+      "visuallyInspected": true
+    },
+    {
+      "file": "source-writer-narrow.png",
+      "width": 65536,
+      "height": 4292542531,
+      "sha256": "d91b188fc3a66791e655daf212f5e93a9c300f00b478c90217f7dbf7014e2bdb",
+      "visuallyInspected": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "original_file_import_and_cutoff",
+      "status": "PASS",
+      "evidence": "Upload source-real.md, select after source chapter 3, authorize bounded cloud analysis, reopen persistent run and staging manifest."
+    },
+    {
+      "name": "source_graph_and_evidence",
+      "status": "PASS",
+      "evidence": "Search and select directed edge, open exact source chapter; dense c64 proof is highlighted at its UTF-16 offsets."
+    },
+    {
+      "name": "cross_page_bulk_selection",
+      "status": "PASS",
+      "evidence": "Actual 60-chapter HTTP fixture scan; 30-row pages, all-filter background then main, 64th character on final page. UI creates real project with 64 characters and 20 locked prefix chapters."
+    },
+    {
+      "name": "independent_field_selection",
+      "status": "PASS",
+      "evidence": "Parallel template resets prefix/dynamics/history, uncheck c64 aliases, preview65 main assets, create separate project directly in Writer. source-browser-fixture.json readback."
+    },
+    {
+      "name": "real_director_writer_handoff",
+      "status": "PASS",
+      "evidence": "Real first chapter, author UI takeover and key return, save/version, redelegate next chapter, inspect new version in actual request, memory2/2."
+    },
+    {
+      "name": "failure_and_recovery",
+      "status": "PASS",
+      "evidence": "Visible invalid source/review output and stopped task, persisted draft, explicit budget grant, resume with successful steps reused. Source mode and subsequent Writer unaffected."
+    },
+    {
+      "name": "raw_response_regex_and_cache",
+      "status": "PASS",
+      "evidence": "Open Writer request inspector: raw/candidate, fixed style a6a05d93, quote transformations, read640/writeUNKNOWN, total19818=19178uncached+640cached, output1140."
+    },
+    {
+      "name": "latest_ui_and_history",
+      "status": "PASS",
+      "evidence": "Final build on4318; lineage shows baseline/new/author provenance and accepted/revoked separately; desktopWriter/Director and narrowWriter/Director/dialog responsive."
+    },
+    {
+      "name": "version_restore_after_test_edit",
+      "status": "PASS",
+      "evidence": "Automation incorrectly read virtualized editor text and made a partial edit; immediately restored complete chapter via visible Versions UI, then applied only two typo changes. Full1581 characters checked against preserved candidate. Erroneous intermediate version remains in history."
+    }
+  ],
+  "limitations": [
+    "Browser fixture provider is deterministic, distinct from real DSH project.",
+    "Pre-restart connection warning was visible and cleared after reload; final error console and fixture error console empty.",
+    "Screenshots include historical failure state before its successful recovery."
+  ],
+  "finalConsoleErrors": [],
+  "fixtureConsoleErrors": [],
+  "horizontalOverflow": false,
+  "viewportReset": true,
+  "fixtureTabClosed": true,
+  "fixtureServiceStopped": true,
+  "deliveredTab": {
+    "id": "2",
+    "url": "http://127.0.0.1:4318/novel-studio/",
+    "projectId": "project_c7a60811-f25f-4c64-a320-9af9293da507",
+    "view": "Director, completed second continuation task"
+  }
+}

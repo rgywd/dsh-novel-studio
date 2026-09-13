@@ -1,0 +1,238 @@
+{
+  "at": "2026-09-13T10:43:51.645Z",
+  "status": "PASS",
+  "tests": [
+    {
+      "type": "unit",
+      "file": "source-test-unit.txt",
+      "pass": 16,
+      "fail": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "integration",
+      "file": "source-test-integration.txt",
+      "pass": 55,
+      "fail": 0,
+      "status": "PASS"
+    },
+    {
+      "type": "e2e",
+      "file": "source-test-e2e.txt",
+      "pass": 3,
+      "fail": 0,
+      "status": "PASS"
+    }
+  ],
+  "oldProjects": [
+    {
+      "port": 4317,
+      "id": "project_77717e50-8d31-4e7a-8e22-59adc6dd50ea",
+      "revision": 16,
+      "checksum": "290822919540ad57a952bc2a5ac7b758326b02376c8e791738246b19e73de646",
+      "afterChecksum": "290822919540ad57a952bc2a5ac7b758326b02376c8e791738246b19e73de646",
+      "status": "PASS"
+    },
+    {
+      "port": 4317,
+      "id": "project_9d842405-8b12-4eb2-a05a-20becaaa5d52",
+      "revision": 2,
+      "checksum": "3467a142d9f951f4887035aa74a89a8d38d8efee3c137d28556522f7a8743d86",
+      "afterChecksum": "3467a142d9f951f4887035aa74a89a8d38d8efee3c137d28556522f7a8743d86",
+      "status": "PASS"
+    },
+    {
+      "port": 4317,
+      "id": "project_f875e365-e23c-4c68-9648-b56980d132d6",
+      "revision": 2,
+      "checksum": "47285cf29855f10dd4263cad564a65210b4cd7a26fdc7a53dff28bf0ecc9540c",
+      "afterChecksum": "47285cf29855f10dd4263cad564a65210b4cd7a26fdc7a53dff28bf0ecc9540c",
+      "status": "PASS"
+    },
+    {
+      "port": 4317,
+      "id": "project_c48e9145-8790-4c6a-a6a8-7bd281213d64",
+      "revision": 10,
+      "checksum": "2adfe29923c818f10d7214ac7c1b35c77823193c56ececa617f72a34085f23f2",
+      "afterChecksum": "2adfe29923c818f10d7214ac7c1b35c77823193c56ececa617f72a34085f23f2",
+      "status": "PASS"
+    },
+    {
+      "port": 4318,
+      "id": "project_5c52031c-dabb-4fd5-9180-a5f5e6782aa8",
+      "revision": 8,
+      "checksum": "a5ac04d0e2ca5588b4f1be45192258859f8a579f1d888c4d5da121017ab6a4e2",
+      "afterChecksum": "a5ac04d0e2ca5588b4f1be45192258859f8a579f1d888c4d5da121017ab6a4e2",
+      "status": "PASS"
+    },
+    {
+      "port": 4318,
+      "id": "project_08a514b1-1198-4741-9ac0-836da5d3764d",
+      "revision": 12,
+      "checksum": "c52efca48dc99cf35747af5a9f4917c1bfcebf4132c29e506bdb59eadbb482b5",
+      "afterChecksum": "c52efca48dc99cf35747af5a9f4917c1bfcebf4132c29e506bdb59eadbb482b5",
+      "status": "PASS"
+    },
+    {
+      "port": 4318,
+      "id": "project_a1bd5917-88f8-4b54-bc7b-f88fe5814a99",
+      "revision": 2,
+      "checksum": "562f8089baf7ee91645e9ef91a99681735132e28d227e4136d4cbccefa3992ec",
+      "afterChecksum": "562f8089baf7ee91645e9ef91a99681735132e28d227e4136d4cbccefa3992ec",
+      "status": "PASS"
+    },
+    {
+      "port": 4318,
+      "id": "project_859081f7-7f04-4e57-ad4e-32ff3263a33f",
+      "revision": 4,
+      "checksum": "3772d22d7aca57378728c26c7f1fa11bf80557003eeec7428310a54cc20160d2",
+      "afterChecksum": "3772d22d7aca57378728c26c7f1fa11bf80557003eeec7428310a54cc20160d2",
+      "status": "PASS"
+    },
+    {
+      "port": 4318,
+      "id": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+      "revision": 17,
+      "checksum": "bcdeedf4d65b0f8ebe85af2bb2bec214365e351bf23ca60fefe9df9b17fc84e3",
+      "afterChecksum": "bcdeedf4d65b0f8ebe85af2bb2bec214365e351bf23ca60fefe9df9b17fc84e3",
+      "status": "PASS"
+    },
+    {
+      "port": 4318,
+      "id": "project_f46d8355-1f33-49b5-ac8e-9b230a228854",
+      "revision": 15,
+      "checksum": "c44a77c639c9fa1506dbe40fce5b1d4ea005556be36fb1e41fb2a7ce0e395aa2",
+      "afterChecksum": "c44a77c639c9fa1506dbe40fce5b1d4ea005556be36fb1e41fb2a7ce0e395aa2",
+      "status": "PASS"
+    }
+  ],
+  "finalText": [
+    {
+      "id": "chapter_912ddd15-f4ec-45e6-9111-f61184d43a8b",
+      "version": "version_152189ba-2757-487e-8b07-e371c3a0d92b",
+      "words": 1128,
+      "hash": "8d081fdc6f7c638de3bf00729ffe008e98e1ba3315a04e105c9b02dcb6166804",
+      "status": "PASS"
+    },
+    {
+      "id": "chapter_888fbe90-4e36-49f0-b3e2-25323f56bbcc",
+      "version": "version_9e1c153a-1bde-4b4a-94ae-43f1edb53c7f",
+      "words": 1251,
+      "hash": "a3aefa77daf681cc0d927f1b6177f991bf48f1933eaa54bb960f691f1ed51249",
+      "status": "PASS"
+    }
+  ],
+  "images": [
+    {
+      "file": "source-64-selection.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-budget-recovery.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-director-desktop.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-director-narrow.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-evidence-desktop.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-fields-narrow.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-graph-desktop.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-inspector-desktop.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-library-narrow.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-lineage-narrow.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-proof-narrow.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-writer-desktop.png",
+      "status": "PASS"
+    },
+    {
+      "file": "source-writer-narrow.png",
+      "status": "PASS"
+    }
+  ],
+  "checks": [
+    {
+      "type": "restart",
+      "status": "PASS"
+    },
+    {
+      "type": "browser",
+      "status": "PASS"
+    },
+    {
+      "type": "real-model",
+      "status": "PASS"
+    },
+    {
+      "type": "scale-metadata-only",
+      "status": "PASS"
+    },
+    {
+      "type": "memory",
+      "status": "PASS"
+    },
+    {
+      "type": "source-read-only",
+      "status": "PASS"
+    },
+    {
+      "type": "source-complete",
+      "status": "PASS"
+    }
+  ],
+  "runtime": "source-final-runtime.json",
+  "cache": {
+    "requests": 40,
+    "reported": 40,
+    "positiveReads": 33,
+    "readTokens": 62592,
+    "writeTokens": "UNKNOWN",
+    "cost": "UNKNOWN",
+    "meaning": "实际DSH提供方usage，含失败/重试，不是固定负载命中率；本地编译复用单独记录。"
+  },
+  "sourceModel": {
+    "calls": 18,
+    "outputTokens": 34090,
+    "estimated": false
+  },
+  "fixture": "60 chapters/64 roles through HTTP+deterministic extraction; real24 roles separately; scale1000 direct metadata only",
+  "servicePorts": {
+    "dsh": 4318,
+    "local": 4317,
+    "unrelatedUntouched": 3080
+  },
+  "failedDevelopmentPaths": [
+    "Structured review citations and closing delimiters preserved in request records.",
+    "Budget stops kept progress; explicit grants did not reset usage.",
+    "Verifier initially tried a forbidden generic backup of the source workspace (403); corrected to source-specific read APIs.",
+    "Virtualized editor automation partial edit recovered via visible version history; final full text verified."
+  ],
+  "unfinished": [],
+  "externalBlockers": []
+}

@@ -1,0 +1,36 @@
+
+> @rgywd/dsh-novel-studio@0.3.0 test:unit
+> node --import tsx --test test/context.test.ts test/review.test.ts test/compiler-unit.test.ts test/source-unit.test.ts
+
+(node:67724) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ compiler unit: observable diff includes model, tools and role changes without normalizing prose (0.9175ms)
+✔ compiler unit: extraction wire schema excludes ideas and native regex rejects unmapped scope/depth (5.1286ms)
+(node:780) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ D: planned events and candidates never become canon (19.8581ms)
+✔ L: large book is scoped, bounded and stale summary omitted (464.4098ms)
+✔ L: locked constraints must fit or fail visibly (13.2811ms)
+✔ word count excludes whitespace and punctuation (0.587ms)
+✔ continuation finds carried items in the previous ending even when the broad goal omits them (10.0977ms)
+(node:64504) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ E: unique-key conflict cites both exact sources and location (12.7805ms)
+✔ E: memory and explicit retrieval are not current-state conflicts (7.168ms)
+✔ evidence fabrication and empty short chapters fail validation (4.6914ms)
+✔ holder identity IDs and names refer to the same character without erasing source values (4.6908ms)
+✔ inherited obligations cannot be reattributed to a new chapter memory; diagnostics identify the exact path (3.6975ms)
+✔ task evidence diagnostics identify the actual source without accepting a wrong chapter attribution (5.8804ms)
+(node:64208) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ source parsing: exact offsets, repeat numbering, missing chapters, volume boundaries and immutable corrections (12.8434ms)
+✔ source text package: original bytes, Chinese legacy decoding, excluded author-only materials and explicit format errors (0.974ms)
+✔ source structured repair is bounded, preserves data, rejects truncation and multiple documents (0.8437ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1562.9216

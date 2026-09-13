@@ -1,0 +1,85 @@
+
+> @rgywd/dsh-novel-studio@0.3.0 test:integration
+> node --import tsx --test test/domain.test.ts test/runtime.test.ts test/guards.test.ts test/workbench.test.ts test/plugin.test.ts test/configuration.test.ts test/memory.test.ts test/source-integration.test.ts test/source-boundary.test.ts
+
+(node:9060) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ upgrade B/F: imported roles/order/macros and frozen scope are compiled; literature cannot change structured protocols (30.3118ms)
+✔ upgrade C: Chinese multiline captures, display isolation, clean replay, invalid regex and worker termination (282.7441ms)
+✔ upgrade B: config formats/credentials and readonly variables are explicit, previews never mutate (6.2674ms)
+✔ upgrade A: additive schema migration and v1/v2 backups preserve prose, versions and config isolation (58.5567ms)
+✔ upgrade G: pipeline preserves raw response, review sees candidate and late config updates cannot change running task (797.7006ms)
+✔ upgrade F: observable DSH request and disjoint cache accounting never invent missing cache writes (39.1213ms)
+✔ upgrade F: DSH preserves usage on failed stream and final schema budget stops before the call (6.6625ms)
+(node:61480) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ A: author save persists and old autosave revision is rejected (71.5095ms)
+✔ atomic accept and rollback handle facts and downstream invalidation (14.183ms)
+✔ H: failed transaction never accepts body without state (4.4938ms)
+✔ I: locks, cyclic moves and foreign-project writes rejected (4.4775ms)
+✔ J: raw import, adjusted split, export and backup references restore (27.4755ms)
+(node:54504) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ chapter metadata cannot forge accepted bodies, versions or summaries (14.4292ms)
+✔ fact edits retain source history and rollback cannot resurrect overridden claims (19.9702ms)
+✔ canon projection uses current scoped state; locked candidates stay outside canon (7.2678ms)
+✔ replan is atomic and rejects locked/accepted bodies and unknown impacts (8.9039ms)
+✔ manual multi-chapter extraction accepts siblings without duplicate facts or stale evidence (240.1913ms)
+✔ cancelled late success remains stale and preserves every retry receipt (397.5721ms)
+✔ structured retry reports field errors, keeps diagnostics and charges actual failed output (771.7402ms)
+✔ DSH adapter uses advertised low effort per call without changing configured selection (39.7258ms)
+✔ author state refresh omits old chapter plans and exposes AI risk decisions without rewriting the body (982.898ms)
+✔ manual draft repair is durable and must pass a new review before it can replace a chapter (381.992ms)
+✔ DSH structured tool return is parsed as data; extra or foreign tool calls are rejected (5.4579ms)
+✔ knowledge accumulates and normal decisions/movement are not deterministic contradictions (3.9004ms)
+✔ dream and rumor events retain their narrative layer and stay outside happened timeline context (4.5152ms)
+(node:26812) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ upgrade E: forty-chapter fixture recalls rare Chinese aliases, early causes and evidence; gaps remain and versions are bounded (1350.2604ms)
+✔ upgrade E/I: accepted source change rejects late summary; edit/lock/restore never changes canon, rollback and repeat install do not duplicate (10.4931ms)
+✔ upgrade D: temporal directed relationships retain asymmetric knowledge; world lookup is selective and recursively bounded (18.4532ms)
+✔ upgrade G: accepted chapter updates memory atomically, neutral summarizer backfills after takeover and late summaries are isolated (1343.4193ms)
+✔ upgrade D/E: relation replacement keeps one temporal edge; chapter move invalidates projections and branch mismatch is fenced (8.8068ms)
+(node:47424) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ DSH ToolRuntime invokes shared reads, enforces proposal boundaries and unregisters on disposal (62.2633ms)
+(node:68672) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ B/F: real domain workflow with explicit deterministic model, two chapters inherit latest versions (1795.1469ms)
+✔ C: late ignored-abort result cannot overwrite takeover (398.6269ms)
+✔ F/H: chapter/call/output budgets stay finite (191.0715ms)
+✔ H: malformed structured output exhausts bounded retries and preserves diagnostic (5.7227ms)
+✔ H: timeout bounded, partial data retained, cancel-late never commits (93.0918ms)
+✔ G: actual pause during chapter two, disk restart reuses checkpoint without repeating chapter one (1423.6ms)
+✔ review-only repair gets blocking issues and no implicit writing-length target (208.18ms)
+(node:68900) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ source boundaries: time projection, early evidence recall and actual source requests exclude later revelations (1836.0238ms)
+✔ source knowledge: the subject of a secret does not automatically know it, and discarded fields do not leak through prose (12.1453ms)
+✔ source identity decisions: split/merge/undo retain evidence, remap links and invalidate dependent scans without altering a branch (39.0846ms)
+✔ source profiles: late results are isolated after an author decision; only explicitly reviewed profiles enter inheritance (12.838ms)
+✔ source temporal fields: historical states and template resets agree with explicit field choices (18.1638ms)
+✔ source invalid claims remain visible candidates, never auto accepted as dangling formal facts (7.9097ms)
+✔ field selection cannot activate an uninterpretable fact or relationship (7.5086ms)
+(node:66900) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ source C/J: budget pause persists, restart reuses completed ranges, grant resumes and commit replay creates only once (2434.1459ms)
+✔ source F/G/H/I: selective references, field resets, retcon conflicts, independent text packages and branch isolation (1204.8184ms)
+✔ source J: invalid JSON retains gap; canceled late responses never publish assets (12.0942ms)
+✔ source G/H: an authorized divergent relationship and a text-only material package both enter normal chapter production (1168.3251ms)
+(node:38944) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ ideas enter future plans idempotently, with linked world entities in context but no invented canon (20.5631ms)
+✔ replan undo is atomic, repeat-safe and cannot overwrite subsequent edits (15.2151ms)
+✔ a chapter-scoped replan cannot change a different unlocked future chapter (4.9589ms)
+✔ multi-volume ordering is shared by UI, export and context; import appends after reordered volumes (7.8305ms)
+✔ extraction repairs missing canonical fields instead of accepting unusable state records (201.6498ms)
+✔ AI brief can pause for a material ambiguity; author clarification keeps original budget (772.7213ms)
+ℹ tests 55
+ℹ suites 0
+ℹ pass 55
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6369.5724

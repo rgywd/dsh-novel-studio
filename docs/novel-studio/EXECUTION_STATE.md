@@ -2,7 +2,7 @@
 
 ## 当前任务：原作资料、选择性继承与衍生作品（0.3.0）
 
-2026-09-13，阶段 A–E 实现与验收已通过，正在整理最终交付文档与本地提交。原始 A–L 条件保留在 PRODUCT/ACCEPTANCE。起点 f271345，原有工作树干净；本轮代码切片 2a6ef26、ae30dba，最近收口提交请以 git log 核对。此前 0.2/V1 记录是历史，不代表本轮验证。
+2026-09-13，阶段 A–E 实现、验收及交付文档已完成。本轮核心验收A–L通过，已可按README日常使用。原始 A–L 条件保留在 PRODUCT/ACCEPTANCE。起点 f271345，原有工作树干净；本轮代码切片2a6ef26、ae30dba，最终实现f782ecf；其后仅交付文档与证据提交，以git log核对最近提交。此前 0.2/V1 记录是历史，不代表本轮验证。
 
 现状→缺口→修改→验收：旧TXT/MD导入直接写小说，没有独立只读源/截止点/继承清单；在既有SQLite、Domain、Runner、编译器、图谱、记忆和双模式上增加源版本、分段覆盖、证据素材、manifest原子复制激活。没有另起应用或修改DSH Core。没有作品总角色硬上限；批次、上下文、分页和任务预算各自保留边界。
 
@@ -18,11 +18,11 @@
 
 可复核作品：project_c7a60811-f25f-4c64-a320-9af9293da507（潮门之后 · 原作接续验收）；原作source_7a667157-8c93-49e5-af20-910906b722a0，sourceversion_15e7babd-f4c3-4bcf-a31b-fea1290c336e，scan_dbc256bf-9e2a-4910-969e-e930fdc18330。作者第4章version_152189ba-2757-487e-8b07-e371c3a0d92b；第5章最终version_9e1c153a-1bde-4b4a-94ae-43f1edb53c7f。第二章任务task_6e33fa3c-d4d7-4626-a591-dd35310685b7。
 
-恢复入口：本节→PRODUCT/ACCEPTANCE→ARCHITECTURE→git status→git log→diff。下一项：完成README和0.3验收文档收口、提交本地更改；无需继续调用模型或重写已通过的功能。未完成的核心功能/外部阻塞：无。兼容边界：TXT/MD/UTF-8与GB18030文本资料包；EPUB未实现，来源采集/自动发布不在范围。摘要语义/实体发现仍会遗漏或误归类，所有引文可回查，深度档案不是创建前置。
+恢复入口：本节→PRODUCT/ACCEPTANCE→ARCHITECTURE→git status→git log→diff。下一项：按README使用现有原作资料库或查看真实接续作品；没有需要在本次会话之后继续执行的工作，无需为看成果再次调用模型。未完成的核心功能/外部阻塞：无。兼容边界：TXT/MD/UTF-8与GB18030文本资料包；EPUB未实现，来源采集/自动发布不在范围。摘要语义/实体发现仍会遗漏或误归类，所有引文可回查，深度档案不是创建前置。
 
 启动：npm run start:dsh（4318）或npm run start:local（4317）；改代码后npm run build，powershell -NoProfile -ExecutionPolicy Bypass -File scripts/serve.ps1 -Dsh -Restart。分类测试npm run test:unit / test:integration / test:e2e；只读复核node scripts/source-smoke.mjs capture、node scripts/source-final.mjs。性能npm run test:source-scale。运行快照：设置NOVEL_RUNTIME_EVIDENCE=docs/novel-studio/evidence/source-final-runtime、NOVEL_SOURCE_RUNTIME=1，再node scripts/upgrade-runtime.mjs capture→重启两个本项目实例→verify，必须capture成功才重启。
 
-最近文件：src/source-{contracts,runner,http}.ts、sources.ts、inheritance.ts、context/temporal/domain/runtime/review/prompts、ui/SourceLibrary与现有入口；test/source-*、scripts/source-*。schema3加6张来源表，无新增依赖；源文件/凭据/数据库均在.local私有保存。10份迁移前备份在.local/backups/source-20260913，JSON恢复为独立作品；完整来源库冷备先停止所属进程，保留整个SQLite库后再启动。证据均在docs/novel-studio/evidence/source-*，仅原创材料/无密钥回执。当前未提交均本任务，无用户原始脏内容。
+最近文件：src/source-{contracts,runner,http}.ts、sources.ts、inheritance.ts、context/temporal/domain/runtime/review/prompts、ui/SourceLibrary与现有入口；test/source-*、scripts/source-*。schema3加6张来源表，无新增依赖；源文件/凭据/数据库均在.local私有保存。10份迁移前备份在.local/backups/source-20260913，JSON恢复为独立作品；完整来源库冷备先停止所属进程，保留整个SQLite库后再启动。证据均在docs/novel-studio/evidence/source-*，仅原创材料/无密钥回执。交付后工作树应干净，以git status --short核对；提交前的全部未提交内容均为本任务，无用户原始脏内容。
 
 参考核对：ExplosiveCoderflome/AI-Novel-Writing-Assistant @24832d5eb0ded8c39cfaab9971af2a57e1827a22；实际API/Service/Prompt/notes的16/8/5/3限制与发布/缓存代码已读，AGPL-3.0-only与商业声明已核对；不运行、不复制参考实现，独立实现允许范围资产继承。
 
