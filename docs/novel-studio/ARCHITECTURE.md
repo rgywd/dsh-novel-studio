@@ -25,7 +25,20 @@ Reference study (read, not run or copied): SillyTavern release `8172dcd0ee672d3c
 | JS regex captures/flags/multiline/ordering/enabled | SUPPORTED | Whole-text isolated Worker, bounded execution and visible traces |
 | ST regex placement/edit/macros | PARTIAL | Whitelisted goal/selection/world before, prose after/display; unsupported combinations disabled; onEdit tested explicitly |
 | Regex chat depth, Trim Out, script/reasoning/tool replacement | UNSUPPORTED | Preserved import diagnostics; protected protocol/schema never processed |
-| Lorebook and long-memory compatibility | NOT YET VERIFIED | Next implementation slice; acceptance remains NOT_RUN |
+| Lorebook / World Info JSON entries, key/keysecondary, content, constant, disable, order | SUPPORTED | Original retained; acceptance maps to the existing world tree; repeat import is idempotent |
+| World Info selective, recursion, aliases/entity links | PARTIAL | AND_ANY secondary match, depth 2, 24 nonmandatory entries, token/character budget; core/pinned rules retained or fail visibly |
+| World Info advanced positions, probability and scripts | UNSUPPORTED | Reported and disabled; no arbitrary execution |
+| LittleWhiteBox memory ideas | PARTIAL | Native source/version coverage, evidence recall and checkpoints; no chat floors, plugin scripts or external retrieval stack |
+
+## Source-bound memory and temporal projection
+
+`temporal.ts` queries accepted entities and changeset history at a chapter boundary (and optionally an exact/relative story-time label); arbitrary prose time strings are not falsely ordered as dates. Relationship identity is from/to/type, with separate states, causes, sources, visibility and each party's knowledge. New sourced versions supersede that edge at their effective chapter; historical queries retain earlier states. Character perspective filters secret data and other characters' knowledge; reader visibility is explicit. `worldRecall` includes core/pinned rules, entity links, aliases/keys and secondary matches with bounded recursion. `lorebook.ts` previews and preserves original files/reports, then accepts into unified world objects.
+
+`memory.ts` keeps accepted original versions, chapter evidence summaries and derived checkpoint groups (default every 5 complete chapters, configurable 3–12). It never repeatedly rewrites a sole grand summary. Each record holds exact source IDs, hashes, order/branch, coverage and edit history. Scene/event causes, knowledge differences, transfers and unresolved obligations preserve quotes/modality/uncertainty. Author edits to summaries are not author canon. Accepting a reviewed chapter commits body/state/memory together; standalone neutral Summarizer proposals recheck exact sources before installing. Replays are idempotent.
+
+Context retains recent necessary original text; uncovered accepted chapters are added in full or stop at the budget. Older evidence is retrieved by Intl.Segmenter Chinese terms, rare-name/alias exact matches, explicit IDs and related entities, narrative importance and obligations, with surrounding quotes and source versions. It excludes future/other-branch/candidate/stale material. Core/current/recent/history priorities and omissions are inspectable. Accepted body changes, rollback, ordering and branch changes invalidate affected sources/checkpoints and dependent tasks. The conservative project revision fence remains intentional. Rolling planning passes commitments/arcs/near three chapters/far volume goals/obligations as evidence for a future-only proposal; it does not pretend to prove all narrative dependencies.
+
+Backup includes the ancestry of every effective/task configuration, raw imports, native scope snapshot, memory histories and request records. Restore creates independent IDs and a frozen local effective configuration; it never changes other projects' global default. Original configured schema-1 backups remain supported. Model usage is retained on failures when DSH supplies it; final request budget also checks tool schemas before stream invocation.
 
 ## DSH integration and boundaries
 

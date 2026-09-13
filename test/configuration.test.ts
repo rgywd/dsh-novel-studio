@@ -7,7 +7,8 @@ test('upgrade B/F: imported roles/order/macros and frozen scope are compiled; li
  const f=fixture(),v=saveConfig(f.store,importConfiguration(raw,'兼容测试'));assert.equal(resolveConfig(f.store,f.p.id).config.enabled,false);bindConfig(f.store,'project:'+f.p.id,v.id,null);
  const t=f.task({configuration:{patch:{bindings:{characterId:f.a.id,authorName:'作者甲'}}}});const a=await compilePrompt(f.domain,t,'write',{goal:t.goal});assert.deepEqual(a.messages.filter(m=>['文学样例','不输出解释'].includes(m.text)).map(m=>m.role),['assistant','user']);assert.ok(a.messages.some(m=>m.text.includes('沈砚 / 作者甲 / {{unknown}}')));assert.ok(a.warnings.some(w=>w.includes('{{unknown}}')));assert.ok(!a.messages.some(m=>m.text.includes('不可映射')||m.text.includes('禁用内容')));assert.equal(a.sampling.temperature,0.8);assert.ok(v.report.some(r=>r.field==='top_p'&&r.status==='UNSUPPORTED'));
  const next=saveConfig(f.store,importConfiguration(JSON.stringify({format:'dsh-novel-config',config:nativePresets[2].config}),'新文风'));bindConfig(f.store,'project:'+f.p.id,next.id,v.id);assert.equal((await compilePrompt(f.domain,t,'write',{goal:t.goal})).hash,a.hash);
- for(const key of ['plan','review','extract'] as const){const c=await compilePrompt(f.domain,t,key,{draft:'正文',goal:t.goal});assert.ok(c.system.includes('JSON Schema'));assert.ok(!c.messages.some(m=>m.text.includes('不输出解释')||m.text.includes('文学样例')));assert.deepEqual(c.sampling,{});}
+ const dynamic=await compilePrompt(f.domain,t,'write',{goal:'完全不同的当前目标'});assert.equal(dynamic.stableHash,a.stableHash);assert.notEqual(dynamic.hash,a.hash);
+ for(const key of ['plan','review','extract','summarize'] as const){const c=await compilePrompt(f.domain,t,key,{draft:'正文',goal:t.goal});assert.ok(c.system.includes('JSON Schema'));assert.ok(!c.messages.some(m=>m.text.includes('不输出解释')||m.text.includes('文学样例')));assert.deepEqual(c.sampling,{});}
  const second=await compilePrompt(f.domain,t,'write',{goal:t.goal});assert.equal(second.localCompilationCache,'HIT');assert.equal(second.hash,a.hash);assert.equal(stable(second.messages),stable(a.messages));assert.equal(adaptToNovel(v).config.strategy,'novel');assert.equal(v.config.strategy,'compatible');
  const diff=requestDiff({messages:a.messages},{messages:[...a.messages,{role:'user',text:'下一章'}]});assert.ok(diff.firstChangedPath?.startsWith('$.messages'));f.store.close();
 });
@@ -27,4 +28,12 @@ test('upgrade G: pipeline preserves raw response, review sees candidate and late
 });
 test('upgrade F: observable DSH request and disjoint cache accounting never invent missing cache writes',async()=>{
  const f=fixture();const t=f.task({});const compiled=await compilePrompt(f.domain,t,'write',{goal:'test'});let observed:any;const provider=new DshProvider({async *stream(options:any){assert.equal(options.system,compiled.system);yield {type:'text-delta' as const,index:0,text:'实际文本'};yield {type:'usage' as const,usage:{inputTokens:100,cacheReadTokens:900,outputTokens:20,totalTokens:1020}};yield {type:'finish' as const,reason:{kind:'stop' as const}};}},()=>({provider:'test-deepseek',model:'test'}));const result=await provider.generate({prompt:'write',input:{},compiled,task:t,maxTokens:1000,signal:new AbortController().signal,onDelta:()=>{},onRequest:r=>{observed=r;}});assert.equal(result.usage?.inputTokens,1000);assert.equal(result.usage?.uncachedInputTokens,100);assert.equal(result.usage?.cacheReadTokens,900);assert.equal(result.usage?.cacheWriteTokens,undefined);assert.ok(observed.messages);assert.ok(!JSON.stringify(observed).includes('api_key'));f.store.close();
+});
+
+test('upgrade F: DSH preserves usage on failed stream and final schema budget stops before the call',async()=>{
+ const f=fixture(),t=f.task({}),compiled=await compilePrompt(f.domain,t,'review',{draft:'正文'});let called=false;
+ const provider=new DshProvider({async *stream(){called=true;yield {type:'usage' as const,usage:{inputTokens:10,cacheReadTokens:100,outputTokens:20,totalTokens:130}};yield {type:'finish' as const,reason:{kind:'max-tokens' as const}};}},()=>({provider:'test',model:'test'}));
+ const request={prompt:'review' as const,input:{},compiled,task:t,maxTokens:1000,signal:new AbortController().signal,onDelta:()=>{}};
+ await assert.rejects(provider.generate({...request,compiled:{...compiled,budget:20}}),(e:any)=>e.code==='PROMPT_BUDGET');assert.equal(called,false);
+ await assert.rejects(provider.generate(request),(e:any)=>e.outputTokens===20&&e.usage.cacheReadTokens===100&&e.usage.elapsedMs>=0);assert.equal(called,true);f.store.close();
 });

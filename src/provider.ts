@@ -23,8 +23,10 @@ export class DshProvider implements ModelProvider {
     const options:GenerateOptions={...m,system:r.compiled?.system??promptSystem(r.prompt),messages:messages.map(message=>createMessage({role:message.role,content:[{type:'text',text:message.text}],source:{kind:'plugin',plugin:'@rgywd/dsh-novel-studio',form:'snapshot',sections:[{name:'novel-task-data',text:'Versioned creative input'}]}})),maxTokens:Math.min(r.maxTokens,r.compiled?.sampling.maxTokens??r.maxTokens),signal:r.signal,...(r.compiled?.sampling.temperature!==undefined?{temperature:r.compiled.sampling.temperature}:{}),...(r.compiled?.sampling.stop?{stop:r.compiled.sampling.stop}:{})};
     if(schema){options.temperature=0.2;options.tools=[{name:'submit_novel_result',description:'Return the requested structured creative result. This only returns data and does not apply any changes.',parameters:zodToJsonSchema(schema,{$refStrategy:'none'})}];options.system+='\n本次结构化交付请调用 submit_novel_result 一次，以函数参数返回完整结果。不要添加解释性正文。它仅返回数据，不会直接接受或修改作品。';}
     // This is the observable DSH invocation, not a guessed downstream HTTP body. No connection or credential is stored.
+    const requestChars=JSON.stringify({system:options.system,messages:options.messages.map(message=>({role:message.role,content:message.content})),tools:options.tools}).length;
+    if(r.compiled&&requestChars>r.compiled.budget)throw new DomainError('PROMPT_BUDGET','最终 DSH 请求（含工具 Schema）超过预算；没有截断必要内容');
     r.onRequest?.({...m,system:options.system,messages:options.messages.map(message=>({role:message.role,content:message.content})),maxTokens:options.maxTokens,temperature:options.temperature,stop:options.stop,tools:options.tools});
-    for await(const chunk of this.llm.stream(options)){
+    try{for await(const chunk of this.llm.stream(options)){
       if(firstTokenMs===undefined&&((chunk.type==='text-delta'&&chunk.text)||(chunk.type==='tool-call-delta'&&chunk.argumentsDelta)))firstTokenMs=Math.round(performance.now()-started);
       if(chunk.type==='text-delta'){text+=chunk.text;r.onDelta(chunk.text);if(text.length>120000)throw new DomainError('OUTPUT_LIMIT','模型输出超过安全长度',422);}
       if(chunk.type==='tool-call-delta'&&schema)r.onDelta(chunk.argumentsDelta);
@@ -39,6 +41,7 @@ export class DshProvider implements ModelProvider {
     }
     if(!finished||!text.trim())throw new DomainError('MODEL_FAILED','模型流未完整返回有效内容',502);
     return {text,outputTokens,model:m,usage:{...(usage??{serverCache:'UNKNOWN'}),firstTokenMs,elapsedMs:Math.round(performance.now()-started)}};
+    }catch(error){throw Object.assign(error instanceof Error?error:new DomainError('MODEL_FAILED','模型流失败'),{outputTokens,model:m,usage:{...(usage??{serverCache:'UNKNOWN'}),firstTokenMs,elapsedMs:Math.round(performance.now()-started)}});}
   }
 }
 function requireSubmission(name:string,count:number){if(name!=='submit_novel_result'||count!==0)throw new DomainError('INVALID_OUTPUT','结构化交付只允许一次 submit_novel_result，不执行其他工具',422);}

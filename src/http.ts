@@ -9,10 +9,13 @@ import { DomainError, requireThat } from './contracts.js';
 import { prompts } from './prompts.js';
 import { binding,bindConfig,listConfigs,configVersion,importConfiguration,saveConfig,resolveConfig,adaptToNovel,nativePresets } from './config.js';
 import { configPatchSchema,regexRuleSchema } from './config-contracts.js';
-import { compilePrompt } from './compiler.js';
+import { compilePrompt,macroEnvironment } from './compiler.js';
 import { transformText } from './text-pipeline.js';
 import { requestGet,requestList } from './requests.js';
 import { taskInputSchema,now,type CreativeTask } from './contracts.js';
+import { memoryStatus,memoryGet,editMemory,recallMemory,rollingPlanning } from './memory.js';
+import { temporalObjects } from './temporal.js';
+import { previewLorebook,acceptLorebook } from './lorebook.js';
 export const API='/api/novel-studio';
 const num=z.number().int().positive();
 export async function readJson(req:IncomingMessage){let size=0;const chunks:Buffer[]=[];for await(const chunk of req){const b=Buffer.from(chunk);size+=b.length;requireThat(size<=64*1024*1024,'BODY_LIMIT','请求超过 64 MiB',413);chunks.push(b);}try{return JSON.parse(Buffer.concat(chunks).toString('utf8')||'{}');}catch{throw new DomainError('INVALID_JSON','请求不是有效 JSON',400);}}
@@ -40,7 +43,7 @@ export class HttpApp {
       res.setHeader('Content-Type',file[1]);res.end(await readFile(resolve(this.assets,file[0])));
     }catch(error){const e=publicError(error);const status=error instanceof DomainError?error.status:error instanceof z.ZodError?422:500;res.writeHead(status,{'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify({error:e}));}
   }
-  dispatch(method:string,path:string,body:any={},query=new URLSearchParams()):any{
+  async dispatch(method:string,path:string,body:any={},query=new URLSearchParams()):Promise<any>{
     const segments=path.split('/').filter(Boolean);const [group,pid,resource,key,action]=segments;
     if(method==='GET'&&path==='/health')return {version:'0.2.0',dsh:this.runner.provider.info(),demo:this.runner.demo.info(),schema:2,prompts:Object.values(prompts).map(p=>({id:p.id,version:p.version,purpose:p.purpose}))};
     if(group==='projects'&&!pid){if(method==='GET')return this.domain.store.list('projects');if(method==='POST')return this.domain.createProject(body);}
@@ -48,20 +51,28 @@ export class HttpApp {
     requireThat(group==='projects'&&pid,'NOT_FOUND','未知接口',404);this.domain.project(pid);
     if(!resource){if(method==='GET')return this.domain.snapshot(pid);if(method==='PATCH')return this.domain.updateProject(pid,num.parse(body.revision),body.project);}
     if(resource==='status'&&method==='GET')return {project:this.domain.project(pid),tasks:this.domain.store.list('tasks',pid).map(t=>({...t,steps:[]}))};
+    if(resource==='planning-check'&&method==='GET')return rollingPlanning(this.domain,pid);
+    if(resource==='memories'){
+      if(method==='GET'&&!key)return memoryStatus(this.domain,pid);
+      if(method==='GET'&&key)return memoryGet(this.domain.store,pid,key);
+      if(method==='PATCH'&&key)return editMemory(this.domain,pid,key,num.parse(body.revision),z.object({content:z.unknown().optional(),locked:z.boolean().optional(),invalidate:z.boolean().optional(),restoreRevision:z.number().int().positive().optional()}).strict().parse(body.change));
+    }
+    if(resource==='recall'&&method==='POST')return recallMemory(this.domain,pid,z.object({goal:z.string().max(6000),asOf:z.number().int().nonnegative(),branch:z.string().max(100).default('main'),entityIds:z.array(z.string()).max(30).optional(),viewpointId:z.string().optional(),audience:z.enum(['author','character','reader']).optional(),limit:z.number().int().min(1).max(12).optional()}).parse(body));
+    if(resource==='temporal'&&method==='POST')return temporalObjects(this.domain,pid,z.object({asOfChapter:z.number().int().nonnegative().optional(),viewpointId:z.string().optional(),audience:z.enum(['author','character','reader']).optional(),branch:z.string().max(100).default('main'),storyTime:z.string().max(240).optional()}).parse(body));
+    if(resource==='lorebook'&&method==='POST')return key==='preview'?previewLorebook(z.string().parse(body.raw),z.string().max(160).parse(body.name)):acceptLorebook(this.domain,pid,num.parse(body.revision),z.string().parse(body.raw),z.string().max(160).parse(body.name),z.string().parse(body.sourceHash));
     if(resource==='configurations'){
       if(method==='GET'&&!key)return {versions:listConfigs(this.domain.store),bindings:{global:binding(this.domain.store,'global'),project:binding(this.domain.store,'project:'+pid)},effective:resolveConfig(this.domain.store,pid),samples:nativePresets};
       if(method==='GET'&&key)return configVersion(this.domain.store,key);
       if(method==='POST'&&key==='preview')return importConfiguration(z.string().parse(body.raw),z.string().max(160).parse(body.name??'导入配置'),'本地文件',body.orderId);
-      if(method==='POST'&&!key){this.domain.guard(pid,this.domain.project(pid).revision);const raw=body.raw!==undefined?z.string().parse(body.raw):JSON.stringify({format:'dsh-novel-config',config:configPatchSchema.parse(body.config)});const v=importConfiguration(raw,z.string().trim().min(1).max(160).parse(body.name),'作者保存',body.orderId);if(body.parentId)v.parentId=configVersion(this.domain.store,z.string().parse(body.parentId)).id;return this.domain.store.transaction(()=>{saveConfig(this.domain.store,v);this.domain.store.event(pid,null,'config.saved','已保存独立配置版本；尚未自动应用',{versionId:v.id});return v;});}
+      if(method==='POST'&&!key){this.domain.guard(pid,this.domain.project(pid).revision);const raw=body.raw!==undefined?z.string().parse(body.raw):JSON.stringify({format:'dsh-novel-config',config:configPatchSchema.parse(body.config)});let v=importConfiguration(raw,z.string().trim().min(1).max(160).parse(body.name),'作者保存',body.orderId);if(body.parentId)v.parentId=configVersion(this.domain.store,z.string().parse(body.parentId)).id;return this.domain.store.transaction(()=>{v=saveConfig(this.domain.store,v);this.domain.store.event(pid,null,'config.saved','已保存独立配置版本；尚未自动应用',{versionId:v.id});return v;});}
       if(method==='POST'&&key==='bind'){const scope=z.enum(['global','project']).parse(body.scope)==='global'?'global':'project:'+pid;return this.domain.store.transaction(()=>{this.domain.guard(pid,this.domain.project(pid).revision);bindConfig(this.domain.store,scope,z.string().nullable().parse(body.versionId),z.string().nullable().parse(body.expected));this.domain.store.event(pid,null,'config.bound','后续任务采用新配置；运行任务保持原配置版本',{scope,versionId:body.versionId});return resolveConfig(this.domain.store,pid);});}
       if(method==='POST'&&key&&action==='adapt')return adaptToNovel(configVersion(this.domain.store,key));
     }
-    if(resource==='regex-test'&&method==='POST')return transformText(z.string().max(100000).parse(body.input),z.array(regexRuleSchema).max(40).parse(body.rules),z.enum(['before','after','display']).parse(body.stage),z.enum(['goal','selection','world','prose']).parse(body.scope??'prose'),{test:true,edited:body.edited===true});
-    if(resource==='display'&&method==='POST'){const chapter=this.domain.object(pid,z.string().parse(body.chapterId));const config=resolveConfig(this.domain.store,pid);return transformText(chapter.body,config.config.enabled?config.config.regex??[]:[],'display','prose',{test:true});}
+    if(resource==='regex-test'&&method==='POST'){const task=previewTask(this.domain,pid,{kind:'write',goal:'规则测试',configuration:{patch:body.config}}),env=macroEnvironment(this.domain,task,task.configSnapshot!,{});const result=await transformText(z.string().max(100000).parse(body.input),z.array(regexRuleSchema).max(40).parse(body.rules),z.enum(['before','after','display']).parse(body.stage),z.enum(['goal','selection','world','prose']).parse(body.scope??'prose'),{test:true,edited:body.edited===true,expand:env.expand});return {...result,macros:env.trace,warnings:env.warnings};}
+    if(resource==='display'&&method==='POST'){const chapter=this.domain.object(pid,z.string().parse(body.chapterId)),task=previewTask(this.domain,pid,{kind:'write',goal:'展示正文',chapterId:chapter.id}),config=task.configSnapshot!,env=macroEnvironment(this.domain,task,config,{});const result=await transformText(chapter.body,config.config.enabled?config.config.regex??[]:[],'display','prose',{test:true,expand:env.expand});return {...result,macros:env.trace,warnings:env.warnings};}
     if(resource==='compile-preview'&&method==='POST'){
-      const prompt=z.enum(Object.keys(prompts) as [keyof typeof prompts,...(keyof typeof prompts)[]]).parse(body.prompt??'write');const data=taskInputSchema.parse(body.task??{kind:'write',goal:'继续当前章节'});const at=now();
-      const t:CreativeTask={...data,id:'preview',projectId:pid,status:'QUEUED',createdAt:at,updatedAt:at,inputRevision:this.domain.project(pid).revision,expectedRevision:this.domain.project(pid).revision,epoch:0,currentStep:'preview',completedChapters:0,steps:[],usage:{calls:0,outputTokens:0,estimated:false},contract:{scope:'预览，不执行',lockedIds:[],permitted:[],forbidden:[],deliverables:[],stop:[]},checkpoint:{committed:[]}};
-      t.configSnapshot=resolveConfig(this.domain.store,pid,data.configuration,'preview','2000-01-01T00:00:00.000Z');const pack=buildContext(this.domain,pid,{chapterId:data.chapterId,goal:data.goal,maxChars:data.budget.contextChars});return compilePrompt(this.domain,t,prompt,{goal:data.goal,targetWords:data.targetWords,constraints:data.constraints,context:pack.text,_contextPack:pack,chapterId:data.chapterId});
+      const prompt=z.enum(Object.keys(prompts) as [keyof typeof prompts,...(keyof typeof prompts)[]]).parse(body.prompt??'write'),t=previewTask(this.domain,pid,body.task??{kind:'write',goal:'继续当前章节'}),config=t.configSnapshot!.config;
+      const pack=buildContext(this.domain,pid,{chapterId:t.chapterId,goal:t.goal,maxChars:t.budget.contextChars,...t.perspective,viewpointId:t.perspective?.viewpointId??config.bindings?.viewpointId,audience:t.perspective?.audience??config.bindings?.audience,memory:config.enabled?config.memory:undefined});return compilePrompt(this.domain,t,prompt,{goal:t.goal,targetWords:t.targetWords,constraints:t.constraints,context:pack.text,_contextPack:pack,chapterId:t.chapterId});
     }
     if(resource==='requests'&&method==='GET')return key?requestGet(this.domain.store,pid,key):requestList(this.domain.store,pid).map(r=>({id:r.id,taskId:r.taskId,stepKey:r.stepKey,createdAt:r.createdAt,status:r.status,role:r.compiled.role,configHash:r.compiled.config.hash,hash:r.compiled.hash,localCompilationCache:r.compiled.localCompilationCache,localPrefixReuse:r.localPrefixReuse,usage:r.usage,error:r.error}));
     if(resource==='objects'){
@@ -99,4 +110,9 @@ export class HttpApp {
     if(method==='GET'&&resource==='backup')return this.domain.backup(pid);
     throw new DomainError('NOT_FOUND','未知接口',404);
   }
+}
+
+function previewTask(domain:Domain,pid:string,input:unknown):CreativeTask {
+ const data=taskInputSchema.parse(input),at='2000-01-01T00:00:00.000Z';
+ return {...data,id:'preview',projectId:pid,status:'QUEUED',createdAt:at,updatedAt:at,inputRevision:domain.project(pid).revision,expectedRevision:domain.project(pid).revision,epoch:0,currentStep:'preview',completedChapters:0,steps:[],usage:{calls:0,outputTokens:0,estimated:false},contract:{scope:'预览，不执行',lockedIds:[],permitted:[],forbidden:[],deliverables:[],stop:[]},checkpoint:{committed:[]},configSnapshot:resolveConfig(domain.store,pid,data.configuration,'preview',at)};
 }

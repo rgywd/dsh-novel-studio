@@ -12,9 +12,17 @@
 | 只保留近四章摘要，早期细节难以召回 | 复用正文版本/事件/变更记录，增加派生记忆覆盖、封存段、证据召回及重建 | E/G |
 | DSH 已提供独立 cacheRead/cacheWrite 字段，当前丢失 | 复用 DeepSeek 隐式缓存，保存实际计量；本地编译复用与服务缓存分开 | F |
 
-当前：阶段 A/B 核心代码已接入，继续 C/D 关系世界与长篇记忆，随后真实模型、缓存和浏览器验收。schema 1→2 只增加配置/请求/派生记忆表，旧数据不回写；schema 1/2 备份均可恢复为独立副本。所有 AI 调用经 compilePrompt，任务固定配置版本，原始响应/生成后处理/候选/成果分别保存；DSH 最终可观察参数及独立 cache usage 已接入。配置/导入报告/正则测试台/检查器 UI 已构建，尚未做本轮浏览器验收。长篇记忆开关和总结入口正在后续切片接通，不能视为已完成。
+当前：阶段 A–D 已实现，正在 E 精修与最终浏览器/真实文风验收。schema 1→2 已在两个本项目实例实际升级并重启；8/8 旧作品的 project/objects/versions/tasks/artifacts/imports 原样哈希回归 PASS（upgrade-old-projects.json）。当前应用 0.2.0。最近可靠提交 99e779a（A/B），本次待提交 C/D、边界修复和新增验证。
 
-最近验证：typecheck、build、全部 47 项自动测试 PASS（原 41 + 升级 6）；`evidence/upgrade-configuration-tests.txt` 包含新增测试，覆盖编译、角色顺序/宏/固定版本、格式隔离、恶意正则实际 Worker 终止、schema 迁移和两代备份、生成后结果进入审校、缓存字段不重复计量。真实模型/浏览器仍 NOT_RUN。相关新代码 `config-contracts.ts/config.ts/compiler.ts/text-pipeline.ts/requests.ts/ui/CreativeConfig.tsx`；扩展 store/contracts/domain/runtime/provider/http/UI。新配置默认关闭。
+已实现：统一 P0–P5 编译、冻结全局/项目/任务配置、兼容导入与报告/来源链备份、可终止三阶段 regex、实际请求检查器与未知缓存字段；有方向/按章/视角的关系与世界召回；World Info 核心导入到同一世界树；接受正文事务内增量记忆、封存段、覆盖缺口、原文回查、人工修订/锁定/失效/历史恢复、未来滚动规划依据。正文/改序/分支/回滚保护与 late call fence 继续共用 Domain。
+
+最近验证：typecheck/build PASS；11 unit + 43 integration + 2 deterministic HTTP E2E = 56 PASS，0 FAIL。证据 upgrade-test-{unit,integration,e2e}.txt。真实模型首章935字 → 作者将钥匙交还 → 第二章1025字和中性 Summarizer PASS。原 Extractor 因过宽 kind schema、后续引文失败在5次预算后暂停；修正 schema 后新任务限定6条候选、原预算不变，真实验证 PASS。原文风对照发现第一人称配置未生效，保留 upgrade-style-initial.json 为 FAIL；现已补明确形式协议和独立视角绑定，三样本重测正在运行，不能只凭 hash 不同标文学效果 PASS。
+
+当前真实作品 project_fbc9e2a1-059a-4735-a987-6ed9eb38f068。实际 DeepSeek 23次已读请求中有 cacheRead 0–4480 tokens，cacheWrite UNKNOWN，无费用估算；包含重试与样本调用，不能用本地 hash 当服务缓存。scripts/upgrade-smoke.mjs --continue 只补未完成验证，不会自动重启失败任务或增大预算。证据 upgrade-real.json 持续保存。
+
+浏览器已验证真实作品配置、生成后 Diff、记忆覆盖、源版本、原文召回跳转到 CodeMirror 精确选区、桌面无水平溢出；仍需最新构建的导入/规则开关/图谱/窄窗口和错误重试验收。当前 UI 和真实 smoke 工作通过 in-app tab 2，勿误操作其他标签。
+
+下一项：检查文风三样本视角/对白/禁用表达 → 完成最新浏览器操作与截图 → 记录最终请求/用量和服务重启读回 → 更新 ACCEPTANCE/README 并本地提交。无外部阻塞，不推送。新增关键文件 memory*.ts/temporal.ts/lorebook.ts/ui/MemoryStudio.tsx，升级测试和 smoke/regression 脚本。当前未提交均本轮修改（没有用户初始脏内容）。启动与验证命令沿用下方历史记录，新验证为 npm run smoke:upgrade -- --continue、npm run test:old-projects。
 
 继续禁止修改独立 DSH checkout、既有 3080 实例、远端 push 或清库。只用当前授权 DSH 模型。SillyTavern release `8172dcd0ee672d3cd9a5e5f7af134f91a45cd2b8` 与 LittleWhiteBox `960b3233c90cdd7de7ac61becb7f00b05fa8a21b` 作为只读参考，源码/素材不复制。研究与兼容矩阵追加到现有 PRODUCT/ARCHITECTURE，测试追加到 ACCEPTANCE；不另建一套文档。
 

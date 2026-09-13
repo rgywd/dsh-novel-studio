@@ -18,6 +18,7 @@ export class DemoProvider implements ModelProvider {
       }
       case 'repair':value={edits:[],summary:'演示提供方不会伪装修复成功，请手工修改或接入真实模型。'};break;
       case 'ideas':value={ideas:[{title:'寄给昨日的信',body:'让一封退信的邮戳比投递日期早一天，迫使主角核对自己的记忆。',tradeoff:'需要尽早明确时间规则'},{title:'灯匠的空白账本',body:'闻溪修好的每盏灯都对应账本上一处被擦去的姓名。',tradeoff:'关系推进应通过行动而非解释'}]};break;
+      case 'summarize':value={summary:'明确演示样本：'+String(r.input.draft).slice(0,160),scenes:[{summary:'演示原文片段',quote:String(r.input.draft).slice(0,100),entityIds:[],knownByIds:[],time:'未知',location:'未知',cause:'未证实',effect:'未证实',modality:'uncertain',inference:true,importance:1}],obligations:[]};break;
       case 'extract':value={objects:char?[]:[{kind:'character',title:'沈砚',body:'待确认的港口邮差',fields:{identity:'邮差'},source:{type:'import',quote:String(r.input.draft??'').slice(0,60)}}]};break;
       case 'replan':value={rationale:'将调查行动提前，让主角以选择推动情节。',changes:(r.input.editablePlans??[]).slice(0,1).map((x:any)=>({id:x.id,body:'让人物先承担一个具体代价，再追问信件的真相',fields:{goal:'主动调查港灯'}})),impacts:(r.input.dependencies??[]).slice(0,4).map((x:any)=>({id:x.id,reason:'可能影响后续揭示节奏，需随正文复核',certainty:'possible'}))};break;
       case 'assist':value=`${r.input.selection?.expectedText??''}窗外的雾贴着玻璃，他没有再解释，只把信推近了一寸。`;break;

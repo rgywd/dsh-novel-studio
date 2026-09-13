@@ -2,18 +2,22 @@
 
 ## 当前增量升级 A–H（独立于下方已完成 V1）
 
-起点 `7839613`。升级前 `npm run typecheck` 与 41 项完整回归 PASS；证据 `evidence/upgrade-baseline-*.txt`。8 个旧作品备份成功；`evidence/upgrade-backup-receipt.json`。本轮功能验收尚未执行，逐切片更新。
+起点 `7839613`。升级前 `npm run typecheck` 与 41 项完整回归 PASS；证据 `evidence/upgrade-baseline-*.txt`。8 个旧作品备份成功；`evidence/upgrade-backup-receipt.json`。本轮自动验证 56 项通过，旧作品 8/8 哈希回归通过；真实闭环与界面仍在收尾，以下不借用历史 V1 的 PASS。
 
 | 本轮场景 | 状态 |
 |---|---|
-| A 旧版数据与双模式迁移回归 | NOT_RUN |
-| B 预设、顺序/角色/宏、任务隔离和固定版本 | NOT_RUN |
-| C 三阶段 regex、原始响应、非法规则与隔离终止 | NOT_RUN |
-| D 关系/世界时态、单方知情和有界召回 | NOT_RUN |
-| E 长篇证据召回、覆盖缺口、失效重建与晚到保护 | NOT_RUN |
-| F 确定性编译、稳定前缀与真实缓存计量 | NOT_RUN |
-| G 双模式完整升级闭环 | NOT_RUN |
-| H 三种文风的真实可读样本 | NOT_RUN |
+| A 旧版数据与双模式迁移回归 | PASS（8/8 原有作品；两代备份和运行器回归） |
+| B 预设、顺序/角色/宏、任务隔离和固定版本 | PASS（配置集成与 HTTP E2E；真实 Writer/Reviewer/Summarizer/Extractor） |
+| C 三阶段 regex、原始响应、非法规则与隔离终止 | PASS（Worker 高耗时终止/中文捕获/回放与 HTTP 流程） |
+| D 关系/世界时态、单方知情和有界召回 | PASS（自动测试；新增图形交互浏览器收尾中） |
+| E 长篇证据召回、覆盖缺口、失效重建与晚到保护 | PASS（40章原创合成 Fixture、原文跳转与真实接管重建） |
+| F 确定性编译、稳定前缀与真实缓存计量 | PASS（重复编译、角色/模型/schema Diff 与实际 cacheRead；write UNKNOWN） |
+| G 双模式完整升级闭环 | PASS（确定性 HTTP 与真实两章；浏览器完整操作收尾中） |
+| H 三种文风的真实可读样本 | FAIL（首轮第一人称没有生效，已修复编译形式协议，重测中） |
+
+本轮五类证据：`upgrade-test-unit.txt` 11 PASS；`upgrade-test-integration.txt` 43 PASS；`upgrade-test-e2e.txt` 2 PASS；`upgrade-real.json` 真实模型与服务端用量；`upgrade-*.png` 当前浏览器截图。最终 UI 清单尚未收口。
+
+真实失败保留：`upgrade-extractor-failure.json` 包含过宽 enum 导致的三次输出失败；同任务最后一次有引文不匹配，5次预算耗尽后暂停，不增大预算。修正 schema 后另开一个有明确边界的抽取验收，限定6条候选，成功。`upgrade-style-initial.json` 保存首轮人称失败与完整三样本；不能用输出 hash 不同代替文风符合。
 
 ## 历史 V1 验收
 

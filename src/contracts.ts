@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { memoryContentSchema } from './memory-contracts.js';
 import { configOverrideSchema,type ConfigSnapshot } from './config-contracts.js';
 
 export const id = (prefix: string) => `${prefix}_${crypto.randomUUID()}`;
@@ -42,7 +43,7 @@ export const projectSchema = z.object({
 export interface Project extends z.infer<typeof projectSchema> { id: string; revision: number; createdAt: string; updatedAt: string; }
 export interface ChapterVersion { id: string; projectId: string; chapterId: string; content: string; chapterRevision: number; createdAt: string; actor: string; accepted: boolean; summary: string; restoredFrom?: string; commitKey?: string; }
 export const taskInputSchema = z.object({
-  kind: z.enum(['bootstrap','write','review','replan','extract','ideas','assist']), goal: z.string().trim().min(1).max(6000),
+  kind: z.enum(['bootstrap','write','review','replan','extract','ideas','assist','summarize']), goal: z.string().trim().min(1).max(6000),
   chapterId: z.string().optional(), count: z.number().int().min(1).max(3).default(1), targetWords: z.number().int().min(300).max(8000).default(2000),
   constraints: z.array(z.string().max(2000)).max(30).default([]), autoAccept: z.boolean().default(false),
   provider: z.enum(['dsh','demo']).default('dsh'),
@@ -70,7 +71,7 @@ export interface CreativeTask extends TaskInput {
   contract: {scope: string; lockedIds: string[]; permitted: string[]; forbidden: string[]; deliverables: string[]; stop: string[]; brief?:{objective:string;approach:string;assumptions:string[];constraints:string[];question?:string}; briefEpoch?:number};
   checkpoint: {chapterId?: string; artifactId?: string; committed: string[]};
 }
-export interface Artifact { id: string; taskId: string; projectId: string; type: 'chapter'|'state-review'|'setup'|'replan'|'ideas'|'extraction'|'edit'; status: 'pending'|'accepted'|'rejected'|'stale'; baseRevision: number; chapterId?: string; chapterRevision?: number; createdAt: string; data: any; }
+export interface Artifact { id: string; taskId: string; projectId: string; type: 'chapter'|'state-review'|'setup'|'replan'|'ideas'|'extraction'|'edit'|'memory'; status: 'pending'|'accepted'|'rejected'|'stale'; baseRevision: number; chapterId?: string; chapterRevision?: number; createdAt: string; data: any; }
 export const claimSchema = z.object({
   entityId: z.string(), property: z.enum(['holder','location','health','status','identity','alias','name','ability','relationship','known','goal','rule','inventory','decision']), value: z.string().min(1).max(2000), quote: z.string().min(1).max(4000),
   modality: z.enum(['objective','knowledge','rumor','memory','dream','uncertain']).default('objective'),
@@ -86,6 +87,8 @@ export const issueSchema = z.object({
 });
 export type ReviewIssue = z.infer<typeof issueSchema> & {id:string; start:number; end:number; status:'open'|'ignored'|'intentional'|'resolved'; reason?:string; engine:'deterministic'|'ai'};
 export const reviewSchema = z.object({
+  memory:memoryContentSchema.optional(),
+  relationships:z.array(z.object({fromId:z.string(),toId:z.string(),type:z.string().min(1).max(100),state:z.string().max(500),quote:z.string().min(1).max(2000),cause:z.string().max(1000),visibility:z.enum(['public','hidden']).default('public'),knownByIds:z.array(z.string()).max(20).default([]),perspectiveFrom:z.string().max(1000).default('未证实'),perspectiveTo:z.string().max(1000).default('未证实')})).max(12).optional(),
   summary:z.string().min(1).max(3000), claims:z.array(claimSchema).max(50),
   events:z.array(z.object({title:z.string().max(240),quote:z.string().min(1).max(3000),time:z.string().max(240).default('未知'),entityIds:z.array(z.string()).default([]),modality:sourceSchema.shape.modality,inference:z.boolean().default(false)})).max(30),
   issues:z.array(issueSchema).max(30),

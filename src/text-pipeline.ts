@@ -14,7 +14,7 @@ try {
    if(matches.length>=maxMatches)throw Error('替换次数超过限制');
    matches.push({start:m.index,end:m.index+m[0].length,text:m[0]});
    if(!rule.flags.includes('g'))break;
-   if(m[0].length===0){const point=text.codePointAt(scan.lastIndex);scan.lastIndex+=rule.flags.includes('u')&&point>65535?2:1;}
+   if(m[0].length===0){const point=text.codePointAt(scan.lastIndex);scan.lastIndex+=(rule.flags.includes('u')||rule.flags.includes('v'))&&point>65535?2:1;}
  }
  const output=text.replace(rx,rule.replacement);
  if(output.length>maxOutput)throw Error('变换结果超过安全长度');

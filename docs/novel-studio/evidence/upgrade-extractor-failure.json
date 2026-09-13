@@ -1,0 +1,516 @@
+{
+  "at": "2026-09-13T06:30:59.071Z",
+  "task": {
+    "kind": "extract",
+    "goal": "只提取第二章里有明确证据的新资料候选，不把未来计划登记为事实。",
+    "chapterId": "chapter_a3453818-2279-409c-afd6-fbdbf70a04d0",
+    "count": 1,
+    "targetWords": 900,
+    "constraints": [],
+    "autoAccept": true,
+    "provider": "dsh",
+    "reasoning": "balanced",
+    "budget": {
+      "calls": 5,
+      "outputTokens": 22000,
+      "contextChars": 30000
+    },
+    "id": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+    "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+    "status": "FAILED",
+    "inputRevision": 14,
+    "expectedRevision": 14,
+    "epoch": 0,
+    "createdAt": "2026-09-13T06:23:48.802Z",
+    "updatedAt": "2026-09-13T06:24:20.050Z",
+    "currentStep": "提取资料-0",
+    "completedChapters": 0,
+    "steps": [
+      {
+        "key": "0:0:整理任务约定",
+        "name": "整理任务约定",
+        "inputHash": "d12d054963ccbacc84e4c43d7186222225d7727aa43c38d63c7823cc30354001",
+        "inputRevision": 14,
+        "status": "COMPLETED",
+        "attempts": 1,
+        "startedAt": "2026-09-13T06:23:48.807Z",
+        "calls": [
+          {
+            "attempt": 1,
+            "reserved": 5000,
+            "outputTokens": 358,
+            "estimated": false,
+            "status": "COMPLETED",
+            "startedAt": "2026-09-13T06:23:48.807Z",
+            "endedAt": "2026-09-13T06:23:51.305Z",
+            "model": {
+              "provider": "deepseek-official",
+              "model": "deepseek-flash",
+              "reasoningEffort": "off"
+            }
+          }
+        ],
+        "requestIds": [
+          "request_cf670870-7f22-4b30-9b4b-b0c7155a97b4"
+        ],
+        "output": {
+          "objective": "从第2章正文中提取有明确文本证据的新资料候选（人物、设定、事件、关系等），形成候选清单，供后续确认；不将未来计划、伏笔意图或推测登记为已接受事实。",
+          "approach": "1) 读取第2章正文及已有资料库，明确已登记条目以避免重复。2) 逐段扫描，定位可指向具体语句的新信息点。3) 每条候选附原文证据（简短引文或位置），并标注类型与置信度。4) 区分候选与已接受事实，凡仅属计划、暗示或推测者单列或剔除。5) 按目标篇幅约900字整理输出候选清单，不写入正文。",
+          "assumptions": [
+            "第2章正文与现有资料库均可读取，且资料库为判断“新”的基准。",
+            "证据以正文原句或明确段落位置为准，无证据者不入候选。",
+            "输出为候选清单，不触发对已接受正文或锁定对象的改动。"
+          ],
+          "constraints": [
+            "只提取第2章范围内有明确证据的资料候选。",
+            "不把未来计划登记为事实。",
+            "不覆盖锁定对象，不改写范围外已接受正文。",
+            "不删除用户内容，不发布到外部平台。",
+            "仅限指定章节第2章，不扩大范围。"
+          ]
+        },
+        "endedAt": "2026-09-13T06:23:51.306Z",
+        "usage": {
+          "outputTokens": 358,
+          "estimated": false
+        }
+      },
+      {
+        "key": "0:0:提取资料-0",
+        "name": "提取资料-0",
+        "inputHash": "e2b575d49dd8397d80ada1bb32ad7beb1b1ead147070be8e5a5528572c9dc8d7",
+        "inputRevision": 14,
+        "status": "FAILED",
+        "attempts": 3,
+        "startedAt": "2026-09-13T06:24:10.062Z",
+        "calls": [
+          {
+            "attempt": 1,
+            "reserved": 5000,
+            "outputTokens": 2688,
+            "estimated": false,
+            "status": "FAILED",
+            "startedAt": "2026-09-13T06:23:51.328Z",
+            "endedAt": "2026-09-13T06:24:01.726Z",
+            "model": {
+              "provider": "deepseek-official",
+              "model": "deepseek-flash",
+              "reasoningEffort": "off"
+            },
+            "error": "抽取对象类型不合法",
+            "diagnostic": "{\"objects\": [{\"kind\": \"world\", \"title\": \"潮位册\", \"body\": \"档案室架上存放的册子，扉页贴有灯座登记表，纸色发黄，钢笔书写，一格一座，列着灯座编号与对应渡口。册中被裁走一段，缺页范围三月至九月，缺页处前后页码连着、没有跳号、纸茬整齐。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"档案\", \"证物\"], \"source\": {\"type\": \"import\", \"quote\": \"小邝从架上抽出潮位册，翻到扉页。扉页贴着一张灯座登记表，纸色发黄，字是钢笔写的，一格一座，列着编号与对应渡口。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"灯座登记表\", \"body\": \"贴在潮位册扉页的登记表，一格一座，列着灯座编号与对应渡口。表上灯盏渡一行写的是乙字四十七，而四十一那一格写着另一个渡口的名字；四十七对应的渡口是另一处。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"档案\", \"证物\"], \"source\": {\"type\": \"import\", \"quote\": \"扉页贴着一张灯座登记表，纸色发黄，字是钢笔写的，一格一座，列着编号与对应渡口。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"潮灯\", \"body\": \"档案室内成排的潮灯，灯座为铸铁，底座内侧刻有编号（如乙字四十七、丙字十二、乙字四十一），刻痕被灯油和潮气糊住，需擦拭才能辨认。灯芯烧到尽头会发出细微噼啪声。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"器物\"], \"source\": {\"type\": \"import\", \"quote\": \"小邝没争。他把册子搁在架子上，走到最近的一座潮灯前。灯座是铸铁的，底座内侧有一圈刻痕，被灯油和潮气糊住。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"新棉芯\", \"body\": \"闻溪带来的一卷新棉芯，用于替换潮灯烧黑的旧芯。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"器物\"], \"source\": {\"type\": \"import\", \"quote\": \"闻溪从堤上下来，肩上挎着工具袋，手里多了一卷新棉芯。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"工具袋\", \"body\": \"闻溪随身携带的工具袋，内有镊子、工具布等，可放置折好的抄录纸。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"器物\"], \"source\": {\"type\": \"import\", \"quote\": \"闻溪先进去，把工具袋放在灯座边，蹲下，从袋里抽出镊子，夹出烧黑的旧芯，换上新的。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"残页\", \"body\": \"闻溪昨日取得的一片残页，边缘带水痕。她将其举到灯下，与第三座灯底座水线比对，高度齐平。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"证物\"], \"source\": {\"type\": \"import\", \"quote\": \"闻溪从工具布里取出昨天那片残页，举到灯下，又蹲到第三座灯前，把残页边缘的水痕对着底座水线比了比。高度齐平。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"小本\", \"body\": \"小邝从外套内袋摸出的小本，用于抄录核对结果，字写得小、笔画压得重。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"器物\"], \"source\": {\"type\": \"import\", \"quote\": \"小邝从外套内袋摸出一个小本，翻到空白页，把三项抄下\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"灯盏渡\", \"body\": \"渡口名。登记表上灯盏渡一行写的是乙字四十七，而实物刻号为乙字四十一的第三座灯，其水痕与灯盏渡潮位相符。\", \"fields\": {\"type\": \"地点\"}, \"tags\": [\"渡口\"], \"source\": {\"type\": \"import\", \"quote\": \"「灯盏渡。」他手指停在一行上，「登记表写的是乙字，四十七。」\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"档案室\", \"body\": \"存放潮灯与潮位册的屋子，低矮屋顶，门框上有水痕，门轴开合拖出长音，石阶缝里会积水。\", \"fields\": {\"type\": \"地点\"}, \"tags\": [\"地点\"], \"source\": {\"type\": \"import\", \"quote\": \"他站在档案室门口，没有急着开锁。门框上那道水痕比昨天低了一指，潮气还没退净，石阶缝里积着薄薄一层水，踩上去会响。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"铜钥匙由小邝持有\", \"body\": \"小邝用铜钥匙打开档案室门锁，事后隔着外套内袋确认钥匙仍在。\", \"fields\": {\"entityName\": \"铜钥匙\", \"property\": \"holder\", \"value\": \"邝昶\"}, \"tags\": [\"物品归属\"], \"source\": {\"type\": \"import\", \"quote\": \"他掏出铜钥匙，插进锁孔，锁舌弹开。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"第三座潮灯实物刻号为乙字四十一\", \"body\": \"屋角第三座潮灯底座刻痕为「乙字，四十一」，与登记表所载灯盏渡编号不符。\", \"fields\": {\"entityName\": \"潮灯\", \"property\": \"刻号\", \"value\": \"乙字四十一\"}, \"tags\": [\"核对结果\"], \"source\": {\"type\": \"import\", \"quote\": \"「乙字，四十一。」她说。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"登记表灯盏渡一行编号为乙字四十七\", \"body\": \"灯座登记表上灯盏渡对应编号写为乙字四十七，与实物刻号乙字四十一不一致。\", \"fields\": {\"entityName\": \"灯座登记表\", \"property\": \"灯盏渡对应编号\", \"value\": \"乙字四十七\"}, \"tags\": [\"核对结果\"], \"source\": {\"type\": \"import\", \"quote\": \"「灯盏渡。」他手指停在一行上，「登记表写的是乙字，四十七。」\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"潮位册缺页范围为三月至九月\", \"body\": \"潮位册被裁走一段，缺页范围三月至九月，缺页处前后页码连着、没有跳号、纸茬整齐。\", \"fields\": {\"entityName\": \"潮位册\", \"property\": \"缺页范围\", \"value\": \"三月至九月\"}, \"tags\": [\"核对结果\"], \"source\": {\"type\": \"import\", \"quote\": \"小邝把册子翻回被裁走的那一段。缺页处前后页码连着，没有跳号，纸茬整齐。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"残页水痕与第三座灯底座水线齐平\", \"body\": \"闻溪将残页边缘水痕与第三座灯底座水线比对，高度齐平，据此判断该灯曾在灯盏渡的潮位里泡过。\", \"fields\": {\"entityName\": \"残页\", \"property\": \"水痕比对结果\", \"value\": \"与第三座灯底座水线高度齐平\"}, \"tags\": [\"核对结果\"], \"source\": {\"type\": \"import\", \"quote\": \"「水痕对得上。」她说，「这座灯在灯盏渡的潮位里泡过。」\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"裁页顺序与登记表顺序一致\", \"body\": \"小邝数过缺页后判断：裁页的人是按登记表的顺序动手的，表上写灯盏渡在哪座，就裁哪座对应的月份。\", \"fields\": {\"entityName\": \"潮位册\", \"property\": \"裁页规律\", \"value\": \"按登记表顺序，表上写灯盏渡在哪座就裁哪座对应的月份\"}, \"tags\": [\"推断\"], \"source\": {\"type\": \"import\", \"quote\": \"「裁页的人是按登记表的顺序动手的。表上写灯盏渡在哪座，他就裁哪座对应的月份。」\", \"modality\": \"objective\", \"inference\": true}}, {\"kind\": \"fact\", \"title\": \"登记表被改动或灯座被更换（两种可能）\", \"body\": \"小邝认为登记表被人动过，闻溪提出灯座也可能被换过，并指出两种都可能；表是谁改的、什么时候改的，看不出来。\", \"fields\": {\"entityName\": \"灯座登记表\", \"property\": \"状态存疑\", \"value\": \"登记表被改动或灯座被更换，两种可能均无法排除\"}, \"tags\": [\"存疑\"], \"source\": {\"type\": \"import\", \"quote\": \"「登记表被人动过。」小邝说。\\n\\n「或者灯座被换过。」闻溪说，「两种都可能。」\", \"modality\": \"uncertain\", \"inference\": false}}, {\"kind\": \"event\", \"title\": \"档案室门口出现未敲门的脚步声\", \"body\": \"门外传来脚步声，停在门口，没有敲门也没有推门；两人未动，小邝按住外套内袋确认钥匙，闻溪收起残页。脚步声随后往回走远。\", \"fields\": {\"storyTime\": \"第二天退潮前，核对灯座期间\"}, \"tags\": [\"悬念\"], \"source\": {\"type\": \"import\", \"quote\": \"门外传来脚步声，停在门口。没有敲门，也没有推门。两人都没动。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"event\", \"title\": \"两人逐座核对潮灯刻号与登记表\", \"body\": \"闻溪换上新棉芯后，两人逐座擦拭灯座核对刻号：第一座乙字四十七与登记表一致，第二座丙字十二，第三座乙字四十一与登记表所载灯盏渡编号不符。\", \"fields\": {\"storyTime\": \"第二天退潮前\"}, \"tags\": [\"核对\"], \"source\": {\"type\": \"import\", \"quote\": \"两人一座一座核过去，声音在低矮的屋顶下撞回来。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"foreshadow\", \"title\": \"闻溪提议明日当着第三人的面再核一遍\", \"body\": \"闻溪提出明天退潮后当着第三个人的面再核一遍，不是现在。此为计划，尚未发生。\", \"fields\": {\"storyTime\": \"明天退潮后（计划）\"}, \"tags\": [\"计划\", \"未发生\"], \"source\": {\"type\": \"import\", \"quote\": \"「明天退潮后，」闻溪说，「当着第三个人的面再核一遍。不是现在。」\", \"modality\": \"objective\", \"inference\": false}}]}"
+          },
+          {
+            "attempt": 2,
+            "reserved": 5000,
+            "outputTokens": 2411,
+            "estimated": false,
+            "status": "FAILED",
+            "startedAt": "2026-09-13T06:24:01.730Z",
+            "endedAt": "2026-09-13T06:24:10.058Z",
+            "model": {
+              "provider": "deepseek-official",
+              "model": "deepseek-flash",
+              "reasoningEffort": "off"
+            },
+            "error": "抽取对象类型不合法",
+            "diagnostic": "{\"objects\": [{\"kind\": \"world\", \"title\": \"潮位册\", \"body\": \"档案室架上存放的册子，扉页贴有灯座登记表，记录灯座编号与对应渡口；其中三月至九月一段被裁走，缺页处前后页码连着，纸茬整齐。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"档案室\", \"证物\"], \"source\": {\"type\": \"import\", \"quote\": \"小邝从架上抽出潮位册，翻到扉页。扉页贴着一张灯座登记表，纸色发黄，字是钢笔写的，一格一座，列着编号与对应渡口。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"灯座登记表\", \"body\": \"潮位册扉页所贴的表格，纸色发黄，钢笔书写，一格一座，列着灯座编号与对应渡口。灯盏渡一行登记为乙字四十七。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"档案室\", \"证物\"], \"source\": {\"type\": \"import\", \"quote\": \"扉页贴着一张灯座登记表，纸色发黄，字是钢笔写的，一格一座，列着编号与对应渡口。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"潮灯灯座\", \"body\": \"档案室内多座铸铁潮灯，底座内侧刻有编号，被灯油和潮气糊住，擦净后可读。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"档案室\", \"潮灯\"], \"source\": {\"type\": \"import\", \"quote\": \"灯座是铸铁的，底座内侧有一圈刻痕，被灯油和潮气糊住。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"新棉芯\", \"body\": \"闻溪带来的一卷新棉芯，用于替换烧黑的旧灯芯。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"工具\"], \"source\": {\"type\": \"import\", \"quote\": \"闻溪从堤上下来，肩上挎着工具袋，手里多了一卷新棉芯。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"工具袋\", \"body\": \"闻溪肩上挎的工具袋，内装镊子、工具布等，她将抄录的纸条折好放入其中。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"工具\"], \"source\": {\"type\": \"import\", \"quote\": \"闻溪从堤上下来，肩上挎着工具袋，手里多了一卷新棉芯。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"小本\", \"body\": \"小邝从外套内袋摸出的小本，用于抄录实物刻号、登记表编号与缺页范围。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"记录\"], \"source\": {\"type\": \"import\", \"quote\": \"小邝从外套内袋摸出一个小本，翻到空白页，把三项抄下：实物刻号乙字四十一，登记表编号乙字四十七，缺页范围三月至九月。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"残页\", \"body\": \"闻溪昨日取得的残页，边缘水痕与第三座灯底座水线高度齐平。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"证物\"], \"source\": {\"type\": \"import\", \"quote\": \"闻溪从工具布里取出昨天那片残页，举到灯下，又蹲到第三座灯前，把残页边缘的水痕对着底座水线比了比。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"灯盏渡\", \"body\": \"登记表中出现的渡口名，其一行登记为乙字四十七。\", \"fields\": {\"type\": \"地点\"}, \"tags\": [\"渡口\"], \"source\": {\"type\": \"import\", \"quote\": \"「灯盏渡。」他手指停在一行上，「登记表写的是乙字，四十七。」\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"档案室\", \"body\": \"存放潮灯与潮位册的低矮屋子，门框上有水痕，门轴开合有长音，室内点灯。\", \"fields\": {\"type\": \"地点\"}, \"tags\": [\"场景\"], \"source\": {\"type\": \"import\", \"quote\": \"他站在档案室门口，没有急着开锁。门框上那道水痕比昨天低了一指，潮气还没退净，石阶缝里积着薄薄一层水，踩上去会响。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"铜钥匙由小邝持有\", \"body\": \"小邝掏出铜钥匙开锁，并隔着布确认钥匙还在内袋。\", \"fields\": {\"entityName\": \"铜钥匙\", \"property\": \"holder\", \"value\": \"邝昶\"}, \"tags\": [\"钥匙\"], \"source\": {\"type\": \"import\", \"quote\": \"他掏出铜钥匙，插进锁孔，锁舌弹开。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"第三座灯实物刻号为乙字四十一\", \"body\": \"闻溪擦净屋角第三座灯底座后读出刻号。\", \"fields\": {\"entityName\": \"潮灯灯座\", \"property\": \"刻号\", \"value\": \"乙字四十一\"}, \"tags\": [\"证物\"], \"source\": {\"type\": \"import\", \"quote\": \"「乙字，四十一。」她说。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"灯盏渡登记编号为乙字四十七\", \"body\": \"登记表上灯盏渡一行写的是乙字四十七，与第三座灯实物刻号不符。\", \"fields\": {\"entityName\": \"灯座登记表\", \"property\": \"灯盏渡登记编号\", \"value\": \"乙字四十七\"}, \"tags\": [\"证物\"], \"source\": {\"type\": \"import\", \"quote\": \"「灯盏渡。」他手指停在一行上，「登记表写的是乙字，四十七。」\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"潮位册缺页范围为三月至九月\", \"body\": \"小邝抄录的缺页范围，缺页处前后页码连着，没有跳号，纸茬整齐。\", \"fields\": {\"entityName\": \"潮位册\", \"property\": \"缺页范围\", \"value\": \"三月至九月\"}, \"tags\": [\"证物\"], \"source\": {\"type\": \"import\", \"quote\": \"把三项抄下：实物刻号乙字四十一，登记表编号乙字四十七，缺页范围三月至九月。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"残页水痕与第三座灯底座水线齐平\", \"body\": \"闻溪比对后认为该灯在灯盏渡的潮位里泡过。\", \"fields\": {\"entityName\": \"残页\", \"property\": \"水痕高度\", \"value\": \"与第三座灯底座水线齐平\"}, \"tags\": [\"证物\"], \"source\": {\"type\": \"import\", \"quote\": \"「水痕对得上。」她说，「这座灯在灯盏渡的潮位里泡过。」\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"裁页者按登记表顺序动手\", \"body\": \"小邝的推断：表上写灯盏渡在哪座，就裁哪座对应的月份。\", \"fields\": {\"entityName\": \"潮位册\", \"property\": \"裁页方式\", \"value\": \"按登记表顺序，表上写灯盏渡在哪座就裁哪座对应的月份\"}, \"tags\": [\"推断\"], \"source\": {\"type\": \"import\", \"quote\": \"「裁页的人是按登记表的顺序动手的。表上写灯盏渡在哪座，他就裁哪座对应的月份。」\", \"modality\": \"knowledge\", \"inference\": true}}, {\"kind\": \"fact\", \"title\": \"登记表被改动或灯座被更换尚不能确定\", \"body\": \"两人提出两种可能，均无法确定改动者与时间。\", \"fields\": {\"entityName\": \"灯座登记表\", \"property\": \"状态\", \"value\": \"可能被人动过，也可能灯座被换过，两种都可能，改动者与时间看不出来\"}, \"tags\": [\"不确定\"], \"source\": {\"type\": \"import\", \"quote\": \"「或者灯座被换过。」闻溪说，「两种都可能。」\", \"modality\": \"uncertain\", \"inference\": false}}, {\"kind\": \"event\", \"title\": \"两人核对灯座编号与登记表\", \"body\": \"退潮前，小邝与闻溪进入档案室，换灯芯后逐座核对灯座刻号与登记表，发现第三座灯刻号与登记表不符，并比对残页水痕。\", \"fields\": {\"storyTime\": \"第二天退潮前\"}, \"tags\": [\"第二章\"], \"source\": {\"type\": \"import\", \"quote\": \"两人一座一座核过去，声音在低矮的屋顶下撞回来。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"event\", \"title\": \"门外出现未进门的脚步声\", \"body\": \"有人走到门口停下，未敲门也未推门，随后往回走远。\", \"fields\": {\"storyTime\": \"核对灯座期间\"}, \"tags\": [\"第二章\"], \"source\": {\"type\": \"import\", \"quote\": \"门外传来脚步声，停在门口。没有敲门，也没有推门。两人都没动。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"idea\", \"title\": \"明日当着第三人再核一遍\", \"body\": \"闻溪提出的计划，尚未发生，不作为事实。\", \"fields\": {\"storyTime\": \"明天退潮后\"}, \"tags\": [\"计划\"], \"source\": {\"type\": \"import\", \"quote\": \"「明天退潮后，」闻溪说，「当着第三个人的面再核一遍。不是现在。」\", \"modality\": \"knowledge\", \"inference\": false}}]}"
+          },
+          {
+            "attempt": 3,
+            "reserved": 5000,
+            "outputTokens": 2903,
+            "estimated": false,
+            "status": "FAILED",
+            "startedAt": "2026-09-13T06:24:10.062Z",
+            "endedAt": "2026-09-13T06:24:20.048Z",
+            "model": {
+              "provider": "deepseek-official",
+              "model": "deepseek-flash",
+              "reasoningEffort": "off"
+            },
+            "error": "抽取对象类型不合法",
+            "diagnostic": "{\"objects\": [{\"kind\": \"world\", \"title\": \"潮位册\", \"body\": \"档案室架上存放的册子，扉页贴有灯座登记表，记录灯座编号与对应渡口；其中三月至九月一段被裁走，缺页处前后页码连着、纸茬整齐。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"档案\", \"证物\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"小邝从架上抽出潮位册，翻到扉页。扉页贴着一张灯座登记表，纸色发黄，字是钢笔写的，一格一座，列着编号与对应渡口。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"灯座登记表\", \"body\": \"贴在潮位册扉页的表格，纸色发黄，钢笔书写，一格一座，列着灯座编号与对应渡口。灯盏渡一行登记为乙字四十七。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"档案\", \"证物\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"扉页贴着一张灯座登记表，纸色发黄，字是钢笔写的，一格一座，列着编号与对应渡口。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"残页\", \"body\": \"闻溪昨日取得的一片残页，边缘水痕与档案室第三座灯底座水线高度齐平。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"证物\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"闻溪从工具布里取出昨天那片残页，举到灯下，又蹲到第三座灯前，把残页边缘的水痕对着底座水线比了比。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"小邝的小本\", \"body\": \"小邝外套内袋里的小本，用于抄录核对结果；闻溪也照抄了一份放进工具袋。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"记录\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"小邝从外套内袋摸出一个小本，翻到空白页，把三项抄下\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"新棉芯\", \"body\": \"闻溪带来的一卷新棉芯，用于替换档案室潮灯烧黑的旧芯。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"工具\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"闻溪从堤上下来，肩上挎着工具袋，手里多了一卷新棉芯。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"工具袋\", \"body\": \"闻溪肩上的工具袋，内装镊子、工具布等；她将照抄的记录折好放入其中。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"工具\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"闻溪先进去，把工具袋放在灯座边，蹲下，从袋里抽出镊子，夹出烧黑的旧芯，换上新的。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"档案室\", \"body\": \"低矮屋顶的屋子，内有若干铸铁潮灯与架子，架上存放潮位册；门框上有水痕，门轴开合有长音。\", \"fields\": {\"type\": \"地点\"}, \"tags\": [\"地点\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"他站在档案室门口，没有急着开锁。门框上那道水痕比昨天低了一指，潮气还没退净，石阶缝里积着薄薄一层水，踩上去会响。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"灯盏渡\", \"body\": \"登记表中出现的一处渡口名，其一行登记为乙字四十七。\", \"fields\": {\"type\": \"地点\"}, \"tags\": [\"地点\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「灯盏渡。」他手指停在一行上，「登记表写的是乙字，四十七。」\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"铜钥匙由小邝持有\", \"body\": \"小邝用铜钥匙打开档案室门锁，并隔着外套内袋确认钥匙还在。\", \"fields\": {\"entityName\": \"铜钥匙\", \"property\": \"holder\", \"value\": \"邝昶\"}, \"tags\": [\"物品归属\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"他掏出铜钥匙，插进锁孔，锁舌弹开。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"第三座灯刻号为乙字四十一\", \"body\": \"档案室屋角第三座潮灯底座刻痕为「乙字，四十一」，而登记表上该格写着另一个渡口的名字。\", \"fields\": {\"entityName\": \"灯座登记表\", \"property\": \"第三座灯刻号\", \"value\": \"乙字四十一\"}, \"tags\": [\"矛盾证据\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「乙字，四十一。」她说。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"第二座灯刻号为乙字四十七\", \"body\": \"小邝重擦第二座灯后确认刻痕清楚，为「乙字四十七」；登记表中四十七对应的是另一处渡口。\", \"fields\": {\"entityName\": \"灯座登记表\", \"property\": \"第二座灯刻号\", \"value\": \"乙字四十七\"}, \"tags\": [\"矛盾证据\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"小邝走回去，蹲在第二座灯前重擦了一遍。刻痕清楚，是「乙字四十七」。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"潮位册缺页范围为三月至九月\", \"body\": \"小邝抄录的三项之一：缺页范围三月至九月。\", \"fields\": {\"entityName\": \"潮位册\", \"property\": \"缺页范围\", \"value\": \"三月至九月\"}, \"tags\": [\"矛盾证据\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"把三项抄下：实物刻号乙字四十一，登记表编号乙字四十七，缺页范围三月至九月。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"残页水痕与第三座灯底座水线齐平\", \"body\": \"闻溪比对后确认残页边缘水痕与第三座灯底座水线高度齐平，据此判断该灯在灯盏渡的潮位里泡过。\", \"fields\": {\"entityName\": \"残页\", \"property\": \"水痕高度\", \"value\": \"与第三座灯底座水线齐平\"}, \"tags\": [\"证物比对\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「水痕对得上。」她说，「这座灯在灯盏渡的潮位里泡过。」\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"裁页顺序与登记表顺序一致\", \"body\": \"小邝数过页码后判断：裁页的人是按登记表的顺序动手的，表上写灯盏渡在哪座，就裁哪座对应的月份。\", \"fields\": {\"entityName\": \"潮位册\", \"property\": \"裁页规律\", \"value\": \"按登记表顺序裁对应月份\"}, \"tags\": [\"推断\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「裁页的人是按登记表的顺序动手的。表上写灯盏渡在哪座，他就裁哪座对应的月份。」\", \"modality\": \"knowledge\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"登记表或灯座被改动（两种可能）\", \"body\": \"小邝认为登记表被人动过；闻溪提出灯座被换过也可能，两种可能并存，尚无法确定改动者与时间。\", \"fields\": {\"entityName\": \"灯座登记表\", \"property\": \"状态\", \"value\": \"可能被人动过，或灯座被换过，未定\"}, \"tags\": [\"未定\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「登记表被人动过。」小邝说。\\n\\n「或者灯座被换过。」闻溪说，「两种都可能。」\", \"modality\": \"uncertain\", \"inference\": false}}, {\"kind\": \"event\", \"title\": \"退潮前核对灯座与登记表\", \"body\": \"第二天退潮前，小邝与闻溪在档案室换灯芯、逐座核对灯座刻号与登记表，发现刻号与登记不符，并比对残页水痕。\", \"fields\": {\"storyTime\": \"第二天退潮前\"}, \"tags\": [\"核对\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"第二天退潮前，小邝先到了。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"event\", \"title\": \"门外脚步声停留后离去\", \"body\": \"核对期间门外传来脚步声，停在门口，既不敲门也不推门；两人未动，随后脚步声往回走远。\", \"fields\": {\"storyTime\": \"第二天退潮前\"}, \"tags\": [\"悬念\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"门外传来脚步声，停在门口。没有敲门，也没有推门。两人都没动。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"idea\", \"title\": \"明日当着第三人再核一遍（计划）\", \"body\": \"闻溪提出明天退潮后当着第三个人的面再核一遍，不是现在；此为计划，尚未发生。\", \"fields\": {\"storyTime\": \"明天退潮后\"}, \"tags\": [\"计划\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「明天退潮后，」闻溪说，「当着第三个人的面再核一遍。不是现在。」\", \"modality\": \"objective\", \"inference\": false}}]}"
+          }
+        ],
+        "requestIds": [
+          "request_b217db7d-3379-4384-a0c1-cd1e48ad4218",
+          "request_a445d6f9-9e8f-47db-a88a-47be21de3193",
+          "request_94eb34ad-9d32-41f4-adfc-9d3ced6f3868"
+        ],
+        "partial": "{\"objects\": [{\"kind\": \"world\", \"title\": \"潮位册\", \"body\": \"档案室架上存放的册子，扉页贴有灯座登记表，记录灯座编号与对应渡口；其中三月至九月一段被裁走，缺页处前后页码连着、纸茬整齐。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"档案\", \"证物\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"小邝从架上抽出潮位册，翻到扉页。扉页贴着一张灯座登记表，纸色发黄，字是钢笔写的，一格一座，列着编号与对应渡口。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"灯座登记表\", \"body\": \"贴在潮位册扉页的表格，纸色发黄，钢笔书写，一格一座，列着灯座编号与对应渡口。灯盏渡一行登记为乙字四十七。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"档案\", \"证物\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"扉页贴着一张灯座登记表，纸色发黄，字是钢笔写的，一格一座，列着编号与对应渡口。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"残页\", \"body\": \"闻溪昨日取得的一片残页，边缘水痕与档案室第三座灯底座水线高度齐平。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"证物\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"闻溪从工具布里取出昨天那片残页，举到灯下，又蹲到第三座灯前，把残页边缘的水痕对着底座水线比了比。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"小邝的小本\", \"body\": \"小邝外套内袋里的小本，用于抄录核对结果；闻溪也照抄了一份放进工具袋。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"记录\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"小邝从外套内袋摸出一个小本，翻到空白页，把三项抄下\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"新棉芯\", \"body\": \"闻溪带来的一卷新棉芯，用于替换档案室潮灯烧黑的旧芯。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"工具\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"闻溪从堤上下来，肩上挎着工具袋，手里多了一卷新棉芯。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"工具袋\", \"body\": \"闻溪肩上的工具袋，内装镊子、工具布等；她将照抄的记录折好放入其中。\", \"fields\": {\"type\": \"物品\"}, \"tags\": [\"工具\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"闻溪先进去，把工具袋放在灯座边，蹲下，从袋里抽出镊子，夹出烧黑的旧芯，换上新的。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"档案室\", \"body\": \"低矮屋顶的屋子，内有若干铸铁潮灯与架子，架上存放潮位册；门框上有水痕，门轴开合有长音。\", \"fields\": {\"type\": \"地点\"}, \"tags\": [\"地点\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"他站在档案室门口，没有急着开锁。门框上那道水痕比昨天低了一指，潮气还没退净，石阶缝里积着薄薄一层水，踩上去会响。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"world\", \"title\": \"灯盏渡\", \"body\": \"登记表中出现的一处渡口名，其一行登记为乙字四十七。\", \"fields\": {\"type\": \"地点\"}, \"tags\": [\"地点\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「灯盏渡。」他手指停在一行上，「登记表写的是乙字，四十七。」\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"铜钥匙由小邝持有\", \"body\": \"小邝用铜钥匙打开档案室门锁，并隔着外套内袋确认钥匙还在。\", \"fields\": {\"entityName\": \"铜钥匙\", \"property\": \"holder\", \"value\": \"邝昶\"}, \"tags\": [\"物品归属\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"他掏出铜钥匙，插进锁孔，锁舌弹开。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"第三座灯刻号为乙字四十一\", \"body\": \"档案室屋角第三座潮灯底座刻痕为「乙字，四十一」，而登记表上该格写着另一个渡口的名字。\", \"fields\": {\"entityName\": \"灯座登记表\", \"property\": \"第三座灯刻号\", \"value\": \"乙字四十一\"}, \"tags\": [\"矛盾证据\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「乙字，四十一。」她说。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"第二座灯刻号为乙字四十七\", \"body\": \"小邝重擦第二座灯后确认刻痕清楚，为「乙字四十七」；登记表中四十七对应的是另一处渡口。\", \"fields\": {\"entityName\": \"灯座登记表\", \"property\": \"第二座灯刻号\", \"value\": \"乙字四十七\"}, \"tags\": [\"矛盾证据\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"小邝走回去，蹲在第二座灯前重擦了一遍。刻痕清楚，是「乙字四十七」。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"潮位册缺页范围为三月至九月\", \"body\": \"小邝抄录的三项之一：缺页范围三月至九月。\", \"fields\": {\"entityName\": \"潮位册\", \"property\": \"缺页范围\", \"value\": \"三月至九月\"}, \"tags\": [\"矛盾证据\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"把三项抄下：实物刻号乙字四十一，登记表编号乙字四十七，缺页范围三月至九月。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"残页水痕与第三座灯底座水线齐平\", \"body\": \"闻溪比对后确认残页边缘水痕与第三座灯底座水线高度齐平，据此判断该灯在灯盏渡的潮位里泡过。\", \"fields\": {\"entityName\": \"残页\", \"property\": \"水痕高度\", \"value\": \"与第三座灯底座水线齐平\"}, \"tags\": [\"证物比对\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「水痕对得上。」她说，「这座灯在灯盏渡的潮位里泡过。」\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"裁页顺序与登记表顺序一致\", \"body\": \"小邝数过页码后判断：裁页的人是按登记表的顺序动手的，表上写灯盏渡在哪座，就裁哪座对应的月份。\", \"fields\": {\"entityName\": \"潮位册\", \"property\": \"裁页规律\", \"value\": \"按登记表顺序裁对应月份\"}, \"tags\": [\"推断\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「裁页的人是按登记表的顺序动手的。表上写灯盏渡在哪座，他就裁哪座对应的月份。」\", \"modality\": \"knowledge\", \"inference\": false}}, {\"kind\": \"fact\", \"title\": \"登记表或灯座被改动（两种可能）\", \"body\": \"小邝认为登记表被人动过；闻溪提出灯座被换过也可能，两种可能并存，尚无法确定改动者与时间。\", \"fields\": {\"entityName\": \"灯座登记表\", \"property\": \"状态\", \"value\": \"可能被人动过，或灯座被换过，未定\"}, \"tags\": [\"未定\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「登记表被人动过。」小邝说。\\n\\n「或者灯座被换过。」闻溪说，「两种都可能。」\", \"modality\": \"uncertain\", \"inference\": false}}, {\"kind\": \"event\", \"title\": \"退潮前核对灯座与登记表\", \"body\": \"第二天退潮前，小邝与闻溪在档案室换灯芯、逐座核对灯座刻号与登记表，发现刻号与登记不符，并比对残页水痕。\", \"fields\": {\"storyTime\": \"第二天退潮前\"}, \"tags\": [\"核对\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"第二天退潮前，小邝先到了。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"event\", \"title\": \"门外脚步声停留后离去\", \"body\": \"核对期间门外传来脚步声，停在门口，既不敲门也不推门；两人未动，随后脚步声往回走远。\", \"fields\": {\"storyTime\": \"第二天退潮前\"}, \"tags\": [\"悬念\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"门外传来脚步声，停在门口。没有敲门，也没有推门。两人都没动。\", \"modality\": \"objective\", \"inference\": false}}, {\"kind\": \"idea\", \"title\": \"明日当着第三人再核一遍（计划）\", \"body\": \"闻溪提出明天退潮后当着第三个人的面再核一遍，不是现在；此为计划，尚未发生。\", \"fields\": {\"storyTime\": \"明天退潮后\"}, \"tags\": [\"计划\"], \"source\": {\"type\": \"import\", \"chapterId\": \"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\", \"quote\": \"「明天退潮后，」闻溪说，「当着第三个人的面再核一遍。不是现在。」\", \"modality\": \"objective\", \"inference\": false}}]}",
+        "error": "抽取对象类型不合法",
+        "endedAt": "2026-09-13T06:24:20.048Z",
+        "usage": {
+          "outputTokens": 8002,
+          "estimated": false
+        }
+      }
+    ],
+    "usage": {
+      "calls": 4,
+      "outputTokens": 8360,
+      "estimated": false
+    },
+    "checkpoint": {
+      "committed": []
+    },
+    "contract": {
+      "scope": "指定章节 第2章",
+      "lockedIds": [],
+      "permitted": [
+        "读取有界资料",
+        "创建候选与草稿",
+        "最多两轮局部修复",
+        "按合格成果策略自动接受"
+      ],
+      "forbidden": [
+        "覆盖锁定对象",
+        "改写范围外已接受正文",
+        "删除用户内容",
+        "发布到外部平台"
+      ],
+      "deliverables": [
+        "可审阅成果",
+        "影响与依据"
+      ],
+      "stop": [
+        "预算耗尽",
+        "重大冲突",
+        "版本变化",
+        "用户暂停或取消"
+      ],
+      "brief": {
+        "objective": "从第2章正文中提取有明确文本证据的新资料候选（人物、设定、事件、关系等），形成候选清单，供后续确认；不将未来计划、伏笔意图或推测登记为已接受事实。",
+        "approach": "1) 读取第2章正文及已有资料库，明确已登记条目以避免重复。2) 逐段扫描，定位可指向具体语句的新信息点。3) 每条候选附原文证据（简短引文或位置），并标注类型与置信度。4) 区分候选与已接受事实，凡仅属计划、暗示或推测者单列或剔除。5) 按目标篇幅约900字整理输出候选清单，不写入正文。",
+        "assumptions": [
+          "第2章正文与现有资料库均可读取，且资料库为判断“新”的基准。",
+          "证据以正文原句或明确段落位置为准，无证据者不入候选。",
+          "输出为候选清单，不触发对已接受正文或锁定对象的改动。"
+        ],
+        "constraints": [
+          "只提取第2章范围内有明确证据的资料候选。",
+          "不把未来计划登记为事实。",
+          "不覆盖锁定对象，不改写范围外已接受正文。",
+          "不删除用户内容，不发布到外部平台。",
+          "仅限指定章节第2章，不扩大范围。"
+        ]
+      },
+      "briefEpoch": 0
+    },
+    "configSnapshot": {
+      "hash": "ab5d16870176fa6501a4b4959464b5ca21043f64bff20373beb9b2ea6a9d59f3",
+      "versions": [
+        {
+          "scope": "project:project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+          "id": "config_80868c15-2132-4a03-a7b8-319861afa089",
+          "name": "兼容文风与记忆 · 实测"
+        }
+      ],
+      "config": {
+        "enabled": true,
+        "strategy": "compatible",
+        "entries": [
+          {
+            "id": "voice",
+            "name": "原创文风",
+            "content": "叙述克制、具体，以行动和短对白推进。{{char}} 是当前角色，{{user}} 是作者称呼。文风不改变任务协议。",
+            "role": "system",
+            "enabled": true,
+            "order": 0,
+            "position": "relative",
+            "roles": [
+              "Writer"
+            ],
+            "triggers": [],
+            "supported": true,
+            "original": {
+              "identifier": "voice",
+              "name": "原创文风",
+              "role": "system",
+              "content": "叙述克制、具体，以行动和短对白推进。{{char}} 是当前角色，{{user}} 是作者称呼。文风不改变任务协议。"
+            }
+          },
+          {
+            "id": "off",
+            "name": "off",
+            "content": "禁止生效的测试条目",
+            "role": "user",
+            "enabled": false,
+            "order": 1,
+            "position": "relative",
+            "roles": [
+              "Writer"
+            ],
+            "triggers": [],
+            "supported": true,
+            "original": {
+              "identifier": "off",
+              "role": "user",
+              "content": "禁止生效的测试条目"
+            }
+          },
+          {
+            "id": "scene",
+            "name": "scene",
+            "content": "场景里应有可观察的声音和物件。",
+            "role": "user",
+            "enabled": true,
+            "order": 100,
+            "position": "before-task",
+            "roles": [
+              "Writer"
+            ],
+            "triggers": [],
+            "supported": true,
+            "original": {
+              "identifier": "scene",
+              "role": "user",
+              "content": "场景里应有可观察的声音和物件。",
+              "injection_position": 1,
+              "injection_depth": 1
+            }
+          }
+        ],
+        "sampling": {
+          "temperature": 0.7
+        },
+        "regex": [
+          {
+            "id": "quotes-open",
+            "name": "中文引号开",
+            "pattern": "“",
+            "flags": "gu",
+            "replacement": "「",
+            "enabled": true,
+            "order": 0,
+            "stage": "after",
+            "scope": "prose",
+            "onEdit": false,
+            "macros": "none",
+            "supported": true
+          },
+          {
+            "id": "quotes-close",
+            "name": "中文引号闭",
+            "pattern": "”",
+            "flags": "gu",
+            "replacement": "」",
+            "enabled": true,
+            "order": 0,
+            "stage": "after",
+            "scope": "prose",
+            "onEdit": false,
+            "macros": "none",
+            "supported": true
+          },
+          {
+            "id": "display-name",
+            "name": "仅展示标记",
+            "pattern": "邝昶",
+            "flags": "gu",
+            "replacement": "【邝昶】",
+            "enabled": true,
+            "order": 0,
+            "stage": "display",
+            "scope": "prose",
+            "onEdit": false,
+            "macros": "none",
+            "supported": true
+          }
+        ],
+        "bindings": {
+          "characterId": "character_57cbc95c-6c49-4efe-8cee-3c8fac990c93",
+          "authorName": "验收作者"
+        },
+        "memory": {
+          "enabled": true,
+          "checkpointEvery": 3,
+          "recallLimit": 6
+        }
+      },
+      "origins": {
+        "enabled": "project:project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "strategy": "project:project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "entries": "project:project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "sampling.temperature": "project:project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "regex": "project:project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "bindings.characterId": "project:project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "bindings.authorName": "project:project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "memory.enabled": "project:project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "memory.checkpointEvery": "project:project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "memory.recallLimit": "project:project_fbc9e2a1-059a-4735-a987-6ed9eb38f068"
+      },
+      "report": [
+        {
+          "field": "config",
+          "status": "SUPPORTED",
+          "message": "DSH 原生配置，导入后仍需选择应用范围。"
+        }
+      ],
+      "seed": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+      "date": "2026-09-13T06:23:48.802Z"
+    },
+    "error": {
+      "code": "EXTRACTION",
+      "message": "抽取对象类型不合法"
+    },
+    "events": [
+      {
+        "id": 362,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:24:20.051Z",
+        "type": "task.stopped",
+        "message": "抽取对象类型不合法",
+        "data": "{\"code\":\"EXTRACTION\"}"
+      },
+      {
+        "id": 361,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:24:20.048Z",
+        "type": "step.failed",
+        "message": "提取资料-0：抽取对象类型不合法",
+        "data": "{\"key\":\"0:0:提取资料-0\",\"code\":\"EXTRACTION\"}"
+      },
+      {
+        "id": 360,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:24:10.064Z",
+        "type": "prompt.compiled",
+        "message": "Extractor 已按固定配置编译；2357 token（估算）",
+        "data": "{\"requestId\":\"request_94eb34ad-9d32-41f4-adfc-9d3ced6f3868\",\"configuration\":\"ab5d16870176fa6501a4b4959464b5ca21043f64bff20373beb9b2ea6a9d59f3\",\"cache\":\"HIT\"}"
+      },
+      {
+        "id": 359,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:24:10.063Z",
+        "type": "step.started",
+        "message": "执行 提取资料-0（第 3 次尝试）",
+        "data": "{\"key\":\"0:0:提取资料-0\",\"inputRevision\":14,\"maxTokens\":5000}"
+      },
+      {
+        "id": 358,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:24:10.059Z",
+        "type": "step.failed",
+        "message": "提取资料-0：抽取对象类型不合法",
+        "data": "{\"key\":\"0:0:提取资料-0\",\"code\":\"EXTRACTION\"}"
+      },
+      {
+        "id": 357,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:24:01.732Z",
+        "type": "prompt.compiled",
+        "message": "Extractor 已按固定配置编译；2357 token（估算）",
+        "data": "{\"requestId\":\"request_a445d6f9-9e8f-47db-a88a-47be21de3193\",\"configuration\":\"ab5d16870176fa6501a4b4959464b5ca21043f64bff20373beb9b2ea6a9d59f3\",\"cache\":\"MISS\"}"
+      },
+      {
+        "id": 356,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:24:01.731Z",
+        "type": "step.started",
+        "message": "执行 提取资料-0（第 2 次尝试）",
+        "data": "{\"key\":\"0:0:提取资料-0\",\"inputRevision\":14,\"maxTokens\":5000}"
+      },
+      {
+        "id": 355,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:24:01.727Z",
+        "type": "step.failed",
+        "message": "提取资料-0：抽取对象类型不合法",
+        "data": "{\"key\":\"0:0:提取资料-0\",\"code\":\"EXTRACTION\"}"
+      },
+      {
+        "id": 354,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:23:51.329Z",
+        "type": "prompt.compiled",
+        "message": "Extractor 已按固定配置编译；2287 token（估算）",
+        "data": "{\"requestId\":\"request_b217db7d-3379-4384-a0c1-cd1e48ad4218\",\"configuration\":\"ab5d16870176fa6501a4b4959464b5ca21043f64bff20373beb9b2ea6a9d59f3\",\"cache\":\"MISS\"}"
+      },
+      {
+        "id": 353,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:23:51.329Z",
+        "type": "step.started",
+        "message": "执行 提取资料-0（第 1 次尝试）",
+        "data": "{\"key\":\"0:0:提取资料-0\",\"inputRevision\":14,\"maxTokens\":5000}"
+      },
+      {
+        "id": 352,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:23:51.323Z",
+        "type": "context.built",
+        "message": "上下文 29162/30000 字符；33 条资料",
+        "data": "{\"chapterId\":\"chapter_a3453818-2279-409c-afd6-fbdbf70a04d0\",\"revision\":14,\"omitted\":38,\"purpose\":\"generation\"}"
+      },
+      {
+        "id": 351,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:23:51.313Z",
+        "type": "task.brief",
+        "message": "从第2章正文中提取有明确文本证据的新资料候选（人物、设定、事件、关系等），形成候选清单，供后续确认；不将未来计划、伏笔意图或推测登记为已接受事实。",
+        "data": "{\"approach\":\"1) 读取第2章正文及已有资料库，明确已登记条目以避免重复。2) 逐段扫描，定位可指向具体语句的新信息点。3) 每条候选附原文证据（简短引文或位置），并标注类型与置信度。4) 区分候选与已接受事实，凡仅属计划、暗示或推测者单列或剔除。5) 按目标篇幅约900字整理输出候选清单，不写入正文。\",\"assumptions\":[\"第2章正文与现有资料库均可读取，且资料库为判断“新”的基准。\",\"证据以正文原句或明确段落位置为准，无证据者不入候选。\",\"输出为候选清单，不触发对已接受正文或锁定对象的改动。\"]}"
+      },
+      {
+        "id": 350,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:23:51.308Z",
+        "type": "step.completed",
+        "message": "整理任务约定 已完成并保存",
+        "data": "{\"key\":\"0:0:整理任务约定\",\"outputTokens\":358,\"requestId\":\"request_cf670870-7f22-4b30-9b4b-b0c7155a97b4\"}"
+      },
+      {
+        "id": 349,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:23:48.808Z",
+        "type": "prompt.compiled",
+        "message": "Planner 已按固定配置编译；752 token（估算）",
+        "data": "{\"requestId\":\"request_cf670870-7f22-4b30-9b4b-b0c7155a97b4\",\"configuration\":\"ab5d16870176fa6501a4b4959464b5ca21043f64bff20373beb9b2ea6a9d59f3\",\"cache\":\"MISS\"}"
+      },
+      {
+        "id": 348,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:23:48.807Z",
+        "type": "step.started",
+        "message": "执行 整理任务约定（第 1 次尝试）",
+        "data": "{\"key\":\"0:0:整理任务约定\",\"inputRevision\":14,\"maxTokens\":5000}"
+      },
+      {
+        "id": 347,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:23:48.804Z",
+        "type": "task.running",
+        "message": "任务开始执行；进度来自实际落盘步骤",
+        "data": "{}"
+      },
+      {
+        "id": 346,
+        "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+        "taskId": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "at": "2026-09-13T06:23:48.803Z",
+        "type": "task.queued",
+        "message": "任务约定已保存，可开始执行",
+        "data": "{\"scope\":\"指定章节 第2章\",\"budget\":{\"calls\":5,\"outputTokens\":22000,\"contextChars\":30000},\"configuration\":\"ab5d16870176fa6501a4b4959464b5ca21043f64bff20373beb9b2ea6a9d59f3\"}"
+      }
+    ],
+    "artifacts": []
+  },
+  "reason": "Model schema allowed idea but extraction domain rejects it; schema narrowed, no budget change."
+}

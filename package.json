@@ -1,6 +1,6 @@
 {
   "name": "@rgywd/dsh-novel-studio",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "A local, version-safe Writer and Director workbench for DSH",
@@ -28,12 +28,14 @@
     "dev": "npm run build && npm start",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test test/*.test.ts",
-    "test:unit": "node --import tsx --test test/context.test.ts test/review.test.ts",
-    "test:integration": "node --import tsx --test test/domain.test.ts test/runtime.test.ts test/guards.test.ts test/workbench.test.ts test/plugin.test.ts",
-    "test:e2e": "node --import tsx --test test/http.test.ts",
+    "test:unit": "node --import tsx --test test/context.test.ts test/review.test.ts test/compiler-unit.test.ts",
+    "test:integration": "node --import tsx --test test/domain.test.ts test/runtime.test.ts test/guards.test.ts test/workbench.test.ts test/plugin.test.ts test/configuration.test.ts test/memory.test.ts",
+    "test:e2e": "node --import tsx --test test/http.test.ts test/upgrade-http.test.ts",
     "smoke:real": "node scripts/real-smoke.mjs",
     "start:dsh": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/serve.ps1 -Dsh",
-    "start:local": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/serve.ps1"
+    "start:local": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/serve.ps1",
+    "smoke:upgrade": "node scripts/upgrade-smoke.mjs",
+    "test:old-projects": "node scripts/upgrade-regression.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "6.11.0",
