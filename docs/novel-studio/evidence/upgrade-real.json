@@ -32,8 +32,9 @@
     {
       "name": "provider_cache_usage_observed",
       "status": "PASS",
-      "measuredRequests": 26,
+      "measuredRequests": 27,
       "reads": [
+        128,
         0,
         0,
         0,
@@ -72,15 +73,20 @@
           "words": 852,
           "hash": "ce07846e8346fb34dbd841e886f560795ab1ca16d03cb5a99ee2838733e95877"
         },
-        "adventure": {
-          "words": 903,
-          "hash": "4d4900ebe8e22ccef50c5c8474b657f89154fb4ac7bf5bbcbdde469ea2a13357"
-        },
         "dialogue": {
           "words": 763,
           "hash": "24d9a710b34e1220bce824c4553479179cda4259c20d2ec22b816e033d74ef3b"
+        },
+        "adventure": {
+          "words": 567,
+          "hash": "bd95dabb645620f9405a319e2a1eaab1066952a2ec3fbdd48bcce567382522e9"
         }
       }
+    },
+    {
+      "name": "style_effect_reading",
+      "status": "PASS",
+      "evidence": "upgrade-style-review.json"
     }
   ],
   "tasks": {
@@ -376,30 +382,6 @@
         }
       ]
     },
-    "style-adventure": {
-      "id": "task_294b446e-9e5c-4dd0-b28b-3697fc389d51",
-      "status": "NEEDS_INPUT",
-      "usage": {
-        "calls": 1,
-        "outputTokens": 841,
-        "estimated": false
-      },
-      "error": {
-        "code": "WAITING_REVIEW",
-        "message": "成果已保存，请审阅后接受或拒绝"
-      },
-      "configHash": "25d5f2ed7009521199609b199a32ec3f58e1862942e7d9dbb2de761225da9f24",
-      "steps": [
-        {
-          "name": "选区写作",
-          "status": "COMPLETED",
-          "attempts": 1,
-          "requests": [
-            "request_cfc4aa50-f818-45e6-a198-495261dbb4ea"
-          ]
-        }
-      ]
-    },
     "style-dialogue": {
       "id": "task_67550d81-07c3-481f-bef0-41a228e0c7d7",
       "status": "NEEDS_INPUT",
@@ -423,6 +405,54 @@
           ]
         }
       ]
+    },
+    "viewpoint-style-adventure": {
+      "id": "task_294b446e-9e5c-4dd0-b28b-3697fc389d51",
+      "status": "NEEDS_INPUT",
+      "usage": {
+        "calls": 1,
+        "outputTokens": 841,
+        "estimated": false
+      },
+      "error": {
+        "code": "WAITING_REVIEW",
+        "message": "成果已保存，请审阅后接受或拒绝"
+      },
+      "configHash": "25d5f2ed7009521199609b199a32ec3f58e1862942e7d9dbb2de761225da9f24",
+      "steps": [
+        {
+          "name": "选区写作",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "requests": [
+            "request_cfc4aa50-f818-45e6-a198-495261dbb4ea"
+          ]
+        }
+      ]
+    },
+    "style-adventure": {
+      "id": "task_891d88ad-cc3a-47ac-a290-8df161f7e294",
+      "status": "NEEDS_INPUT",
+      "usage": {
+        "calls": 1,
+        "outputTokens": 564,
+        "estimated": false
+      },
+      "error": {
+        "code": "WAITING_REVIEW",
+        "message": "成果已保存，请审阅后接受或拒绝"
+      },
+      "configHash": "25d5f2ed7009521199609b199a32ec3f58e1862942e7d9dbb2de761225da9f24",
+      "steps": [
+        {
+          "name": "选区写作",
+          "status": "COMPLETED",
+          "attempts": 1,
+          "requests": [
+            "request_1a7976d3-d9a2-465b-ad11-241682f80af4"
+          ]
+        }
+      ]
     }
   },
   "samples": {
@@ -433,19 +463,19 @@
       "hash": "ce07846e8346fb34dbd841e886f560795ab1ca16d03cb5a99ee2838733e95877",
       "text": "邝昶把潮位表摊在灯下，纸面还潮着，边角软塌塌地贴在桌上。有人用铅笔划掉过一个数字，划得不重，横着两道，尾端被水泡开，只剩一截铅灰。他用指甲压住那道划痕，顺着纸背摸，背面没有透痕。\n\n「划掉的是几。」他问。\n\n闻溪没答。她坐在灯座边，把工具布摊开，镊子一根一根摆齐，摆完再挪半寸。灯芯刚换过，火苗稳了，光落在表上，划痕反而更看不真。\n\n「你先说，这表什么时候淋的雨。」她说。\n\n「昨天的雨。窗没关严。」\n\n「那你看得见划掉的笔画，看不见的，是划在雨之前还是雨之后。顺序不对，数就是别人的数。」\n\n邝昶把表往她那边推了两指。「你昨天就在这屋里。」\n\n「我在换芯。」闻溪拿起镊子，对着灯焰瞄了一下，又放下，「灯灭着的时候，我什么都看不见。」\n\n他不再追。这屋里的灯芯烧到哪一个刻度、什么时候该换，都捏在她手里。她不肯说，是因为还没验过。他把表折起一角，没折到划痕，压回架子上。\n\n闻溪忽然站起来，走到灯前，抬高灯罩。她让火苗离灯芯远一点，光散开来，落在芯头上。\n\n「你过来看。」她说。\n\n邝昶凑近。灯芯烧过一截，芯头结着一圈白霜似的东西，不是寻常的炭黑。他用指甲刮了一点，指腹上留下细密的颗粒，舔了一下，咸。\n\n「盐。」他说。\n\n「灯油里没盐。」闻溪把灯罩放回去，声音没变，「盐是从底下带上来的。灯座里进了潮水，芯吸上来的。」\n\n「档案室在退潮线以下，进潮水不奇怪。」\n\n「进潮水不奇怪。」她重复了一遍，拿起镊子，敲了敲灯座外壁，铁声发闷，「奇怪的是这座灯这几天没灭过。新换的芯，两天就结盐，说明底座里的水没退干净——柜脚这一片，比别处低。」\n\n邝昶低头看地砖。灯座周围的地缝里，水色确实深一层，像谁把这一块往下按过。他想起被裁走的那几个月，想起登记表上错位的一格，两件事在他脑子里并排摆着，还没接上。\n\n「如果底座泡过水，」他说，「铭牌上的刻号会怎样。」\n\n「锈。或者被人磨掉重刻。」\n\n「查得出来吗。」\n\n「退潮以后查得出来。」闻溪把镊子收进布卷，一根一根归位，「现在水没退，底下那圈刻痕糊着，擦不净。等水落下去，底座和内壁之间会露出一道水线。哪座灯的水线高，哪座灯这几月泡得久，一比就知道。」\n\n她说完，把工具袋扣上，没提那张潮位表，也没看架子上的册子。\n\n邝昶站了片刻，伸手把表从架子上取下来，重新摊平，压在小本底下。他翻开本子，在空白页写下四个字：退潮前勿动。写完合上，按了按内袋。钥匙还在。\n\n「退潮是几点。」他问。\n\n「我去堤上看看。」闻溪已经走到门口，手搭在门框上，外面的潮声比来时低了些，「你留在这里别擦灯座。擦了就看不出水线。」\n\n她又补了一句：「灯别熄。」"
     },
-    "adventure": {
-      "taskId": "task_294b446e-9e5c-4dd0-b28b-3697fc389d51",
-      "artifactId": "artifact_86258561-d683-437c-8d90-f74e4bb82aea",
-      "words": 903,
-      "hash": "4d4900ebe8e22ccef50c5c8474b657f89154fb4ac7bf5bbcbdde469ea2a13357",
-      "text": "我站在桌边，没有坐下。潮位表摊在灯下，纸面鼓着，雨渍一圈压一圈，像退潮留在泥上的印子。灯盏渡那一行，数字被划掉了，墨迹拉出两道，压得很重。\n\n「这个数，原来写的是什么。」我问。\n\n闻溪没答。她蹲在灯座边，镊子夹着刚换下的旧芯，凑近火苗看。\n\n「闻溪。」\n\n「先别看那张表。」她说，「湿的。你一碰，字就化。」\n\n「我不碰。你告诉我，划掉的是几。」\n\n她把旧芯搁进工具布，折了一下，又折了一下，才站起来。手在围裙上擦过，没看我，看的是我手里的表。\n\n「你从哪儿翻出这张的。」\n\n「架子上第二层。压在登记册下面，纸还是湿的，说明有人最近把它挪过地方。」\n\n「有人挪过，不等于有人划的。」她说，「雨从门缝进来，也会淋到。」\n\n「门缝在门槛那边。这张表在架子中间。」\n\n她没接这句。她走过来，把表从我手里抽走，平放在灯座旁的石台上，四角压上镊子和剪子。\n\n「划痕是干的。」她说，「雨渍是后来洇上去的。划的时候纸还没湿。」\n\n「所以划的人先进来，后来才有雨。」\n\n「或者他划完，忘了关窗。」\n\n我盯着那两道墨。数字的轮廓还在，被压住的笔画透出一点边。我认得出，是「四」。\n\n「四十七。」我说。\n\n闻溪的手停了一下，正在理工具布的那只手。停得很短，短到她接着就继续折布了。\n\n「你猜的。」\n\n「扉页登记表上，灯盏渡写的就是四十七。灯座上刻的是四十一。这张表要是也写四十七，那划它的人，划的就是对的数。」\n\n「也可能他划的就是错的数。」闻溪说，「你先把两件事分开：表上写什么，和表上被划掉什么，不是一回事。」\n\n我把小本掏出来，摊在石台另一头。笔尖悬着，没落。\n\n「你回避了三次。」我说，「第一次我问数，你让我别看表。第二次我问划的人，你说可能是雨。第三次——」\n\n「第三次我在看灯芯。」\n\n她真把旧芯又摊开了。黑的那截烧得发脆，靠灯座那头，缠着一圈白。不是棉芯本来的白，是结在纤维缝里的霜一样的东西，灯油烧过以后不该留下这个。\n\n「你过来。」她说。\n\n我过去。她用镊子尖挑起那圈白，凑到灯焰边上。白圈受热，没化，反而缩了一下，泛出极淡的青。\n\n「盐。」她说，「灯芯里不该有盐。灯油是清的，芯是干的。除非有人拿海水泡过这根芯，或者这盏灯在海水里泡过。」\n\n「第三座灯。」我说。\n\n「就是它。」闻溪把旧芯收进布，「底座水线和残页对得上，现在芯上又有盐。两处都对上同一件事。」\n\n我把笔落在本子上，写下：旧芯含盐，非灯油所致。\n\n「划掉的数字，」她终于说，「我不敢现在给你答案。表在屋里，屋里进过人。我给的答案，可能正好是那个人想让我给的。」\n\n「那去哪儿找答案。」\n\n「灯座。」她把工具袋挎上肩，「刻号在铁上，不在纸上。铁不会被人用一支笔改掉。」\n\n我合上本子，按了按内袋。铜钥匙还在，隔着布，硌着指节。\n\n「退潮前。」我说。\n\n「退潮前。」她应。\n\n我吹熄灯。屋里暗下来，只剩门框上那道水痕，在最后一点余光里，比昨天低了一指。"
-    },
     "dialogue": {
       "taskId": "task_67550d81-07c3-481f-bef0-41a228e0c7d7",
       "artifactId": "artifact_0498a157-de44-4183-a37e-83f8ebb8ec6e",
       "words": 763,
       "hash": "24d9a710b34e1220bce824c4553479179cda4259c20d2ec22b816e033d74ef3b",
       "text": "档案室的潮灯刚换过芯，火苗还短，光只够铺满桌面。那张潮位表摊在灯下，边角泡过雨，纸面皱起来，像被人攥过又松开。\n\n我把它往灯前推了半寸，指着一处。「这一格，原先写的什么？」\n\n闻溪没看表。她把镊子从工具布里抽出来，在指间转了半圈，又插回去。\n\n「先说灯。」她说，「芯是新换的，火不稳，你凑太近，纸会烤卷。」\n\n「你看见我指哪儿了。」\n\n「我看见了。」她把手在围裙上擦了两下，「你指的那一格，墨被刮过。刮得比别处白。」\n\n「刮之前呢。」\n\n她弯腰去看灯座，不看表。「你问的是被划掉的数字，还是划它的人？」\n\n「两个都问。」\n\n「那我先答第二个。」她拨了拨灯芯，「划它的人手上有油，不是水。墨被油化开，再刮，才留这种边。写字的人不会这么干。」\n\n我把表转过来，对着光。那一格边缘确实有一圈淡黄的晕，比旁边的水渍深。\n\n「第一个呢。」我说。\n\n闻溪直起身，隔着桌子看我。潮声从门缝底下渗进来，退得比昨天慢。\n\n「我不知道。」她说，「表上的字，我只认得出被刮过。认不出刮掉的是什么。」\n\n「你昨天说，灯盏渡的册页是三月到九月。」\n\n「那是我数的页。」她顿了顿，「数页不用认字。」\n\n我没再追。她的手指一直在围裙边上捻，捻到第三下，停住。\n\n「你把手伸过来。」她说。\n\n我把手摊开。她从灯座上掰下一小截烧剩的旧芯，搁在我掌心。芯头焦黑，中段却泛着一层细白的结晶，像霜，又不像霜。我用指甲刮了一下，刮不掉。\n\n「盐。」她说，「但不是海盐。」\n\n「你怎么知道。」\n\n「海盐烧过是灰的，这个烧过发亮。」她把那截芯拿回去，对着灯照了照，「旧港的灯，芯上不会有这个。除非灯座进过别处的水。」\n\n「灯盏渡的水。」\n\n「我没说。」她把旧芯裹进工具布，「我说的是别处。」\n\n我把手在裤子上擦净，指腹还留着一点粗粝的触感。表上那一格的白，和芯上的白，在灯下是两种白。\n\n「退潮前还有多久。」我问。\n\n闻溪看了一眼门框上的水痕。那道线比昨天低了一指，还在往下缩。\n\n「够走一趟。」她说，「你带上钥匙，我带上镊子。到了灯座，先看底座，再看盐。表留在这儿，谁也别动。」\n\n「你刚才还说不知道。」\n\n「不知道的事，去灯座上找。」她把工具袋挎上肩，手已经按在门闩上，「档案室里只有纸。纸会被人改。灯座改不了。」\n\n我掏出铜钥匙，隔着内袋按了一下，齿口硌着布。门轴响的时候，潮灯的火苗歪了一下，又立直。桌上那张表还摊着，被刮白的一格朝着灯，像一小块没被潮水淹到的地方。"
+    },
+    "adventure": {
+      "taskId": "task_891d88ad-cc3a-47ac-a290-8df161f7e294",
+      "artifactId": "artifact_95120c1d-5265-4d88-9fa8-9cb48b0b41f7",
+      "words": 567,
+      "hash": "bd95dabb645620f9405a319e2a1eaab1066952a2ec3fbdd48bcce567382522e9",
+      "text": "桌上那张潮位表被雨淋过，边角发皱，墨迹在纸面上晕开一小片。邝昶用手指压住翘起的角，指腹上沾了灰。\n\n「这一格。」他说，「原来是什么数？」\n\n闻溪没看表。她蹲在灯座边，镊子夹着一截烧黑的旧芯，正往工具布上放。\n\n「你问的是被划掉的那个，还是被改过的那个？」\n\n「划掉的。」\n\n「划掉的看不见了。」她说，「改过的还在。」\n\n邝昶把表转了个方向，对着灯。划痕是横着两道，压得很重，底下那层数字只剩半个轮廓。他认了半晌，只认出左边一竖。\n\n「四月。」他说，「这一格是四月。」\n\n闻溪把旧芯搁下，站起来，走到桌边。她没伸手，只低头看了一眼。\n\n「四月灯盏渡。」她说，「你昨天抄的缺页，也是三月到九月。」\n\n「所以这一格本来有数。」邝昶说，「有人先划，再裁。」\n\n闻溪没接话。她转身回到灯座前，把那截旧芯重新夹起来，举到灯焰旁边。火苗照在芯上，芯头焦黑，往下却有一圈发白的硬壳，像盐结在布上。\n\n「你过来看。」\n\n邝昶走过去。闻溪把镊子递到他眼前，芯上的白壳在光里泛着细粒。\n\n「盐。」她说。\n\n「灯芯上怎么会有盐。」\n\n「灯芯不沾盐。」闻溪说，「除非泡过海水，又干透。」\n\n邝昶盯着那截芯。他想起门框上那道水痕，比昨天低了一指。\n\n「这座灯的位置，」他说，「比别的灯低。」\n\n「低两砖。」闻溪说，「退潮时水能漫到灯座底下。可灯座是铸铁的，泡了也不进芯。」\n\n「除非有人把芯拆下来，浸过。」\n\n闻溪把镊子收回去，旧芯放进工具布，折了两折。\n\n「我不下结论。」她说，「我只说这芯不对劲。」\n\n邝昶把潮位表卷起来，塞进外套。他隔着布按了按内袋，钥匙还在。\n\n「退潮前还有多久。」\n\n「一个时辰。」闻溪拎起工具袋，「先去核灯座。表上的数，等回来再说。」\n\n邝昶没再追问那个被划掉的数字。他拉开门，潮气涌进来，灯焰歪了一下。闻溪先出去，他跟上，门在身后合上。"
     }
   },
   "provider": {
@@ -480,7 +510,6 @@
     "chapterId": "chapter_a3453818-2279-409c-afd6-fbdbf70a04d0",
     "words": 1025
   },
-  "error": "extractor: PAUSED BUDGET_EXHAUSTED 任务模型预算已耗尽；已保留有效成果和检查点",
   "recovery": [
     {
       "previousTask": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
@@ -489,6 +518,261 @@
   ],
   "styleChapter": "chapter_9233117e-6ab3-40ed-a5bb-d78bb7ac9369",
   "requests": [
+    {
+      "id": "request_1a7976d3-d9a2-465b-ad11-241682f80af4",
+      "taskId": "task_891d88ad-cc3a-47ac-a290-8df161f7e294",
+      "stepKey": "0:0:选区写作",
+      "createdAt": "2026-09-13T06:48:38.364Z",
+      "status": "COMPLETED",
+      "role": "Writer",
+      "configHash": "25d5f2ed7009521199609b199a32ec3f58e1862942e7d9dbb2de761225da9f24",
+      "hash": "f1342d8d9e1e6d9d3a9a1acccab1e0a49eed6c63853616eab99503c3a95c4cf8",
+      "localCompilationCache": "MISS",
+      "localPrefixReuse": false,
+      "usage": {
+        "uncachedInputTokens": 15216,
+        "inputTokens": 15344,
+        "outputTokens": 564,
+        "cacheReadTokens": 128,
+        "totalTokens": 15908,
+        "serverCache": "REPORTED",
+        "elapsedMs": 5009,
+        "firstTokenMs": 1035
+      },
+      "requestHash": "99e5968ca8680549b96a7b66cccd9d779943046a8b0308afd8de6d8cc07cc6b9",
+      "diff": {
+        "firstChangedPath": "$.messages.0.content.0.text",
+        "commonPrefixChars": 88,
+        "identical": false
+      },
+      "macros": [
+        {
+          "macro": "{{viewpoint}}",
+          "value": "邝昶",
+          "dynamic": false,
+          "resolved": true
+        },
+        {
+          "macro": "{{viewpoint}}",
+          "value": "邝昶",
+          "dynamic": false,
+          "resolved": true
+        }
+      ],
+      "warningCount": 0,
+      "versions": [
+        {
+          "id": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+          "version": "17",
+          "kind": "project"
+        },
+        {
+          "id": "world_4d6ab3e8-6e76-49da-b4ae-9ecb61af9beb",
+          "version": "1",
+          "kind": "world"
+        },
+        {
+          "id": "chapter_9233117e-6ab3-40ed-a5bb-d78bb7ac9369",
+          "version": "2",
+          "kind": "chapter-plan"
+        },
+        {
+          "id": "chapter_a3453818-2279-409c-afd6-fbdbf70a04d0:ending",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "accepted-body"
+        },
+        {
+          "id": "chapter_2f26cf9b-750b-4a15-bc11-b7c89c372d7a:ending",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "accepted-body"
+        },
+        {
+          "id": "fact_6b1935b0-410a-4ca1-b677-51cc970d43b2",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_a740c7f9-08f5-4a8b-b5aa-22137ca0daf7",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_b8e1787a-e8ea-4b6d-a1d9-4d0bb921bf3b",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_fc81e609-8df4-4bf0-80e0-221fbb81038f",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_956e0000-d4e7-4570-a4fb-563428f80e86",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_bcefecf5-5531-46b6-8672-cc3129bda93f",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_551ee4ea-647d-4ec1-b18b-31d64e3c4e86",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_2b1cda92-ac0e-4b9c-aa75-dcd5fc2a4093",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_536f3e5c-6de1-482b-95e3-a4a020e9b09a",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_356beffc-2cc2-4897-8603-dad270518bef",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_c21981c7-5e37-46d9-bd87-08e10c3dd41a",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_fa2a2344-edaa-4756-a843-ad49e4c02f8d",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_42261f2b-0f83-43ac-90f2-4c5575a7ddd6",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_275909ef-eda7-4bce-8c16-e58a2b0427ce",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_8c7e05e4-2f81-4f2b-b0d3-279828ab4989",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_f2d228be-fac1-46f1-aaaa-dfba53add021",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "canon"
+        },
+        {
+          "id": "fact_d4e2ee90-7cba-4ca5-8580-1e3128feb956",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "canon"
+        },
+        {
+          "id": "book_ab1cf78d-7f40-4398-bcd8-3285d4bda458",
+          "version": "1",
+          "kind": "plan"
+        },
+        {
+          "id": "volume_ccec0457-057e-4347-a32e-2b9e87668c73",
+          "version": "1",
+          "kind": "plan"
+        },
+        {
+          "id": "character_57cbc95c-6c49-4efe-8cee-3c8fac990c93",
+          "version": "1",
+          "kind": "character"
+        },
+        {
+          "id": "character_8b96c08e-580b-4c2b-90fc-8ff5d049ce4b",
+          "version": "1",
+          "kind": "character"
+        },
+        {
+          "id": "relationship_20a7e86a-3fce-4e46-843a-73db306ab346",
+          "version": "1",
+          "kind": "relationship"
+        },
+        {
+          "id": "world_6a06dab8-3a12-4db2-b8ad-e48035ccb885",
+          "version": "1",
+          "kind": "world"
+        },
+        {
+          "id": "chapter_a3453818-2279-409c-afd6-fbdbf70a04d0:summary",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "summary"
+        },
+        {
+          "id": "chapter_2f26cf9b-750b-4a15-bc11-b7c89c372d7a:summary",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "summary"
+        },
+        {
+          "id": "event_4b1e6221-41d4-4e8c-985f-6383689338aa",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "happened-event"
+        },
+        {
+          "id": "event_b162f055-eb73-46bc-ab5b-10cf6195320b",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "happened-event"
+        },
+        {
+          "id": "event_18c645ce-6d16-4e80-9084-b55eb1abb9e8",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "happened-event"
+        },
+        {
+          "id": "event_7bc46340-cd58-4f61-8eb2-988e725b0d65",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "happened-event"
+        },
+        {
+          "id": "event_dd1aa061-b18f-4578-bb6e-1b9aed4c6b9a",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "happened-event"
+        },
+        {
+          "id": "event_dbcd8aa9-a753-4057-a82b-bd2287227ed4",
+          "version": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+          "kind": "happened-event"
+        },
+        {
+          "id": "event_7c74c4c6-048d-45ea-9fae-f850e3a7df6a",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "happened-event"
+        },
+        {
+          "id": "event_fd6d7d82-8fdf-4071-8354-58d4ce25d61c",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "happened-event"
+        },
+        {
+          "id": "event_8e11586e-21eb-4188-8367-6524288144cd",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "happened-event"
+        },
+        {
+          "id": "event_345c0208-03fc-4e41-93d3-fa02058eec26",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "happened-event"
+        },
+        {
+          "id": "event_19a25c1b-a545-4536-9c97-2dda59cfcad6",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "happened-event"
+        },
+        {
+          "id": "event_410d802b-8046-41a6-acc9-4e82cdd63602",
+          "version": "version_5e1959b7-c7c8-497f-8dd4-b0df4770eb49",
+          "kind": "happened-event"
+        }
+      ]
+    },
     {
       "id": "request_268df423-f59c-4321-ae4d-b0ad0be3c2af",
       "taskId": "task_67550d81-07c3-481f-bef0-41a228e0c7d7",

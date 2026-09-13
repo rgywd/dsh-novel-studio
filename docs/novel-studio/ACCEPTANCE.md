@@ -2,22 +2,36 @@
 
 ## 当前增量升级 A–H（独立于下方已完成 V1）
 
-起点 `7839613`。升级前 `npm run typecheck` 与 41 项完整回归 PASS；证据 `evidence/upgrade-baseline-*.txt`。8 个旧作品备份成功；`evidence/upgrade-backup-receipt.json`。本轮自动验证 56 项通过，旧作品 8/8 哈希回归通过；真实闭环与界面仍在收尾，以下不借用历史 V1 的 PASS。
+起点 `7839613`。升级前 `npm run typecheck` 与41项完整回归 PASS；证据 `evidence/upgrade-baseline-*.txt`。8个旧作品先备份再增量迁移，回执 `evidence/upgrade-backup-receipt.json`。本轮0.2.0验收 A–H 已收口，56项自动测试、真实模型与实际浏览器分别通过；以下不借用历史 V1 的 PASS。
 
-| 本轮场景 | 状态 |
-|---|---|
-| A 旧版数据与双模式迁移回归 | PASS（8/8 原有作品；两代备份和运行器回归） |
-| B 预设、顺序/角色/宏、任务隔离和固定版本 | PASS（配置集成与 HTTP E2E；真实 Writer/Reviewer/Summarizer/Extractor） |
-| C 三阶段 regex、原始响应、非法规则与隔离终止 | PASS（Worker 高耗时终止/中文捕获/回放与 HTTP 流程） |
-| D 关系/世界时态、单方知情和有界召回 | PASS（自动测试；新增图形交互浏览器收尾中） |
-| E 长篇证据召回、覆盖缺口、失效重建与晚到保护 | PASS（40章原创合成 Fixture、原文跳转与真实接管重建） |
-| F 确定性编译、稳定前缀与真实缓存计量 | PASS（重复编译、角色/模型/schema Diff 与实际 cacheRead；write UNKNOWN） |
-| G 双模式完整升级闭环 | PASS（确定性 HTTP 与真实两章；浏览器完整操作收尾中） |
-| H 三种文风的真实可读样本 | FAIL（首轮第一人称没有生效，已修复编译形式协议，重测中） |
+| 本轮场景 | 实现与实际验证 | 状态 / 证据 |
+|---|---|---|
+| A 旧版数据与双模式迁移回归 | `store/domain/config` 增量schema2，两代备份恢复为独立副本；8/8升级前作品的项目、对象、正文版本、任务、产物和导入哈希相同。最新构建实际重启4317/4318后，10/10项目完整备份校验和相同。 | PASS；`upgrade-old-projects.json`、`upgrade-runtime.json`、`configuration.test.ts`、`upgrade-http.test.ts` |
+| B 预设、顺序/角色/宏、任务隔离和固定版本 | `config/compiler` 原文件/转换/未支持报告、两种编排、范围来源、固定任务快照；真实上传包含启停/排序/角色/深度/宏的原创样例，预览与实际请求核对；Writer生效，Reviewer/Summarizer/Extractor结构合法。祖先警告在适配/恢复后仍可见。 | PASS；`compiler-unit.test.ts`、`configuration.test.ts`、`upgrade-real.json`、`upgrade-import-report.png` |
+| C 三阶段 regex、原始响应、非法规则与隔离终止 | `text-pipeline` 完整文本Worker、500ms可终止隔离、中文/跨行/捕获组、非法规则、替换次数上限、回放不叠加。HTTP验证发送前/生成后/展示独立，接受后资料来自相同候选版本；浏览器运行/关闭单规则、高耗时与非法输入均能结束。 | PASS；`configuration.test.ts`、`upgrade-http.test.ts`、`upgrade-regex-error.png` |
+| D 关系/世界时态、单方知情和有界召回 | `temporal/context/lorebook` 按章/视角/来源查询；早期信任和后期决裂、单方秘密与未来状态隔离；世界必要规则保留、关键词与深度2/24条限制；关系只扩一跳。UI上传世界条目、编辑条件例外代价、搜索局部图、点边、第3/12章历史状态实际读回。 | PASS；`memory.test.ts`、`upgrade-relations-desktop.png`、`upgrade-browser.json` |
+| E 长篇证据召回、覆盖缺口、失效重建与晚到保护 | `memory/context` 40章原创合成Fixture，37章摘要、3章缺口、7封存段；邝昶/阿晷别名、早期物品转移、因果和义务召回；18000字符预算，未来/其他分支/未接受排除；修订/改序/分支/回滚/晚到/锁定失效、恢复后重复总结幂等。真实旧摘要失效、精确原文跳转通过。 | PASS；`memory.test.ts`、`upgrade-http.test.ts`、`upgrade-source-handoff.png`、`upgrade-final.json` |
+| F 确定性编译、稳定前缀与真实缓存计量 | 同快照编译一致；仅动态目标变化时稳定块一致；文风/核心修改更新依赖；比较最终角色/模型/工具schema请求及最早变化。27次实际服务读量回执中17次大于0，0–4480 token；写入量UNKNOWN。输入总数按SDK未缓存+缓存读取字段校验，不重复计数。 | PASS；`compiler-unit.test.ts`、`configuration.test.ts`、`upgrade-request-cache.png`、`upgrade-final.json` |
+| G 双模式完整升级闭环 | 真实预设/正则→首章935字接受→记忆→接管归还钥匙→旧资料失效→中性刷新→第二章1025字引用新版本；原始响应/候选/正文/状态校验。另用实际浏览器上传配置、演示首章644字、接管地图新事实、委派下一章和记忆2章覆盖。演示不充当语义效果证据。 | PASS；`upgrade-real.json`、`upgrade-http.test.ts`、`upgrade-browser.json`、`upgrade-director-real.png` |
+| H 三种文风的真实可读样本 | 同目标/输入版本、默认与两种原生配置；逐篇阅读完整样本，默认第三人称、冒险第三人称限知短段行动、对白驱动第一人称邝昶。禁用表达未出现。852/567/763字候选均未接受；567字偏短明确记录，不作为完整章节验收。 | PASS；`upgrade-style-review.json`、`upgrade-style-samples.md`；首轮/中间失败保留 |
 
-本轮五类证据：`upgrade-test-unit.txt` 11 PASS；`upgrade-test-integration.txt` 43 PASS；`upgrade-test-e2e.txt` 2 PASS；`upgrade-real.json` 真实模型与服务端用量；`upgrade-*.png` 当前浏览器截图。最终 UI 清单尚未收口。
+本轮五类证据分别记录：
 
-真实失败保留：`upgrade-extractor-failure.json` 包含过宽 enum 导致的三次输出失败；同任务最后一次有引文不匹配，5次预算耗尽后暂停，不增大预算。修正 schema 后另开一个有明确边界的抽取验收，限定6条候选，成功。`upgrade-style-initial.json` 保存首轮人称失败与完整三样本；不能用输出 hash 不同代替文风符合。
+| 类型 | 命令 / 方法 | 结果 |
+|---|---|---|
+| 单元 | `npm run test:unit` | 11 PASS / 0 FAIL / 0 skipped；`upgrade-test-unit.txt` |
+| 集成 | `npm run test:integration` | 43 PASS / 0 FAIL / 0 skipped；`upgrade-test-integration.txt` |
+| 确定性提供方HTTP E2E | `npm run test:e2e` | 2 PASS / 0 FAIL / 0 skipped；`upgrade-test-e2e.txt`，不等于真实模型 |
+| 真实已配置模型 | `npm run smoke:upgrade -- --continue` 与有限修复重测、完整人工读稿 | PASS；`upgrade-real.json`、`upgrade-style-review.json`，没有增大失败任务预算 |
+| 实际浏览器与视觉 | in-app browser，1280x900/390x844、深浅主题、原生文件选择器与真实页面交互 | PASS；`upgrade-browser.json`，11张截图带SHA256，最终error console为空，viewport已重置 |
+
+`npm run typecheck`、`npm run build`：PASS。`node scripts/upgrade-final.mjs` 是不调用模型的最终读回，核对日志计数、样本hash/人工读稿、源版本与已接受正文、失效记忆、当前覆盖和服务端缓存计量，写入 `upgrade-final.json`。`node scripts/upgrade-runtime.mjs capture` → 用 `serve.ps1 -Restart` 重启两个自有服务 → `node scripts/upgrade-runtime.mjs verify` 验证完整持久化。`upgrade-tests.txt` 是中途51项测试的历史记录，最终结果以分类56项回执为准。
+
+可复核真实作品：`project_fbc9e2a1-059a-4735-a987-6ed9eb38f068`，修订17；第二章任务 `task_4f197e8e-fc94-4295-893d-ea168881d858`，7次调用（含审校重试），使用作者版本 `version_14ffe512-affc-4037-8708-a7b9658da21f`。两章主线记忆已覆盖；第三章是独立静态文风输入Fixture，保留未总结缺口。最终第二章Writer实际缓存读256/写UNKNOWN，总输入15603、未缓存15347、输出969，首token888ms、总耗时6949ms；检查器显示实际DSH参数，不冒充下游HTTP抓包。
+
+真实失败保留：`upgrade-extractor-failure.json` 包含过宽 enum 导致的三次输出失败；同任务后续引文不匹配，5次预算耗尽后暂停，不增大预算。修正schema后另开限定最多6条候选的抽取验收，成功。`upgrade-style-initial.json` 保存首轮第一人称失败；`upgrade-style-viewpoint-failure.json` 保存第二轮因视角说明引入“我”造成的冒险人称错误。修正形式协议、按人称生成视角说明后有限重测，完整阅读并核对原配置与禁用表达，最终PASS。全部28条请求记录中21条COMPLETED、6条FAILED、1条历史PREPARED（预算边界未发送）；历史记录不改成成功，最终代码已将请求准备记录移到预算校验之后。
+
+本轮未完成项：无；外部阻塞：无。此结论限定在 ARCHITECTURE 的兼容子集和已测环境。未提供用户社区预设，不能宣称全社区兼容；任意脚本和其他厂商缓存对象/TTL不属于本轮实现。服务端缓存写量和费用UNKNOWN是接口可观测边界，不填零。文风和审校仍是模型建议，无法保证每次完全遵守；567字样本的篇幅不足不是文学质量PASS。关系查询不对任意自然语言时间强行排序，超预算核心资料明确暂停。
 
 ## 历史 V1 验收
 

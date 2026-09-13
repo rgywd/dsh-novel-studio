@@ -26,6 +26,7 @@ test('upgrade D/E: relation replacement keeps one temporal edge; chapter move in
  const later=f.add({kind:'relationship',title:'信任变化',status:'accepted',fields:{fromId:f.a.id,toId:f.b.id,type:'信任',state:'决裂',edgeKey:`${f.a.id}:${f.b.id}:信任`},source:{type:'user',fromChapter:5}});
  assert.equal(temporalObjects(f.domain,f.p.id,{asOfChapter:3}).objects.filter(o=>o.kind==='relationship').at(-1)?.id,early.id);
  const relations=temporalObjects(f.domain,f.p.id,{asOfChapter:6}).objects.filter(o=>o.kind==='relationship');assert.equal(relations.length,1);assert.equal(relations[0].id,later.id);
+ const chain=Array.from({length:4},(_,n)=>f.add({kind:'character',title:`链路角色${n}`,status:'accepted'}));for(let n=0;n<chain.length;n++)f.add({kind:'relationship',title:`链路${n}`,status:'accepted',fields:{fromId:n?chain[n-1].id:f.a.id,toId:chain[n].id,type:'合作'}});const bounded=buildContext(f.domain,f.p.id,{chapterId:c.id,goal:'沈砚核对钥匙'});assert.ok(!bounded.items.some(i=>i.kind==='character'&&i.id===chain[3].id),'关系扩展必须有界，不能随存储顺序不断连锁');
  c=f.domain.object(f.p.id,c.id);c=f.domain.updateObject(f.p.id,c.id,c.revision,{...oldInput(c),order:9,fields:{...c.fields,branch:'alternate'}});assert.equal(c.fields.summaryVersion,'');assert.equal(c.fields.extractionPending,true);assert.equal(validMemory(f.domain,m),false);
  assert.throws(()=>f.task({kind:'extract',chapterId:c.id,perspective:{branch:'main'}}),/分支/);const task=f.task({kind:'extract',chapterId:c.id});assert.equal(task.perspective?.branch,'alternate');f.store.close();
 });

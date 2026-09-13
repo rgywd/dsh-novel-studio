@@ -2,23 +2,23 @@
 > @rgywd/dsh-novel-studio@0.2.0 test:unit
 > node --import tsx --test test/context.test.ts test/review.test.ts test/compiler-unit.test.ts
 
-(node:50132) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(node:45784) ExperimentalWarning: SQLite is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ compiler unit: observable diff includes model, tools and role changes without normalizing prose (2.4922ms)
-✔ compiler unit: extraction wire schema excludes ideas and native regex rejects unmapped scope/depth (7.9279ms)
-(node:11240) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+✔ compiler unit: observable diff includes model, tools and role changes without normalizing prose (1.5564ms)
+✔ compiler unit: extraction wire schema excludes ideas and native regex rejects unmapped scope/depth (5.5778ms)
+(node:2608) ExperimentalWarning: SQLite is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ D: planned events and candidates never become canon (46.1511ms)
-✔ L: large book is scoped, bounded and stale summary omitted (837.3483ms)
-✔ L: locked constraints must fit or fail visibly (8.1198ms)
-✔ word count excludes whitespace and punctuation (0.8628ms)
-✔ continuation finds carried items in the previous ending even when the broad goal omits them (8.4611ms)
-(node:60848) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+✔ D: planned events and candidates never become canon (18.1134ms)
+✔ L: large book is scoped, bounded and stale summary omitted (472.2368ms)
+✔ L: locked constraints must fit or fail visibly (6.4735ms)
+✔ word count excludes whitespace and punctuation (0.6885ms)
+✔ continuation finds carried items in the previous ending even when the broad goal omits them (4.6718ms)
+(node:59360) ExperimentalWarning: SQLite is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ E: unique-key conflict cites both exact sources and location (31.3078ms)
-✔ E: memory and explicit retrieval are not current-state conflicts (7.4961ms)
-✔ evidence fabrication and empty short chapters fail validation (12.3947ms)
-✔ holder identity IDs and names refer to the same character without erasing source values (10.1339ms)
+✔ E: unique-key conflict cites both exact sources and location (13.0242ms)
+✔ E: memory and explicit retrieval are not current-state conflicts (26.4422ms)
+✔ evidence fabrication and empty short chapters fail validation (15.8031ms)
+✔ holder identity IDs and names refer to the same character without erasing source values (6.4208ms)
 ℹ tests 11
 ℹ suites 0
 ℹ pass 11
@@ -26,4 +26,4 @@
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 2773.4283
+ℹ duration_ms 1914.0002

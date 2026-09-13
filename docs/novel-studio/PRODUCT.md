@@ -1,12 +1,14 @@
 # DSH Novel Studio V1
 
-## 本轮增量升级约定（2026-09-13，实施中）
+## 本轮增量升级约定（2026-09-13，0.2.0 已交付）
 
 保持同一个产品与双模式。新增功能必须进入现有生成、审校、提取与接管流程：全局/项目/任务版本化创作配置；Chat Completion 预设可见兼容子集和小说适配提案；原生文风/视角/对白/禁用表达；安全固定宏；发送前/生成后/展示三个隔离的正则阶段；所有 AI 经 P0–P5 确定性编译和实际请求检查器；关系/世界按来源、章节和知情范围参与生成；可重建章节/封存段记忆、覆盖缺口、证据召回与滚动未来规划；实际 DSH Provider 缓存用量与延迟，未知不记零。
 
 本轮原始验收 A–H：A 旧版与非破坏迁移；B 预设生效/结构化任务隔离/运行任务固定版本；C regex 中文跨行捕获、非法/高耗时隔离终止、原始响应与非叠加处理；D 关系和世界时态、单方秘密、有界递归；E 数十章合成记忆召回/缺口/改文晚到保护/回滚；F 固定编译、动态变化边界、真实有限缓存测量；G 预设→处理→导演正文接受→记忆状态→作者改事实→重新委派的双模式闭环；H 默认与两种原创文风的实际可读样本。五类验证分别报告，不能将本轮未完成项改称未来增强。
 
 不实现任意 JS/STscript、聊天皮肤、多媒体、全社区预设兼容、向量数据库或多 Agent 社会。未启用功能不回写历史正文；数据库用迁移及备份恢复，所有写入沿用范围、版本与事务保护。
+
+升级 A–H 在明确的兼容子集内验收通过：11单元、43集成、2模拟HTTP E2E；实际模型与浏览器分开验证。旧8作品没有内容变化，重启后10作品完整校验和相同。风格效果按完整可读样本核对，不用AI评分或字符串哈希替代读稿；567字的冒险样本明确作为偏短的未接受建议。失败和预算暂停记录保留，具体边界见 ACCEPTANCE 与 ARCHITECTURE。
 
 2026-09-13. Personal, local-first long-form fiction workbench. Writer is author-led editing; Director executes a scoped CreativeTask. Both use exactly one project, body/version store, canon and domain service. Viewing never acquires write control; takeover invalidates old AI dependencies. Accepted is distinct from published.
 

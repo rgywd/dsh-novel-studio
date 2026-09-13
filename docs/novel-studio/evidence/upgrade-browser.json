@@ -1,0 +1,113 @@
+{
+  "at": "2026-09-13T07:18:00.000Z",
+  "status": "PASS",
+  "method": "人工驱动的实际 in-app browser 交互；截图来自运行页面。未以静态截图或 HTTP 模拟替代浏览器验证。",
+  "url": "http://127.0.0.1:4318/novel-studio/",
+  "realProjectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+  "explicitDemoProjectId": "project_f46d8355-1f33-49b5-ac8e-9b230a228854",
+  "checks": [
+    {
+      "name": "预设上传与适配",
+      "status": "PASS",
+      "actions": "通过文件选择器上传 test/fixtures/upgrade-preset.json；核对启停、顺序、角色、宏与不支持深度报告；保存不自动启用；预览小说适配 Diff，接受独立版本，绑定沈砚和作者称呼，启用记忆，仅应用于演示作品。"
+    },
+    {
+      "name": "规则测试与隔离错误",
+      "status": "PASS",
+      "actions": "导入的删除套话规则命中一次；关闭单规则后原文不变；未保存的 (a+)+$ 在三万字符输入触发500ms隔离终止；非法 [ 显示错误，按钮恢复可用，原配置未被测试覆盖。"
+    },
+    {
+      "name": "世界统一导入与编辑",
+      "status": "PASS",
+      "actions": "上传 test/fixtures/upgrade-world.json；查看兼容报告后接受到同一世界树；高级深度条目禁用；编辑潮落条件、双人许可例外和铜舌代价并保存。"
+    },
+    {
+      "name": "有方向的关系与历史",
+      "status": "PASS",
+      "actions": "建立沈砚到闻溪的信任关系、双方不同认知和作者来源；第1章谨慎信任，第10章决裂；搜索、局部人物与类型过滤，点击图边和历史。实际重启后按第3章显示谨慎信任，第12章显示决裂，来源范围正确。"
+    },
+    {
+      "name": "真实记忆与原文跳转",
+      "status": "PASS",
+      "actions": "在真实作品搜索邝昶/钥匙，召回作者追加的归还事件及因果；点击来源后 CodeMirror 选区1099–1304包含新证据，源版本为 version_14ffe512-affc-4037-8708-a7b9658da21f。显示2章已覆盖及独立文风输入章的缺口，没有将缺口伪装成已总结。"
+    },
+    {
+      "name": "双模式完整交互",
+      "status": "PASS",
+      "actions": "显式演示提供方生成首章644字并接受，记忆覆盖1；修订、锁定/解锁和恢复摘要；查看正文不取得控制，接管并追加地图缺口对应旧渡口东岸的事实，自动保存后覆盖失效；重新委派下一章，先同步作者正文再生成，记忆覆盖2。演示模型仅验证运行链；真实语义继承另见 upgrade-real.json。"
+    },
+    {
+      "name": "生成检查器",
+      "status": "PASS",
+      "actions": "查看冻结配置、P0–P5、角色、宏、世界召回和原始响应/生成后Diff；展开实际DSH请求和相邻Diff。真实第二章Writer显示缓存读256/写UNKNOWN，总输入15603、未缓存15347、输出969；最早变化 $.messages.2.content.0.text；本地编译MISS与稳定块相同分开。"
+    },
+    {
+      "name": "桌面与窄窗口",
+      "status": "PASS",
+      "actions": "1280x900浅色导演/配置/图谱，390x844深色导演/配置和浅色Writer均实际操作；未见水平溢出或遮挡按钮，错误测试结束后无持续Loading。最终桌面document.scrollWidth=1265、innerWidth=1280。"
+    },
+    {
+      "name": "最终服务重启与浏览器恢复",
+      "status": "PASS",
+      "actions": "受控重启只操作本项目4317/4318；页面连接中断如实提示，刷新后作品和实际请求仍在；最终error console为空，保留真实第二章导演任务，viewport覆盖已reset。"
+    }
+  ],
+  "consoleErrorsAfterFinalReload": [],
+  "screenshots": [
+    {
+      "file": "upgrade-config-narrow-dark.png",
+      "bytes": 27587,
+      "sha256": "8771e4544e02beb78e361e75452e5c1c345a9594b2ca661068a25af0d81f43db"
+    },
+    {
+      "file": "upgrade-director-narrow-dark.png",
+      "bytes": 31073,
+      "sha256": "a1f743fee06037f7d1db666479397aa0680f74b6f361b861f57943fce75a07dc"
+    },
+    {
+      "file": "upgrade-director-real.png",
+      "bytes": 106305,
+      "sha256": "a3380ba2134d9438a52f41a928b61c0b372b4bab25a1ee32f33b7436eb37f551"
+    },
+    {
+      "file": "upgrade-import-report.png",
+      "bytes": 76852,
+      "sha256": "36a263270713e3f1ab34fdb022f695bd31e37ef6a3758572bc7bda1a64240109"
+    },
+    {
+      "file": "upgrade-memory-desktop.png",
+      "bytes": 102083,
+      "sha256": "9abd7995b4ba943f588ca795e7ab6eb042ed447992a9d28a2da6c3f7241e5efd"
+    },
+    {
+      "file": "upgrade-regex-desktop.png",
+      "bytes": 51517,
+      "sha256": "013eb5a4bea5cad7e3698f816e2af73e7e3a80816259cb8f93a0f0fda67dbbc9"
+    },
+    {
+      "file": "upgrade-regex-error.png",
+      "bytes": 46282,
+      "sha256": "675825a83d2218d956964b9d748b061d1993d77c494aafb8df34167b97dc5927"
+    },
+    {
+      "file": "upgrade-relations-desktop.png",
+      "bytes": 56146,
+      "sha256": "100b26e2fddd3dee1857a35444b3302436c16653ab8f6ebeccd598ebf29f8591"
+    },
+    {
+      "file": "upgrade-request-cache.png",
+      "bytes": 62729,
+      "sha256": "9cb8b6b4a16def0f7042301ce3c63561aca6640bbc1a77c9665804272bc2ce13"
+    },
+    {
+      "file": "upgrade-source-handoff.png",
+      "bytes": 111800,
+      "sha256": "382831c6466cc1c4e91651d6a617131ea47861e9d8e14a5d47bf4d3f2f526da9"
+    },
+    {
+      "file": "upgrade-writer-narrow.png",
+      "bytes": 60685,
+      "sha256": "209b314b10a40952c2473ec95b39524b145ed4a58e245cb7377c9cbddb198f21"
+    }
+  ]
+}

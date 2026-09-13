@@ -2,12 +2,12 @@
 > @rgywd/dsh-novel-studio@0.2.0 test:e2e
 > node --import tsx --test test/http.test.ts test/upgrade-http.test.ts
 
-(node:63184) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(node:59388) ExperimentalWarning: SQLite is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ deterministic HTTP E2E: projects, tasks, artifacts, body, failure, export, backup and origin fence (1107.7991ms)
-(node:61544) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+✔ deterministic HTTP E2E: projects, tasks, artifacts, body, failure, export, backup and origin fence (922.1283ms)
+(node:28984) ExperimentalWarning: SQLite is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ upgrade simulated HTTP E2E: preset preview/apply, three text stages, memory, handoff, next chapter and full backup (2404.0607ms)
+✔ upgrade simulated HTTP E2E: preset preview/apply, three text stages, memory, handoff, next chapter and full backup (2185.8586ms)
 ℹ tests 2
 ℹ suites 0
 ℹ pass 2
@@ -15,4 +15,4 @@
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 4509.4435
+ℹ duration_ms 3675.5533

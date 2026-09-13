@@ -1,0 +1,71 @@
+{
+  "temperature": 0.65,
+  "top_p": 0.85,
+  "prompts": [
+    {
+      "identifier": "voice",
+      "name": "简明动作",
+      "role": "system",
+      "content": "克制叙述，场景以动作和短对白推进。{{char}} 是绑定角色；{{user}} 是作者。保留 {{unknown}} 供检查器报告。"
+    },
+    {
+      "identifier": "sample",
+      "name": "原创例句",
+      "role": "assistant",
+      "content": "她把钥匙放下，没有替对方作答。"
+    },
+    {
+      "identifier": "off",
+      "role": "user",
+      "content": "这个停用条目不能进入请求。"
+    },
+    {
+      "identifier": "deep",
+      "role": "user",
+      "content": "没有等价深度的条目",
+      "injection_position": 1,
+      "injection_depth": 8
+    }
+  ],
+  "prompt_order": [
+    {
+      "character_id": 100001,
+      "order": [
+        {
+          "identifier": "sample",
+          "enabled": true
+        },
+        {
+          "identifier": "voice",
+          "enabled": true
+        },
+        {
+          "identifier": "off",
+          "enabled": false
+        },
+        {
+          "identifier": "deep",
+          "enabled": true
+        }
+      ]
+    }
+  ],
+  "extensions": {
+    "regex_scripts": [
+      {
+        "id": "plain",
+        "scriptName": "删除套话",
+        "findRegex": "/命运的齿轮开始转动。/gu",
+        "replaceString": "",
+        "placement": [
+          2
+        ],
+        "disabled": false,
+        "markdownOnly": false,
+        "promptOnly": false,
+        "runOnEdit": false,
+        "substituteRegex": 0
+      }
+    ]
+  }
+}

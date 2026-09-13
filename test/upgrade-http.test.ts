@@ -4,6 +4,7 @@ import { createServer } from 'node:http';
 import { once } from 'node:events';
 import { fixture } from './helpers.js';
 import { HttpApp } from '../src/http.js';
+import { installMemory,memoryList } from '../src/memory.js';
 
 test('upgrade simulated HTTP E2E: preset preview/apply, three text stages, memory, handoff, next chapter and full backup',async()=>{
   const f=fixture(),app=new HttpApp(f.domain,f.runner),server=createServer((q,s)=>void app.handle(q,s));
@@ -53,6 +54,9 @@ test('upgrade simulated HTTP E2E: preset preview/apply, three text stages, memor
     const copy=await api('/backups/restore',backup),copyBase=`/projects/${copy.id}`;
     const config=await api(copyBase+'/configurations');assert.equal(config.effective.config.memory.enabled,true);
     assert.equal((await api(copyBase+'/memories')).covered,2);
+    const records=memoryList(f.store,copy.id),memory=records.find(m=>m.kind==='chapter'&&m.status==='valid')!;
+    const replayed=f.store.transaction(()=>installMemory(f.domain,copy.id,memory.sources[0],memory.content,'restore-replay'));assert.equal(replayed.id,memory.id);assert.equal(memoryList(f.store,copy.id).length,records.length);
+    assert.ok(config.effective.report.some((r:any)=>r.field==='top_p'));
     assert.equal((await api(copyBase)).objects.filter((o:any)=>o.kind==='chapter').length,2);
     assert.equal((await api(base+`/objects/${chapter.id}`)).body,chapter.body);
   }finally{await f.runner.close();server.closeAllConnections();await new Promise<void>(r=>server.close(()=>r()));f.store.close();}

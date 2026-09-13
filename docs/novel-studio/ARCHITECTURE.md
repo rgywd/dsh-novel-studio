@@ -1,6 +1,6 @@
 # Architecture
 
-## 2026-09-13 incremental upgrade (in progress)
+## 2026-09-13 incremental upgrade — 0.2.0 verified
 
 Schema 2 adds immutable `config_versions`, scope bindings, last 100 local request snapshots per project, and derived memories. Migration is additive in one SQLite transaction. Legacy projects/versions are not rewritten. JSON backups support schema 1 and 2; restoration creates a separate project and freezes its restored effective configuration, without changing global defaults. Before migration, eight real project backups were saved privately; see the non-secret receipt in evidence.
 
@@ -39,6 +39,10 @@ Reference study (read, not run or copied): SillyTavern release `8172dcd0ee672d3c
 Context retains recent necessary original text; uncovered accepted chapters are added in full or stop at the budget. Older evidence is retrieved by Intl.Segmenter Chinese terms, rare-name/alias exact matches, explicit IDs and related entities, narrative importance and obligations, with surrounding quotes and source versions. It excludes future/other-branch/candidate/stale material. Core/current/recent/history priorities and omissions are inspectable. Accepted body changes, rollback, ordering and branch changes invalidate affected sources/checkpoints and dependent tasks. The conservative project revision fence remains intentional. Rolling planning passes commitments/arcs/near three chapters/far volume goals/obligations as evidence for a future-only proposal; it does not pretend to prove all narrative dependencies.
 
 Backup includes the ancestry of every effective/task configuration, raw imports, native scope snapshot, memory histories and request records. Restore creates independent IDs and a frozen local effective configuration; it never changes other projects' global default. Original configured schema-1 backups remain supported. Model usage is retained on failures when DSH supplies it; final request budget also checks tool schemas before stream invocation.
+
+Final verified boundaries: effective compatibility reports retain and deduplicate ancestor warnings after native adaptation and backup restore. Remapped memory sources get new source hashes, so rebuilding a restored chapter does not duplicate its memory. Relationship expansion freezes its initial seed set and follows one hop; storage order cannot trigger unlimited graph expansion. Native style templates replace prior literary entries explicitly. Writer's form protocol distinguishes narrator person from the bound viewpoint's knowledge; first-person “I” is introduced only for first-person configuration. These paths have targeted integration/HTTP assertions and actual browser checks.
+
+Evidence: `upgrade-final.json` verifies 56 automated results, actual request/version lineage, 8 unchanged old projects and 10 complete backups across the final two-service restart. `upgrade-browser.json` records manual interaction and hashes of 11 captured screenshots. Real DeepSeek returned cache-read usage for 27 requests, including retries/failures; 17 were positive, range 0–4480 tokens, aggregate read 27008. Cache writes and monetary cost remain UNKNOWN. This is observation of the actual workload, not an isolated cache-hit benchmark. No dependency was added in this upgrade; package version is 0.2.0, DSH Core remains untouched.
 
 ## DSH integration and boundaries
 

@@ -1,0 +1,312 @@
+{
+  "at": "2026-09-13T07:24:36.926Z",
+  "status": "PASS",
+  "version": "0.2.0",
+  "upgradeStart": "7839613",
+  "automated": [
+    {
+      "kind": "unit",
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "upgrade-test-unit.txt",
+      "sha256": "d752d6214fea8f5d83cccdfc25c7c6cf3044cc75e9c41c23b2d18dfaec9b0d33"
+    },
+    {
+      "kind": "integration",
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "upgrade-test-integration.txt",
+      "sha256": "d98d3f1443b5c9811962a415fb9a781d6b40930dd384afa0ff7db18987151844"
+    },
+    {
+      "kind": "e2e",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "upgrade-test-e2e.txt",
+      "sha256": "65542a71b6d6bc6e5285866885dde17443a1dd9ee02001c3f6b20fe0ced235c8"
+    }
+  ],
+  "typecheck": {
+    "status": "PASS",
+    "evidence": "upgrade-typecheck.txt"
+  },
+  "build": {
+    "status": "PASS",
+    "evidence": "upgrade-build.txt"
+  },
+  "migration": {
+    "status": "PASS",
+    "unchangedOldProjects": 8,
+    "evidence": "upgrade-old-projects.json"
+  },
+  "restart": {
+    "status": "PASS",
+    "matchingCompleteBackups": 10,
+    "evidence": "upgrade-runtime.json"
+  },
+  "browser": {
+    "status": "PASS",
+    "screenshots": 11,
+    "evidence": "upgrade-browser.json"
+  },
+  "real": {
+    "status": "PASS",
+    "provider": "deepseek-official / deepseek-flash",
+    "projectId": "project_fbc9e2a1-059a-4735-a987-6ed9eb38f068",
+    "revision": 17,
+    "backupChecksum": "bcdeedf4d65b0f8ebe85af2bb2bec214365e351bf23ca60fefe9df9b17fc84e3",
+    "firstWordsBeforeAuthorEdit": 935,
+    "secondWords": 1025,
+    "authorVersion": "version_14ffe512-affc-4037-8708-a7b9658da21f",
+    "secondRequestId": "request_b6e0996a-2045-4ee0-b70a-84b9481b4982",
+    "secondObservedRequestHash": "135c1b60dc7e7158b0ef54d554c6f6835aaa563db655754d9dd32dd222245ab1",
+    "secondUsage": {
+      "uncachedInputTokens": 15347,
+      "inputTokens": 15603,
+      "outputTokens": 969,
+      "cacheReadTokens": 256,
+      "totalTokens": 16572,
+      "serverCache": "REPORTED",
+      "elapsedMs": 6949,
+      "firstTokenMs": 888
+    },
+    "sourceVersionInSecondContext": true,
+    "staleOldMemories": 1,
+    "memory": {
+      "covered": 2,
+      "total": 3,
+      "gapExplanation": "独立文风输入 Fixture 尚未总结；主线两章已覆盖"
+    },
+    "style": {
+      "status": "PASS",
+      "evidence": "upgrade-style-review.json",
+      "samples": {
+        "default": {
+          "hash": "ce07846e8346fb34dbd841e886f560795ab1ca16d03cb5a99ee2838733e95877",
+          "taskId": "task_8247ecb5-31d2-4e72-a5a9-104f030149cd",
+          "words": 852,
+          "observed": "第三人称，以物件、环境和动作衔接对话；约852字，保留较多灯座和水线解释。",
+          "dialogueCharacterShare": 0.326,
+          "forbiddenMatches": []
+        },
+        "dialogue": {
+          "hash": "24d9a710b34e1220bce824c4553479179cda4259c20d2ec22b816e033d74ef3b",
+          "taskId": "task_67550d81-07c3-481f-bef0-41a228e0c7d7",
+          "words": 763,
+          "observed": "第一人称，我指绑定的邝昶；追问、回避和再追问推动信息，动作夹在对白间；没有把闻溪的未说想法当客观旁白。",
+          "dialogueCharacterShare": 0.371,
+          "forbiddenMatches": []
+        },
+        "adventure": {
+          "hash": "bd95dabb645620f9405a319e2a1eaab1066952a2ec3fbdd48bcce567382522e9",
+          "taskId": "task_891d88ad-cc3a-47ac-a290-8df161f7e294",
+          "words": 567,
+          "observed": "第三人称限知；短问短答、信息核对和出门行动，段落较短；未采用第一人称旁白。篇幅短于800字要求，仍为未接受的伴写建议，不当作整章验收。",
+          "dialogueCharacterShare": 0.304,
+          "forbiddenMatches": []
+        }
+      }
+    },
+    "historicalFailedRequests": 6,
+    "preparedNotSent": 1,
+    "tasks": [
+      {
+        "id": "task_d2542845-5eb4-4216-ac76-358c22f79121",
+        "kind": "write",
+        "status": "COMPLETED",
+        "usage": {
+          "calls": 4,
+          "outputTokens": 8002,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 14,
+          "outputTokens": 70000,
+          "contextChars": 30000
+        }
+      },
+      {
+        "id": "task_4f197e8e-fc94-4295-893d-ea168881d858",
+        "kind": "write",
+        "status": "COMPLETED",
+        "usage": {
+          "calls": 7,
+          "outputTokens": 25055,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 14,
+          "outputTokens": 70000,
+          "contextChars": 30000
+        }
+      },
+      {
+        "id": "task_8bf960fa-9b49-481f-9442-c6dce9adbe9e",
+        "kind": "summarize",
+        "status": "COMPLETED",
+        "usage": {
+          "calls": 2,
+          "outputTokens": 3165,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 5,
+          "outputTokens": 22000,
+          "contextChars": 30000
+        }
+      },
+      {
+        "id": "task_305b6306-d9b7-4bd9-8350-0c0348eb85bf",
+        "kind": "extract",
+        "status": "PAUSED",
+        "usage": {
+          "calls": 5,
+          "outputTokens": 11204,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 5,
+          "outputTokens": 22000,
+          "contextChars": 30000
+        }
+      },
+      {
+        "id": "task_4f25adc1-4471-4b66-9cba-032483ee5080",
+        "kind": "extract",
+        "status": "COMPLETED",
+        "usage": {
+          "calls": 2,
+          "outputTokens": 1548,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 5,
+          "outputTokens": 22000,
+          "contextChars": 30000
+        }
+      },
+      {
+        "id": "task_68efc8d1-b3c8-4e6e-993a-95bc89e37827",
+        "kind": "assist",
+        "status": "CANCELED",
+        "usage": {
+          "calls": 1,
+          "outputTokens": 557,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 3,
+          "outputTokens": 12000,
+          "contextChars": 30000
+        }
+      },
+      {
+        "id": "task_e13b009b-3cb0-4e8b-85ad-80ec749202d7",
+        "kind": "assist",
+        "status": "CANCELED",
+        "usage": {
+          "calls": 1,
+          "outputTokens": 529,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 3,
+          "outputTokens": 12000,
+          "contextChars": 30000
+        }
+      },
+      {
+        "id": "task_912eff39-57dc-40b5-a44f-93e2d66646a4",
+        "kind": "assist",
+        "status": "CANCELED",
+        "usage": {
+          "calls": 1,
+          "outputTokens": 799,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 3,
+          "outputTokens": 12000,
+          "contextChars": 30000
+        }
+      },
+      {
+        "id": "task_8247ecb5-31d2-4e72-a5a9-104f030149cd",
+        "kind": "assist",
+        "status": "CANCELED",
+        "usage": {
+          "calls": 1,
+          "outputTokens": 804,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 3,
+          "outputTokens": 12000,
+          "contextChars": 30000
+        }
+      },
+      {
+        "id": "task_294b446e-9e5c-4dd0-b28b-3697fc389d51",
+        "kind": "assist",
+        "status": "CANCELED",
+        "usage": {
+          "calls": 1,
+          "outputTokens": 841,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 3,
+          "outputTokens": 12000,
+          "contextChars": 30000
+        }
+      },
+      {
+        "id": "task_67550d81-07c3-481f-bef0-41a228e0c7d7",
+        "kind": "assist",
+        "status": "CANCELED",
+        "usage": {
+          "calls": 1,
+          "outputTokens": 715,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 3,
+          "outputTokens": 12000,
+          "contextChars": 30000
+        }
+      },
+      {
+        "id": "task_891d88ad-cc3a-47ac-a290-8df161f7e294",
+        "kind": "assist",
+        "status": "CANCELED",
+        "usage": {
+          "calls": 1,
+          "outputTokens": 564,
+          "estimated": false
+        },
+        "budget": {
+          "calls": 3,
+          "outputTokens": 12000,
+          "contextChars": 30000
+        }
+      }
+    ],
+    "cache": {
+      "measuredRequests": 27,
+      "requestsWithPositiveReads": 17,
+      "readRange": [
+        0,
+        4480
+      ],
+      "totalReadTokens": 27008,
+      "writeTokens": "UNKNOWN",
+      "amountEstimate": "UNKNOWN",
+      "note": "实际DSH服务字段，包含重试和失败；不是固定负载的命中率基准。"
+    }
+  },
+  "incomplete": [],
+  "externalBlockers": []
+}

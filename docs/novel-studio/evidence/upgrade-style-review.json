@@ -1,0 +1,36 @@
+{
+  "at": "2026-09-13T06:59:38.053Z",
+  "status": "PASS",
+  "method": "亲自逐篇读取固定场景的三份完整模型样本，并回查配置/视角绑定/原文版本；字数和对白占比仅为可读辅助指标，不代表客观文学评分。",
+  "limitations": [
+    "文风执行是模型行为，仍需审读；不保证每次完全遵守。",
+    "伴写长度有自然偏差，示例保持未接受状态，未机械填充或截断。",
+    "首轮人称失败和第二轮冒险人称错误分别保留，已修正编译规则并重测。"
+  ],
+  "samples": {
+    "default": {
+      "hash": "ce07846e8346fb34dbd841e886f560795ab1ca16d03cb5a99ee2838733e95877",
+      "taskId": "task_8247ecb5-31d2-4e72-a5a9-104f030149cd",
+      "words": 852,
+      "observed": "第三人称，以物件、环境和动作衔接对话；约852字，保留较多灯座和水线解释。",
+      "dialogueCharacterShare": 0.326,
+      "forbiddenMatches": []
+    },
+    "dialogue": {
+      "hash": "24d9a710b34e1220bce824c4553479179cda4259c20d2ec22b816e033d74ef3b",
+      "taskId": "task_67550d81-07c3-481f-bef0-41a228e0c7d7",
+      "words": 763,
+      "observed": "第一人称，我指绑定的邝昶；追问、回避和再追问推动信息，动作夹在对白间；没有把闻溪的未说想法当客观旁白。",
+      "dialogueCharacterShare": 0.371,
+      "forbiddenMatches": []
+    },
+    "adventure": {
+      "hash": "bd95dabb645620f9405a319e2a1eaab1066952a2ec3fbdd48bcce567382522e9",
+      "taskId": "task_891d88ad-cc3a-47ac-a290-8df161f7e294",
+      "words": 567,
+      "observed": "第三人称限知；短问短答、信息核对和出门行动，段落较短；未采用第一人称旁白。篇幅短于800字要求，仍为未接受的伴写建议，不当作整章验收。",
+      "dialogueCharacterShare": 0.304,
+      "forbiddenMatches": []
+    }
+  }
+}

@@ -14,7 +14,8 @@ export function buildContext(domain:Domain,projectId:string,options:{chapterId?:
   const refreshing=options.purpose==='state-refresh';
   const relevant=new Set(options.entityIds??[]);const query=(refreshing?[current?.title,current?.body]:[options.goal,current?.title,current?.fields.goal,current?.fields.participants,current?.fields.events,prior.at(-1)?.body.slice(-2400)]).filter(Boolean).join(' ');
   for(const o of all.filter(o=>['character','world'].includes(o.kind))){const aliases=Array.isArray(o.fields.aliases)?o.fields.aliases:[];if(query.includes(o.id)||[o.title,...aliases].some(name=>query.includes(name)))relevant.add(o.id);}
-  for(const o of all)if(o.kind==='relationship'&&(relevant.has(String(o.fields.fromId))||relevant.has(String(o.fields.toId)))){relevant.add(String(o.fields.fromId));relevant.add(String(o.fields.toId));}
+  const relationSeeds=new Set(relevant);
+  for(const o of all)if(o.kind==='relationship'&&(relationSeeds.has(String(o.fields.fromId))||relationSeeds.has(String(o.fields.toId)))){relevant.add(String(o.fields.fromId));relevant.add(String(o.fields.toId));}
   for(const entityId of [...relevant])for(const linked of Array.isArray(byId.get(entityId)?.fields.relatedEntityIds)?byId.get(entityId)!.fields.relatedEntityIds as string[]:[])relevant.add(linked);
   const latest=(o:StoryObject)=>!o.source?.versionId||byId.get(o.source.chapterId??'')?.fields.currentVersion===o.source.versionId;
   const history=all.filter(o=>o.kind==='fact'&&o.status==='accepted'&&!o.source?.inference&&['objective','knowledge'].includes(o.source?.modality??'objective')&&latest(o)&&(!o.source?.chapterId||(ordinal.get(o.source.chapterId)??Infinity)<=index)&&(!o.source?.fromChapter||o.source.fromChapter<=index+1)&&(!o.source?.toChapter||o.source.toChapter>=index+1));
