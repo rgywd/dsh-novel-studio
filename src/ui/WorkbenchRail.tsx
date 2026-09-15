@@ -4,6 +4,7 @@ import {
   BookOpen,
   Bookmark,
   CheckCheck,
+  Clapperboard,
   Clock,
   Feather,
   FileText,
@@ -53,10 +54,14 @@ const tools: Array<{ tool: Tool; label: string; icon: typeof FileText }> = [
 ];
 
 export function WorkbenchRail(props: WorkbenchRailProps) {
+  const navigation = props.mode === 'director'
+    ? [{ surface: 'workspace' as const, label: '导演会话', icon: Clapperboard }, ...destinations.slice(1)]
+    : destinations;
+  const inspectorLabel = props.mode === 'director' ? '任务约定' : 'AI 助手';
   return <nav className="workbench-rail" aria-label="工作台导航">
     <div className="rail-group">
-      {destinations.map(({ surface, label, icon: Icon }) => {
-        const active = props.surface === surface && (surface !== 'workspace' || props.mode === 'writer');
+      {navigation.map(({ surface, label, icon: Icon }) => {
+        const active = props.surface === surface;
         return <button
           key={surface}
           className={active ? 'active' : ''}
@@ -70,9 +75,9 @@ export function WorkbenchRail(props: WorkbenchRailProps) {
     <div className="rail-group rail-tools">
       <button
         className={props.inspectorOpen ? 'active' : ''}
-        aria-label={props.inspectorOpen ? '收起 AI 助手' : '展开 AI 助手'}
+        aria-label={`${props.inspectorOpen ? '收起' : '展开'}${inspectorLabel}`}
         aria-pressed={props.inspectorOpen}
-        title={props.inspectorOpen ? '收起 AI 助手' : '展开 AI 助手'}
+        title={`${props.inspectorOpen ? '收起' : '展开'}${inspectorLabel}`}
         onClick={props.onToggleInspector}
       ><Sparkles size={18} strokeWidth={1.7}/></button>
       {props.hasLineage && <button

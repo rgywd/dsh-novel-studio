@@ -1,5 +1,18 @@
 # 验收记录
 
+## Director Agent 会话布局增量（2026-09-15）
+
+| 检查项 | 实际结果 | 状态与证据 |
+|---|---|---|
+| 参考与许可边界 | 核对 NeuroBook `45906272915ff43e83318653af62afa9ce668206` 的公开 Agent 截图及四个会话组件；许可证 AGPL-3.0-only。只重做可观察布局，不复制源码、CSS 或素材 | PASS；PRODUCT/ARCHITECTURE、`evidence/director-layout-20260915.json` |
+| 真实会话导航 | Director 左栏使用实际 CreativeTask，支持搜索和选择；从 Writer 切入且没有当前任务时自动打开本项目最新任务，没有复制旧任务列表或制造演示会话 | PASS；1280×720 实际 CUA 操作，搜索“第4章”后清除并恢复完整列表 |
+| 执行流与控制 | 中央显示真实用户委派、持久化 RunStep、部分输出、产物和事件；暂停/恢复/取消/重新委派、查看、接管、请求检查与新任务完整选项仍调用原逻辑 | PASS；实际完成任务检查、输入区展开/收起、任务约定收起/恢复 |
+| 桌面布局与主题 | 1280×720 浅色/深色均检查；任务约定收起后中央扩展，body/workspace/director 无水平溢出，console error/warning 为空 | PASS；结构化回执和实际页面检查 |
+| 窄屏布局 | 已实现 1280/1120/820/560px 响应式规则；当前 CUA 页面无法调整视口，本次没有实际操作新 Director 窄屏 | NOT_RUN；不借用 Writer 或历史 Director 截图宣称通过 |
+| 回归与运行态 | `npm test` 74 PASS、0 FAIL/skip；typecheck/build PASS；4318 最终构建可用；无模型调用、正文或数据库变更 | PASS；`evidence/director-layout-20260915.json` |
+
+本次只改变 Director 的信息结构和显示密度，原有 A–L、任务状态机、版本保护及写作/导演共享数据条件全部保留。参考项目仍可能变化，本记录只描述已核对提交。
+
 ## Writer 编辑器布局增量（2026-09-15）
 
 | 检查项 | 实际结果 | 状态与证据 |

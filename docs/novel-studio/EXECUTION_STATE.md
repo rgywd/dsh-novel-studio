@@ -1,5 +1,15 @@
 # Execution state — recovery entry
 
+## 当前增量：Director Agent 会话工作台布局（2026-09-15）
+
+用户要求继续参考 NeuroBook 的 Agent 模式改善现有 Director；本次核对 `notnotype/neuro-book@45906272915ff43e83318653af62afa9ce668206` 的公开截图和 `AgentChatSurface`、`AgentModeSessionSidebar`、`AgentChatFlow`、`AgentComposer` 实际源码，只采用可观察的会话布局思路，没有复制 AGPL-3.0-only 源码、CSS 或素材。
+
+现有 Director 的任务协议、单一有界 Runner、真实步骤/产物、暂停恢复、取消、查看、接管、请求检查器和 revision 保护均保留。界面改为：左侧可搜索的真实 CreativeTask 会话列表；中央紧凑任务头和可滚动的委派、步骤、事件、产物流；底部停靠且可折叠的新任务输入；右侧可收起的任务约定检查器。进入 Director 且未选任务时自动打开当前作品最新会话，功能轨在两种模式间保持当前工作模式。
+
+代码位于 `src/ui/Director.tsx`、`DirectorTaskSidebar.tsx`、`WorkbenchRail.tsx`、`main.tsx` 与 `style.css`。无数据库、API、依赖、模型参数或作品数据变更。修改后 `npm test` 74 PASS、0 FAIL/skip，`npm run typecheck`、`npm run build` PASS。真实 4318 页面在 1280×720 完成会话搜索、最新会话恢复、步骤/产物/请求入口、编辑器查看与接管入口、输入区和任务约定收起恢复、浅深主题检查；body/workspace 无水平溢出，console error/warning 为空。当前浏览器控制面没有可用的视口调整能力，因此本次新 Director 的窄屏视觉操作为 NOT_RUN；已实现 1280/1120/820/560px 响应式规则，不能以此替代实际窄屏验收。结构化回执见 `evidence/director-layout-20260915.json`。
+
+当前日常实例为 4318（本次重启回执 PID 33744，PID 仅供本次核对）；启动仍用 `npm run start:dsh`。本增量完成后以最新 `git log -1 --oneline` 和 `git status --short` 核对提交/工作树；不推送远端。未发起模型调用，未编辑小说正文或持久化数据。
+
 ## 当前增量：Writer 编辑器工作台布局（2026-09-15）
 
 用户要求参考 NeuroBook 的编辑器布局改善现有 Writer；本次在原有 React/CodeMirror 和双模式数据流上完成独立实现，没有另起页面、复制参考源码/素材或修改 DSH Core。参考仓库核对到 `notnotype/neuro-book@45906272915ff43e83318653af62afa9ce668206`（2026-09-14），许可证为 AGPL-3.0-only。

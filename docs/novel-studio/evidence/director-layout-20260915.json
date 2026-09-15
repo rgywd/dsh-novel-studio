@@ -1,0 +1,87 @@
+{
+  "checkedAt": "2026-09-15T16:51:41+08:00",
+  "application": "http://127.0.0.1:4318/novel-studio/",
+  "status": "PASS_WITH_NOT_RUN",
+  "reference": {
+    "repository": "https://github.com/notnotype/neuro-book",
+    "commit": "45906272915ff43e83318653af62afa9ce668206",
+    "license": "AGPL-3.0-only",
+    "files": [
+      "AgentChatSurface.vue",
+      "AgentModeSessionSidebar.vue",
+      "AgentChatFlow.vue",
+      "AgentComposer.vue"
+    ],
+    "reuse": "observable layout ideas only; no source code, CSS or visual asset copied"
+  },
+  "implementation": {
+    "files": [
+      "src/ui/Director.tsx",
+      "src/ui/DirectorTaskSidebar.tsx",
+      "src/ui/WorkbenchRail.tsx",
+      "src/ui/main.tsx",
+      "src/ui/style.css"
+    ],
+    "domainChanges": false,
+    "apiChanges": false,
+    "schemaChanges": false,
+    "dependencyChanges": false
+  },
+  "checks": [
+    {
+      "name": "typecheck",
+      "status": "PASS",
+      "command": "npm run typecheck"
+    },
+    {
+      "name": "build",
+      "status": "PASS",
+      "command": "npm run build"
+    },
+    {
+      "name": "tests",
+      "status": "PASS",
+      "command": "npm test",
+      "passed": 74,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "desktop-browser",
+      "status": "PASS",
+      "viewport": [1280, 720],
+      "bodyClientWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "workspaceClientWidth": 1280,
+      "workspaceScrollWidth": 1280,
+      "directorClientWidth": 677,
+      "directorScrollWidth": 677,
+      "horizontalOverflow": false
+    },
+    {
+      "name": "session-search-and-latest-restore",
+      "status": "PASS"
+    },
+    {
+      "name": "composer-inspector-and-real-artifacts",
+      "status": "PASS"
+    },
+    {
+      "name": "light-and-dark-themes",
+      "status": "PASS"
+    },
+    {
+      "name": "browser-console",
+      "status": "PASS",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "name": "narrow-director-visual",
+      "status": "NOT_RUN",
+      "reason": "The current CUA surface did not expose viewport resizing. Responsive rules were implemented, but no prior or Writer-only check is counted as this Director visual check."
+    }
+  ],
+  "modelCalls": 0,
+  "dataMutations": 0
+}

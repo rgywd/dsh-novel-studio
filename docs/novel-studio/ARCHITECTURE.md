@@ -1,5 +1,11 @@
 # Architecture
 
+## 2026-09-15 Director 会话工作台布局
+
+这是 UI 层增量，没有新增领域模型、API、schema、依赖或第二套任务状态。`DirectorTaskSidebar.tsx` 从现有 `CreativeTask[]` 渲染可搜索会话并通过原有 `onLoadTask` 选择；`main.tsx` 在 Director 模式挂载该侧栏，并在没有当前任务时选择本项目最新任务。`Director.tsx` 继续消费原有任务、步骤、产物、事件、请求记录和控制回调，只把结构调整为紧凑会话头、中央实际执行流、底部委派输入和右侧任务约定。`WorkbenchRail.tsx` 根据模式标记“导演会话/任务约定”，资料入口保持当前模式；`style.css` 提供桌面、折叠面板和窄屏抽屉规则。
+
+显示进度只来自已持久化步骤、事件和产物；任务输入仍调用现有创建接口，暂停/恢复/取消/重新委派/查看/接管仍走原回调与 Domain。切换页面不取消任务，收起输入或检查器不改变任务状态。进入 Director 自动选择最新任务只是视图恢复，没有运行副作用。参考 NeuroBook Agent 会话的可观察布局和公开组件职责，独立实现；未复用其 AGPL-3.0-only 源码、样式或素材。
+
 ## 0.3 原作衍生升级（已验证）
 
 在既有 Domain + UI + DSH Adapter 上增量扩展，DSH Core及独立脏checkout均未改动，npm没有新增依赖。schema2→3在事务内新增 `source_works/source_versions/source_runs/source_assets/source_decisions/import_manifests` 六表及版本索引。旧项目JSON行不迁移重写；升级前10项目私人备份，最终校验和10/10相同。完整数据恢复：项目JSON备份恢复为独立副本；来源库冷备先停对应服务，再复制整个SQLite库，不在线覆盖或清库。
