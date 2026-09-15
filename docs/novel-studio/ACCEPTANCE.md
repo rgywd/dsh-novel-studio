@@ -1,5 +1,17 @@
 # 验收记录
 
+## Writer 编辑器布局增量（2026-09-15）
+
+| 检查项 | 实际结果 | 状态与证据 |
+|---|---|---|
+| 参考与许可边界 | 核对 NeuroBook `45906272915ff43e83318653af62afa9ce668206` 的公开截图、页面壳、功能轨、Markdown Studio 与 editorial token；许可证 AGPL-3.0-only。只重做可观察布局思路，不复制代码、CSS 或素材 | PASS；PRODUCT/ARCHITECTURE 的参考记录 |
+| Writer 桌面布局 | 1280×720 实际页面显示紧凑顶栏、功能轨、章节树、带保存状态的章节标签、正文与 AI 助手；助手收起/恢复后正文实时扩展 | PASS；`evidence/writer-layout-20260915.json`、实际 CUA 操作 |
+| 入口与双模式 | 功能轨实际打开人物页并保留全部产品入口；Writer→Director 正常切换，导演仍以任务为中心，未改变接管、保存或任务协议 | PASS；实际 CUA 可访问树和截图检查 |
+| 响应式和主题 | 390×844 body 390/390、工具栏 346/346，无水平溢出；44px 功能轨保留，章节树为 270px 覆盖抽屉且正文宽度不变，AI 默认收起；浅色/深色均检查 | PASS；`evidence/writer-layout-20260915.json` |
+| 回归与运行态 | `npm test` 74 PASS、0 FAIL/skip；typecheck/build PASS；4318 重启后页面可用，console error/warning 为空；无模型调用、正文或数据库变更 | PASS；本节命令与结构化回执 |
+
+本次布局不变更原有 A–L 验收条件、API、schema、模型或作品状态。浏览器临时 390×844 设备指标已清除，用户浅色主题已恢复。参考项目仍在快速开发，本记录只描述已核对提交，不宣称两者功能等价。
+
 ## 0.3 原作、继承与分支验收（已完成；原有验收记录保留）
 
 起点f271345，56旧测试和类型检查先建立基线，保留10份旧项目备份。74项最终自动验证均PASS；真实DSH、实际浏览器、重启持久化单独核对。总回执 [source-final.json](evidence/source-final.json)，最新实现切片f782ecf；后续交付提交见git log。本表保留本轮原始A–L，不用上轮PASS代替本轮验证。

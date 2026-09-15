@@ -1,5 +1,17 @@
 # Execution state — recovery entry
 
+## 当前增量：Writer 编辑器工作台布局（2026-09-15）
+
+用户要求参考 NeuroBook 的编辑器布局改善现有 Writer；本次在原有 React/CodeMirror 和双模式数据流上完成独立实现，没有另起页面、复制参考源码/素材或修改 DSH Core。参考仓库核对到 `notnotype/neuro-book@45906272915ff43e83318653af62afa9ce668206`（2026-09-14），许可证为 AGPL-3.0-only。
+
+现状是 64px 顶栏、章节树、正文和 AI 面板，但作品资料入口散在长侧栏里，中央工具区没有当前文件识别，右侧面板在桌面无法收起。最小修改为 54px 顶栏、48px 可操作功能轨、专注章节/任务的上下文树、带保存状态的章节标签、可折叠 AI 面板，以及不挤压正文的窄屏抽屉。所有入口仍调用现有 `surface`、Modal、Writer/Director 切换、自动保存和 revision 保护。
+
+代码位于 `src/ui/WorkbenchRail.tsx`、`main.tsx`、`Editor.tsx` 与 `style.css`。无数据库、API、依赖或作品数据变更；功能轨覆盖正文、大纲、人物、世界、关系、时间线、伏笔、事实、灵感、继承、原作、记忆、创作配置、生成检查器和备份。桌面 AI 侧栏可收起后释放正文宽度，跨 1120px 响应式边界时自动回到适合该视口的默认状态。
+
+验证：修改前 typecheck/build PASS；修改后 `npm test` 74 PASS、0 FAIL/skip，typecheck/build PASS。真实 4318 页面完成 1280×720 Writer、侧栏收起/恢复、功能轨人物导航、Director、浅/深主题检查；390×844 下 body 与工具栏均无水平溢出，章节抽屉覆盖而不挤压正文，AI 默认收起；浏览器 console error/warning 为空，视口覆盖已清除。结构化回执见 `evidence/writer-layout-20260915.json`。未发起模型调用、未编辑作品正文。
+
+当前日常实例为 4318（本次重启回执 PID 5184，PID 仅供本次核对）；启动仍用 `npm run start:dsh`。本增量完成后应以最新 `git log -1 --oneline` 和 `git status --short` 核对提交/工作树；不推送远端。下一项是用户直接在当前页面体验，暂无后台任务或外部阻塞。
+
 ## 当前任务：原作资料、选择性继承与衍生作品（0.3.0）
 
 2026-09-13，阶段 A–E 实现、验收及交付文档已完成。本轮核心验收A–L通过，已可按README日常使用。原始 A–L 条件保留在 PRODUCT/ACCEPTANCE。起点 f271345，原有工作树干净；本轮代码切片2a6ef26、ae30dba，最终实现f782ecf；其后仅交付文档与证据提交，以git log核对最近提交。此前 0.2/V1 记录是历史，不代表本轮验证。

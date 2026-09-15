@@ -49,6 +49,7 @@ A persistence including restart and honest save errors; B Director chapter 1 →
 ## Decisions
 
 - Full independent DSH plugin page, not changes to the existing dirty Writing Studio checkout. DSH native model, credentials and tool runtime are reused. No copied reference implementation.
+- Writer uses a compact IDE-like shell: global mode/project controls, a narrow functional activity rail, a contextual chapter/task tree, the prose canvas and an optional AI inspector. This keeps the manuscript central while every rail entry remains a real route into the existing product. The 2026-09-15 layout takes only observable interaction ideas from NeuroBook; its AGPL source and visual assets are not copied.
 - SQLite native to Node 24: transactions and revisions, no vector/graph database or generic agent framework. CodeMirror 6 reuses the editor technology already present in DSH.
 - Chinese word count: each Han character, each Latin word/number counts as one; punctuation/whitespace excluded. Target is a range, never filled by repetition or truncation.
 - No publishing, multi-tenancy, payments, complex RBAC, real-time multi-user editing or agent society. Bind local server to loopback; same-origin requests for mutation.
@@ -67,6 +68,7 @@ Acceptance A–L passed on the final code commit `b4ea427`; the actual evidence,
 
 ## References and evidence level
 
+- https://github.com/notnotype/neuro-book at 45906272915ff43e83318653af62afa9ce668206 (2026-09-14): inspected the public home screenshots plus `pages/index.vue`, activity bar, Markdown Studio workbench and editorial theme tokens to understand the editor's visible pane hierarchy. License is AGPL-3.0-only. Only the layout principles were reimplemented with existing Novel Studio components; no code, styles or assets were copied.
 - https://github.com/ExplosiveCoderflome/AI-Novel-Writing-Assistant at 24832d5eb0ded8c39cfaab9971af2a57e1827a22 (2026-09-12): README describes Agent/world/context/book production. Read actual checkpoint runtime and DirectorCommandLeaseService; these contain checkpoint persistence and stale lease/manual recovery branches. Not locally executed. LICENSE says AGPL-3.0-only community plus separate commercial authorization; implementation/assets not copied.
 - https://maliangwriter.com/features/ and https://maliangwriter.com/docs (read 2026-09-13): official descriptions of layered outline, entity context, writing/review workflow. Marketing claims of eliminating inconsistencies are not treated as verified capability. No authenticated demo execution or source equivalence claimed.
 - Local DSH D:\workspace\DSH HEAD 16838a9, dirty user checkout: existing plugin route registration, llm.stream, default model selection, CodeMirror/proposals observed in source. Its pinned 0.1.1-rc.2 differs from installed CLI 0.1.5-rc.1; this plugin targets the installed 0.1.5-rc.1 deliberately.

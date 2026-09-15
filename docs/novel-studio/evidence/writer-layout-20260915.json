@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-09-15T16:30:00+08:00",
+  "application": "http://127.0.0.1:4318/novel-studio/",
+  "reference": {
+    "repository": "https://github.com/notnotype/neuro-book",
+    "commit": "45906272915ff43e83318653af62afa9ce668206",
+    "license": "AGPL-3.0-only",
+    "reuse": "observable layout ideas only; no source code or visual asset copied"
+  },
+  "desktop": {
+    "viewport": [1280, 720],
+    "verified": [
+      "compact header and project switcher",
+      "functional activity rail",
+      "chapter tree, editor and AI assistant three-pane layout",
+      "assistant collapse and restore",
+      "rail navigation to character workspace",
+      "Writer and Director mode switch",
+      "light and dark themes"
+    ]
+  },
+  "narrow": {
+    "viewport": [390, 844],
+    "bodyScrollWidth": 390,
+    "bodyClientWidth": 390,
+    "activityRailWidth": 44,
+    "mainWidth": 346,
+    "toolbarScrollWidth": 346,
+    "toolbarClientWidth": 346,
+    "sidebarDefault": "hidden",
+    "assistantDefault": "hidden",
+    "drawer": {"left": 44, "width": 270, "mainWidthWhileOpen": 346},
+    "horizontalOverflow": false
+  },
+  "consoleErrorsOrWarnings": [],
+  "deviceMetricsOverrideCleared": true,
+  "modelCalls": 0,
+  "dataMutations": 0
+}
