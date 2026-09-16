@@ -1,0 +1,33 @@
+{
+  "at": "2026-09-16T07:12:02.604Z",
+  "status": "PASS",
+  "results": [
+    {
+      "source": "DSH 4318",
+      "schema": "4",
+      "healthSchema": 4,
+      "integrity": "ok",
+      "projectCount": 7,
+      "changedOldTables": [],
+      "projection": {
+        "metadataBytes": 717,
+        "navigationBytes": 44319,
+        "revisionConsistent": true
+      }
+    },
+    {
+      "source": "standalone 4317",
+      "schema": "4",
+      "healthSchema": 4,
+      "integrity": "ok",
+      "projectCount": 4,
+      "changedOldTables": [],
+      "projection": {
+        "metadataBytes": 373,
+        "navigationBytes": 13786,
+        "revisionConsistent": true
+      }
+    }
+  ],
+  "oldProjectRegression": "npm run test:old-projects: 8 PASS; historical backup schema field is its original schema 2"
+}

@@ -5,7 +5,7 @@
 | 场景 | 实际证据 | 状态 |
 |---|---|---|
 | 请求引用保护、时间/容量和主动清理 | 真实 request 模块写入 130 条，第 1/2/3 条分别由活跃任务、待审成果、已接受正文引用，超过 100 后仍可读取完整详情；无引用第 4 条保留已清理摘要和原因。用户主动清理后仅受保护详情与摘要保留，备份在独立副本恢复。 | **PASS**；`test/stage2.test.ts` |
-| 旧库迁移和恢复 | 两个运行中 schema 3 数据库的只读 VACUUM INTO 副本，13 类旧表行数/SHA256 未变，副本事务升级 v4、integrity_check 和独立备份恢复通过。正式服务尚未重启迁移。 | **PASS（副本）** / **NOT_RUN（正式重启）**；`evidence/stage2-migration.json`、`.local/backups/stage2-20260916/` |
+| 旧库迁移和恢复 | 两个运行中 schema 3 数据库的只读 VACUUM INTO 副本，13 类旧表行数/SHA256 未变，副本事务升级 v4、integrity_check 和独立备份恢复通过。正式 4318/4317 在完整备份后重启升级 v4，旧表哈希全相同、quick_check=ok，旧项目回归 8/8 PASS。 | **PASS**；`evidence/stage2-{migration,runtime}.json`、`.local/backups/stage2-20260916/` |
 | 按需读取和索引失效 | 模块和真实 HTTP 测试分别证明导航不返回正文、正文详情单独读取、任务 status 无步骤而详情有步骤，请求分页只有摘要；修改卷结构后新读取索引 revision/结构变化。 | **PASS**；`test/stage2.test.ts` 2 项 |
 | 100/500/1000 章规模 | 合成直接写入章节，不冒充模型生成；启用/关闭记忆各 7 次样本，记录导航/上下文 p50/p95、响应大小、RSS 和埋点路径查询数。1000 章记忆开导航 p50 10.41ms / 357898 B，上下文 p50 128.57ms / 31786 B，查询计数 5（仅索引路径），RSS p50 303.51 MiB。内存库基准，非磁盘或全 SQL 查询数。 | **PASS（限定口径）**；`npm run test:stage2-scale`、`evidence/stage2-scale.json` |
 | UI 操作与真实模型 | 4322 隔离本地服务：浏览器创建项目，显式演示 Director 落盘两次请求，检查器分页/选中详情显示 P0/P1/P5 和 UNKNOWN 缓存计量；原 4318/4317 未变。未进行真实模型调用。 | **PASS（浏览器与模拟）** / **NOT_RUN（真实模型）**；实际隔离浏览器操作 |
