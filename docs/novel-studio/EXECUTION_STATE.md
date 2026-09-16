@@ -1,5 +1,19 @@
 # Execution state — recovery entry
 
+## 当前阶段：边界与状态一致性（2026-09-16，Stage 1 已完成）
+
+基线为 `8b8a8a0d6bb37b5eaeb57f433ae3686ba25496f9`，开始时工作树干净，Node `v24.14.0`，SQLite schema 3；基线 typecheck、build 和 74 项测试通过。任务书提到的同目录 `AUDIT.md` 与 `audit-repros.mjs` 在仓库及用户文档目录的定向查找中均不存在，因此不能核对附件的 5/5；本阶段按实际模块建立了 5 项真实回归，而没有把缺失附件当成产品证据。
+
+核验结论：1A 仍存在（重规划依赖、滚动规划、Context 预览和最终请求曾各自读取）；1B 仍存在（前端只有局部组件取消，没有项目会话提交门）；1C 仍存在（只处理章节自身排序，卷排序没有同一失效流程，数字范围会漂移）；1D 仍存在（规划和上下文分别读取原始伏笔字段与事实）。本阶段分别由 `scope.ts` / `planning.ts`、`ui/project-session.ts`、Domain 结构指纹、`foreshadow.ts` 修复。审计报告中的其他结论因文件缺失标为无法核对，不擅自扩张到 Stage 2–6。
+
+数据保护：改动前 7 个当前作品逐项目备份到 `.local/backups/stage1-20260916-135102/`。一次中途构建曾在服务恢复时给 30 个旧任务写入默认 `planningScope`；已先用 SQLite `VACUUM INTO` 保存 `dsh-novel-studio-pre-compensation.sqlite`，再依据阶段开始前备份只移除这 30 个新增字段。随后代码改为读取默认、不持久化默认。冻结旧项目回归 8/8 PASS；允许三天内正常新增的 1 个任务和 1 个成果，不把新增内容误报成迁移破坏。正文、对象、正文版本、任务状态和成果均未因补偿改变。
+
+实现范围：统一故事 scope 和模型安全 trace；重规划当前/全部分支显式授权；Context/记忆/时态/宏/预览/最终调用共用范围；项目会话及意图 epoch；全局章序指纹与记忆失效；伏笔计划/正文确认投影；对应 Director、Context Inspector 和伏笔 UI。没有 schema 迁移、新依赖、DSH Core 改动或小说正文修改。
+
+当前验证：`npm test` 79 PASS、0 FAIL/skip；`npm run typecheck`、`npm run build`、`git diff --check` PASS；Stage 1 定向 5/5 PASS；冻结旧项目 8/8 PASS。实际 4318 浏览器在 1.2 秒网络延迟下 A→B 快速切换，最终标题、章节、任务和配置均属于 B；默认、900×760、720×760 的 Writer/Director、Context Trace 和伏笔双状态可操作，console error/warning 为空，视口已 reset。证据入口：`evidence/stage1-boundary-20260916.json` 与 `evidence/upgrade-old-projects.json`。
+
+当前 DSH 入口 `http://127.0.0.1:4318/novel-studio/`，模型连接可用但本阶段没有发起真实模型调用、没有产生费用。Stage 2–6 未开始，保持 NOT_RUN；下一项只在后续任务中进入“请求记录与查询成本”，不把它列作本阶段已完成。当前修改应收口为一个本地提交，不推送远端。
+
 ## 当前增量：Director Agent 会话工作台布局（2026-09-15）
 
 用户要求继续参考 NeuroBook 的 Agent 模式改善现有 Director；本次核对 `notnotype/neuro-book@45906272915ff43e83318653af62afa9ce668206` 的公开截图和 `AgentChatSurface`、`AgentModeSessionSidebar`、`AgentChatFlow`、`AgentComposer` 实际源码，只采用可观察的会话布局思路，没有复制 AGPL-3.0-only 源码、CSS 或素材。

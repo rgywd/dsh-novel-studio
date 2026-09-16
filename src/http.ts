@@ -17,6 +17,8 @@ import { memoryStatus,memoryGet,editMemory,recallMemory,rollingPlanning } from '
 import { temporalObjects } from './temporal.js';
 import { previewLorebook,acceptLorebook } from './lorebook.js';
 import { sourceRoute } from './source-http.js';
+import { resolveStoryScope,type StoryScopeOptions } from './scope.js';
+import { planningInput } from './planning.js';
 export const API='/api/novel-studio';
 const num=z.number().int().positive();
 export async function readJson(req:IncomingMessage){let size=0;const chunks:Buffer[]=[];for await(const chunk of req){const b=Buffer.from(chunk);size+=b.length;requireThat(size<=64*1024*1024,'BODY_LIMIT','请求超过 64 MiB',413);chunks.push(b);}try{return JSON.parse(Buffer.concat(chunks).toString('utf8')||'{}');}catch{throw new DomainError('INVALID_JSON','请求不是有效 JSON',400);}}
@@ -54,7 +56,7 @@ export class HttpApp {
     if(!resource){if(method==='GET')return this.domain.snapshot(pid);if(method==='PATCH')return this.domain.updateProject(pid,num.parse(body.revision),body.project);}
     if(resource==='source-baseline'&&method==='GET'){const row=this.domain.store.db.prepare("SELECT data FROM changesets WHERE projectId=? AND kind='source.activated' ORDER BY rowid LIMIT 1").get(pid);return row?JSON.parse(row.data as string):{assets:[]};}
     if(resource==='status'&&method==='GET')return {project:this.domain.project(pid),tasks:this.domain.store.list('tasks',pid).map(t=>({...t,steps:[]}))};
-    if(resource==='planning-check'&&method==='GET')return rollingPlanning(this.domain,pid);
+    if(resource==='planning-check'&&method==='GET'){const read=resolveStoryScope(this.domain,pid,scopeQuery(query));return rollingPlanning(this.domain,pid,read);}
     if(resource==='memories'){
       if(method==='GET'&&!key)return memoryStatus(this.domain,pid);
       if(method==='GET'&&key)return memoryGet(this.domain.store,pid,key);
@@ -75,7 +77,7 @@ export class HttpApp {
     if(resource==='display'&&method==='POST'){const chapter=this.domain.object(pid,z.string().parse(body.chapterId)),task=previewTask(this.domain,pid,{kind:'write',goal:'展示正文',chapterId:chapter.id}),config=task.configSnapshot!,env=macroEnvironment(this.domain,task,config,{});const result=await transformText(chapter.body,config.config.enabled?config.config.regex??[]:[],'display','prose',{test:true,expand:env.expand});return {...result,macros:env.trace,warnings:env.warnings};}
     if(resource==='compile-preview'&&method==='POST'){
       const prompt=z.enum(Object.keys(prompts) as [keyof typeof prompts,...(keyof typeof prompts)[]]).parse(body.prompt??'write'),t=previewTask(this.domain,pid,body.task??{kind:'write',goal:'继续当前章节'}),config=t.configSnapshot!.config;
-      const pack=buildContext(this.domain,pid,{chapterId:t.chapterId,goal:t.goal,maxChars:t.budget.contextChars,...t.perspective,viewpointId:t.perspective?.viewpointId??config.bindings?.viewpointId,audience:t.perspective?.audience??config.bindings?.audience,memory:config.enabled?config.memory:undefined});return compilePrompt(this.domain,t,prompt,{goal:t.goal,targetWords:t.targetWords,constraints:t.constraints,context:pack.text,_contextPack:pack,chapterId:t.chapterId});
+      const options={chapterId:t.chapterId,goal:t.goal,maxChars:t.budget.contextChars,...t.perspective,planningScope:t.planningScope,viewpointId:t.perspective?.viewpointId??config.bindings?.viewpointId,audience:t.perspective?.audience??config.bindings?.audience,memory:config.enabled?config.memory:undefined},read=resolveStoryScope(this.domain,pid,options),pack=buildContext(this.domain,pid,{...options,resolvedScope:read}),extra=prompt==='replan'?planningInput(this.domain,t,read):{};return compilePrompt(this.domain,t,prompt,{goal:t.goal,targetWords:t.targetWords,constraints:t.constraints,context:pack.text,_contextPack:pack,chapterId:t.chapterId,...extra});
     }
     if(resource==='requests'&&method==='GET')return key?requestGet(this.domain.store,pid,key):requestList(this.domain.store,pid).map(r=>({id:r.id,taskId:r.taskId,stepKey:r.stepKey,createdAt:r.createdAt,status:r.status,role:r.compiled.role,configHash:r.compiled.config.hash,hash:r.compiled.hash,localCompilationCache:r.compiled.localCompilationCache,localPrefixReuse:r.localPrefixReuse,usage:r.usage,error:r.error}));
     if(resource==='objects'){
@@ -105,7 +107,7 @@ export class HttpApp {
       if(method==='POST'&&action==='reject')return this.domain.rejectArtifact(pid,key);
       if(method==='POST'&&action==='issues')return this.domain.resolveIssue(pid,key,z.string().parse(body.issueId),z.enum(['ignored','intentional']).parse(body.status),z.string().parse(body.reason));
     }
-    if(method==='GET'&&resource==='context')return buildContext(this.domain,pid,{chapterId:query.get('chapterId')??undefined,goal:query.get('goal')??undefined,maxChars:Number(query.get('maxChars'))||18000});
+    if(method==='GET'&&resource==='context'){const scope=scopeQuery(query),read=resolveStoryScope(this.domain,pid,scope);return buildContext(this.domain,pid,{...scope,resolvedScope:read,goal:query.get('goal')??undefined,maxChars:Number(query.get('maxChars'))||18000});}
     if(method==='GET'&&resource==='events')return this.domain.store.events(pid);
     if(method==='POST'&&resource==='import-preview')return this.domain.splitImport(z.string().parse(body.raw));
     if(method==='POST'&&resource==='imports')return this.domain.importText(pid,num.parse(body.revision),z.string().max(240).parse(body.name),z.string().parse(body.raw),body.parts);
@@ -114,6 +116,10 @@ export class HttpApp {
     if(method==='GET'&&resource==='backup')return this.domain.backup(pid);
     throw new DomainError('NOT_FOUND','未知接口',404);
   }
+}
+
+function scopeQuery(query:URLSearchParams):StoryScopeOptions {
+ return {chapterId:query.get('chapterId')??undefined,branch:query.get('branch')??undefined,asOfChapter:query.has('asOfChapter')?z.coerce.number().int().nonnegative().parse(query.get('asOfChapter')):undefined,viewpointId:query.get('viewpointId')??undefined,audience:query.has('audience')?z.enum(['author','character','reader']).parse(query.get('audience')):undefined,planningScope:query.has('planningScope')?z.enum(['current-branch','all-branches']).parse(query.get('planningScope')):undefined};
 }
 
 function previewTask(domain:Domain,pid:string,input:unknown):CreativeTask {

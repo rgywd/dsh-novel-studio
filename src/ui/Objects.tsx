@@ -1,5 +1,6 @@
 import { useEffect,useState,type FormEvent } from 'react';import { ArrowUpRight,BookOpen,GitBranch,Plus,Search,Lock,Network,ChevronRight,MapPin } from 'lucide-react';
 import { Modal,Field } from './Modal.js';import { api,inputOf,statusText } from './api.js';import type { Kind,StoryObject } from '../contracts.js';
+import type { ForeshadowState } from '../foreshadow.js';
 export const kindLabels:Record<Kind,string>={book:'全书',volume:'分卷',chapter:'章节',character:'角色',world:'世界',relationship:'关系',fact:'事实',event:'时间线',foreshadow:'伏笔',idea:'灵感'};
 const definitions:Record<string,[string,string][]>={
   book:[['goal','全书目标'],['conflict','核心冲突'],['promise','故事承诺']],volume:[['goal','本卷目标'],['conflict','核心冲突'],['progression','推进内容']],
@@ -42,7 +43,7 @@ export function ObjectForm({object,kind,objects,onClose,onSave}:{object?:StoryOb
     <div className="form-footer"><button type="button" onClick={onClose}>取消</button><button className="solid" disabled={busy}>{busy?'保存中…':'保存'}</button></div>
   </form></Modal>;
 }
-export function Collection({onWorldImport,kind,objects,onEdit,onAdd,onNavigate,onInspire,onAdopt}:{onWorldImport?:()=>void;kind:Kind;objects:StoryObject[];onEdit:(o:StoryObject)=>void;onAdd:(kind:Kind)=>void;onNavigate:(id:string)=>void;onInspire:()=>void;onAdopt:(o:StoryObject)=>void}){
+export function Collection({onWorldImport,kind,objects,foreshadows={},onEdit,onAdd,onNavigate,onInspire,onAdopt}:{onWorldImport?:()=>void;kind:Kind;objects:StoryObject[];foreshadows?:Record<string,ForeshadowState>;onEdit:(o:StoryObject)=>void;onAdd:(kind:Kind)=>void;onNavigate:(id:string)=>void;onInspire:()=>void;onAdopt:(o:StoryObject)=>void}){
   const [page,setPage]=useState(0);const [search,setSearch]=useState('');const [entity,setEntity]=useState('');const [chapter,setChapter]=useState('');const [graph,setGraph]=useState(kind==='relationship');
   const [asOf,setAsOf]=useState(''),[relationType,setRelationType]=useState(''),[group,setGroup]=useState(''),[past,setPast]=useState<StoryObject[]>(),[scopeError,setScopeError]=useState('');
   const pid=objects[0]?.projectId;const fingerprint=objects.map(o=>o.id+':'+o.revision+':'+o.status).join('|');
@@ -64,7 +65,7 @@ export function Collection({onWorldImport,kind,objects,onEdit,onAdd,onNavigate,o
       <p className="object-excerpt">{o.kind==='chapter'?String(o.fields.goal??'尚未规划本章目标'):o.body||String(o.fields.goal??o.fields.value??'')}</p>
       {o.kind==='character'&&<div className="entity-details"><span><MapPin size={12}/>{String(o.fields.location??'位置待定')}</span><span>{String(o.fields.desire??'核心欲望待补充')}</span></div>}
       {o.kind==='character'&&objects.filter(f=>f.kind==='fact'&&f.status==='accepted'&&f.fields.entityId===o.id).slice(-3).map(f=><div key={f.id} className="projection"><span>{String(f.fields.property)}</span><strong>{String(f.fields.value)}</strong><button onClick={()=>f.source?.chapterId&&onNavigate(f.source.chapterId)}>来源 ↗</button></div>)}
-      {o.kind==='foreshadow'&&<p className="muted">{String(o.fields.plantChapter??'尚未埋设')} → {String(o.fields.recoveryRange??'回收范围待定')} · {String(objects.filter(f=>f.kind==='fact'&&f.status==='accepted'&&f.fields.entityId===o.id&&f.fields.property==='foreshadowState').at(-1)?.fields.value??o.fields.state??'规划')}</p>}
+      {o.kind==='foreshadow'&&<p className="muted">{String(o.fields.plantChapter??'尚未埋设')} → {String(o.fields.recoveryRange??'回收范围待定')} · 计划：{foreshadows[o.id]?.plannedState??String(o.fields.state??'规划')} · 正文确认：{foreshadows[o.id]?.confirmedState??'未确认'}</p>}
       {o.source&&<div className="source-line"><span>{o.source.type==='user'?'作者设定':o.source.type==='ai'?'AI 提案设定':o.source.inference?'待确认推断':'原文依据'} · {o.source.modality==='knowledge'?'角色知情':o.source.modality==='memory'?'回忆':o.source.time}</span>{o.source.chapterId&&<button onClick={()=>onNavigate(o.source!.chapterId!)}>{byId.get(o.source.chapterId)?.title??'来源章节'} <ArrowUpRight size={12}/></button>}<details><summary>查看证据与版本</summary><blockquote>{o.source.quote||'未提供文字引用'}</blockquote><small>{o.source.versionId??`资料修订 ${o.revision}`} {o.source.policy??''}</small></details></div>}
       {!!o.tags.length&&<div className="tags">{o.tags.map(t=><span key={t}>#{t}</span>)}</div>}
     </article>)}</div>}

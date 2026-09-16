@@ -5,14 +5,17 @@ import { hash } from './store.js';
 import { stable } from './config.js';
 import { id,now,requireThat,type ChapterVersion,type StoryObject,type Review } from './contracts.js';
 import { memoryContentSchema,type MemoryContent } from './memory-contracts.js';
+import { chapterStructureFingerprint,resolveStoryScope,type StoryReadScope } from './scope.js';
+import { foreshadowProjection } from './foreshadow.js';
 export { memoryContentSchema,type MemoryContent };
-export interface MemorySource {chapterId:string;versionId:string;hash:string;ordinal:number;parentId:string|null;branch:string;}
+export interface MemorySource {chapterId:string;versionId:string;hash:string;ordinal:number;parentId:string|null;branch:string;structureHash?:string;}
 export interface MemoryRecord {id:string;projectId:string;kind:'chapter'|'checkpoint';revision:number;createdAt:string;updatedAt:string;status:'valid'|'stale';reason?:string;locked:boolean;actor:string;taskId?:string;sources:MemorySource[];sourceHash:string;content:MemoryContent;history:{revision:number;content:MemoryContent;at:string;actor:string;locked:boolean}[];}
 export const memoryList=(store:Store,pid:string):MemoryRecord[]=>store.db.prepare('SELECT data FROM memories WHERE projectId=? ORDER BY rowid').all(pid).map(r=>JSON.parse(r.data as string));
 export function memoryGet(store:Store,pid:string,key:string){const m=memoryList(store,pid).find(m=>m.id===key);requireThat(m,'NOT_FOUND','记忆不存在',404);return m;}
 function put(store:Store,m:MemoryRecord){store.db.prepare('INSERT INTO memories VALUES(?,?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data').run(m.id,m.projectId,JSON.stringify(m));return m;}
-export function sourceFor(domain:Domain,c:StoryObject,v?:ChapterVersion):MemorySource {return {chapterId:c.id,versionId:v?.id??String(c.fields.currentVersion),hash:hash(v?.content??c.body),ordinal:domain.chapters(c.projectId).findIndex(x=>x.id===c.id)+1,parentId:c.parentId,branch:String(c.fields.branch??'main')};}
-export function validMemory(domain:Domain,m:MemoryRecord){return m.status==='valid'&&m.sources.every(s=>{const c=domain.store.objects(m.projectId,'chapter').find(c=>c.id===s.chapterId);return c&&c.status==='accepted'&&!c.fields.needsReview&&stable(sourceFor(domain,c))===stable(s);});}
+export function sourceFor(domain:Domain,c:StoryObject,v?:ChapterVersion):MemorySource {return {chapterId:c.id,versionId:v?.id??String(c.fields.currentVersion),hash:hash(v?.content??c.body),ordinal:domain.chapters(c.projectId).findIndex(x=>x.id===c.id)+1,parentId:c.parentId,branch:String(c.fields.branch??'main'),structureHash:chapterStructureFingerprint(domain.store.objects(c.projectId),c.id)};}
+function sourceMatches(domain:Domain,c:StoryObject,source:MemorySource){const current=sourceFor(domain,c);if(source.structureHash===undefined)delete current.structureHash;return stable(current)===stable(source);}
+export function validMemory(domain:Domain,m:MemoryRecord){return m.status==='valid'&&m.sources.every(s=>{const c=domain.store.objects(m.projectId,'chapter').find(c=>c.id===s.chapterId);return c&&c.status==='accepted'&&!c.fields.needsReview&&sourceMatches(domain,c,s);});}
 export function invalidateMemories(domain:Domain,pid:string,chapterIds:Set<string>,reason:string){for(const m of memoryList(domain.store,pid))if(m.status==='valid'&&m.sources.some(s=>chapterIds.has(s.chapterId))){m.status='stale';m.reason=reason;m.updatedAt=now();put(domain.store,m);}}
 export function validateMemoryContent(domain:Domain,pid:string,raw:unknown,sources:MemorySource[]):MemoryContent{
  const content=memoryContentSchema.parse(raw);const originals=sources.map(s=>{const c=domain.object(pid,s.chapterId);const v=domain.store.get('versions',s.versionId);requireThat(v.projectId===pid&&v.chapterId===c.id,'MEMORY_SOURCE','记忆来源不属于本作品');return v.content;});
@@ -21,7 +24,7 @@ export function validateMemoryContent(domain:Domain,pid:string,raw:unknown,sourc
 }
 export function memoryFromReview(review:Review):MemoryContent {return review.memory??{summary:review.summary,scenes:review.events.map(e=>({summary:e.title,quote:e.quote,entityIds:e.entityIds,knownByIds:[],time:e.time,location:'未知',cause:'未证实',effect:'见引用正文',modality:e.modality??'objective',inference:e.inference??false,importance:2})),obligations:[]};}
 export function installMemory(domain:Domain,pid:string,source:MemorySource,raw:unknown,actor:string,taskId?:string,checkpointEvery=5){
- const c=domain.object(pid,source.chapterId);requireThat(c.status==='accepted'&&!c.fields.needsReview&&stable(sourceFor(domain,c))===stable(source),'STALE','记忆来源正文、顺序或分支已改变；旧结果不能提交');
+ const c=domain.object(pid,source.chapterId);requireThat(c.status==='accepted'&&!c.fields.needsReview&&sourceMatches(domain,c,source),'STALE','记忆来源正文、顺序或分支已改变；旧结果不能提交');
  const content=validateMemoryContent(domain,pid,raw,[source]),sourceHash=hash(stable([source]));const old=memoryList(domain.store,pid).find(m=>m.kind==='chapter'&&m.sourceHash===sourceHash);
  if(old?.locked){requireThat(validMemory(domain,old),'MEMORY_LOCKED','锁定记忆的正文来源已失效；需要作者解锁后重建');return old;}
  if(old&&validMemory(domain,old)&&stable(old.content)===stable(content))return old;
@@ -49,28 +52,29 @@ export function editMemory(domain:Domain,pid:string,key:string,revision:number,i
 
 const segmenter=new Intl.Segmenter('zh',{granularity:'word'});
 export function recallTerms(text:string){return [...new Set([...segmenter.segment(text)].filter(s=>s.isWordLike&&s.segment.length>1).map(s=>s.segment.toLocaleLowerCase()))].slice(0,40);}
-export function rollingPlanning(domain:Domain,pid:string){const all=domain.store.objects(pid),chapters=domain.chapters(pid),accepted=chapters.filter(c=>c.status==='accepted'&&c.body.trim());const records=memoryList(domain.store,pid).filter(m=>m.kind==='chapter'&&validMemory(domain,m));return {
+export function rollingPlanning(domain:Domain,pid:string,read:StoryReadScope=resolveStoryScope(domain,pid)){const all=read.objects,chapters=read.chapters,accepted=chapters.slice(0,read.trace.evidenceThrough).filter(c=>c.status==='accepted'&&c.body.trim()),acceptedIds=new Set(accepted.map(c=>c.id));const records=memoryList(domain.store,pid).filter(m=>m.kind==='chapter'&&validMemory(domain,m)&&m.sources.every(s=>acceptedIds.has(s.chapterId)));const states=foreshadowProjection(all,chapters);return {
   strategy:'远处粗、近处细；仅提案未来剧情，不要求正文迁就计划',
+  scope:read.trace,
   promises:all.filter(o=>o.kind==='book').map(o=>({id:o.id,goal:o.fields.goal,promise:o.fields.promise,locked:o.locked})),
-  near:chapters.filter(c=>c.status==='planned'&&!c.locked&&!c.body.trim()).slice(0,3).map(c=>({id:c.id,title:c.title,goal:c.fields.goal})),
-  far:all.filter(o=>o.kind==='volume').map(o=>({id:o.id,title:o.title,goal:o.fields.goal,locked:o.locked})),
+  near:read.planningObjects.filter(c=>c.kind==='chapter').slice(0,3).map(c=>({id:c.id,title:c.title,goal:c.fields.goal})),
+  far:read.planningObjects.filter(o=>o.kind==='volume').map(o=>({id:o.id,title:o.title,goal:o.fields.goal,locked:o.locked})),
   obligations:records.flatMap(m=>m.content.obligations.filter(o=>!['fulfilled','abandoned'].includes(o.state)).map(o=>({...o,memoryId:m.id,sources:m.sources,certainty:o.inference?'possible':'known'}))).slice(0,40),
   arcs:all.filter(o=>o.kind==='character'&&o.fields.arc).map(o=>({id:o.id,arc:o.fields.arc})).slice(0,40),
-  foreshadow:all.filter(o=>o.kind==='foreshadow'&&!['revoked','candidate'].includes(o.status)).map(o=>({id:o.id,title:o.title,range:o.fields.recoveryRange,state:o.fields.state,source:o.source})).slice(0,40),
-  checkpoint:{accepted:accepted.length,atVolumeBoundary:accepted.length>0&&chapters[chapters.indexOf(accepted.at(-1)!)+1]?.parentId!==accepted.at(-1)?.parentId,coverage:memoryStatus(domain,pid).covered},
+  foreshadow:all.filter(o=>o.kind==='foreshadow'&&!['revoked','candidate'].includes(o.status)&&states[o.id]?.confirmedState!=='resolved').map(o=>({id:o.id,title:o.title,range:o.fields.recoveryRange,...states[o.id],source:o.source})).slice(0,40),
+  checkpoint:{accepted:accepted.length,atVolumeBoundary:accepted.length>0&&chapters[chapters.indexOf(accepted.at(-1)!)+1]?.parentId!==accepted.at(-1)?.parentId,coverage:records.length},
   risks:[{certainty:'possible',reason:'主线停滞、支线比重与成长弧需要语义审读。统计和来源只提供检查依据，不宣称已证明所有依赖。'}]
 };}
-export function recallMemory(domain:Domain,pid:string,options:{goal:string;asOf:number;branch?:string;entityIds?:string[];viewpointId?:string;audience?:string;limit?:number}){
- const branch=options.branch??'main',entities=domain.store.objects(pid).filter(o=>['character','world'].includes(o.kind));const relevant=new Set(options.entityIds??[]),terms=recallTerms(options.goal);
+export function recallMemory(domain:Domain,pid:string,options:{goal:string;asOf:number;branch?:string;entityIds?:string[];viewpointId?:string;audience?:string;limit?:number;scope?:StoryReadScope}){
+ const branch=options.branch??options.scope?.trace.branch??'main',scopedObjects=options.scope?.objects??domain.store.objects(pid),entities=scopedObjects.filter(o=>['character','world'].includes(o.kind));const relevant=new Set(options.entityIds??[]),terms=recallTerms(options.goal);
  for(const entity of entities){const names=[entity.title,...Array.isArray(entity.fields.aliases)?entity.fields.aliases:[]];if(names.some(n=>options.goal.includes(n))||relevant.has(entity.id)){relevant.add(entity.id);terms.push(...names);}}
- const referenceTextAllowed=domain.project(pid).lineage?.referenceTextAllowed!==false;const visible=(c:StoryObject)=>(!c.fields.referenceOnly||referenceTextAllowed)&&c.status==='accepted'&&!c.fields.needsReview&&String(c.fields.branch??'main')===branch&&sourceFor(domain,c).ordinal<=options.asOf;
- const chapters=domain.chapters(pid).filter(visible);const records=memoryList(domain.store,pid).filter(m=>m.kind==='chapter'&&validMemory(domain,m)&&m.sources.every(s=>s.branch===branch&&s.ordinal<=options.asOf));
+ const referenceTextAllowed=domain.project(pid).lineage?.referenceTextAllowed!==false,candidates=options.scope?.chapters??domain.chapters(pid).filter(c=>String(c.fields.branch??'main')===branch),chapterPositions=new Map(candidates.map((c,n)=>[c.id,n+1]));const visible=(c:StoryObject)=>(!c.fields.referenceOnly||referenceTextAllowed)&&c.status==='accepted'&&!c.fields.needsReview&&(chapterPositions.get(c.id)??Infinity)<=Math.min(options.asOf,options.scope?.trace.evidenceThrough??options.asOf);
+ const chapters=candidates.filter(visible),allowed=new Set(chapters.map(c=>c.id));const records=memoryList(domain.store,pid).filter(m=>m.kind==='chapter'&&validMemory(domain,m)&&m.sources.every(s=>allowed.has(s.chapterId)));
  const hits:{chapterId:string;versionId:string;quote:string;start:number;end:number;reason:string;score:number;scene?:MemoryContent['scenes'][number];memoryId?:string}[]=[];
  for(const c of chapters){const memory=records.find(m=>m.sources[0].chapterId===c.id);const pov=options.audience==='character'?options.viewpointId:undefined;const scenes=memory?.content.scenes.filter(s=>!pov||s.knownByIds.includes(pov))??[];const fullAllowed=!pov||c.fields.viewpointId===pov||c.fields.public===true;
    let positions:number[]=[];if(fullAllowed){for(const term of [...new Set(terms)].filter(Boolean)){const at=c.body.toLowerCase().indexOf(term.toLowerCase());if(at>=0)positions.push(at);}if(relevant.size&&memory?.content.obligations.some(o=>o.state==='open'&&o.entityIds.some(e=>relevant.has(e))))positions.push(c.body.indexOf(memory.content.obligations.find(o=>o.state==='open')!.quote));}
    for(const scene of scenes)if(scene.entityIds.some(e=>relevant.has(e))||terms.some(t=>scene.summary.includes(t)||scene.quote.includes(t)))positions.push(c.body.indexOf(scene.quote));
    for(const at of [...new Set(positions)].filter(n=>n>=0).slice(0,3)){const scene=scenes.find(s=>c.body.indexOf(s.quote)<=at&&c.body.indexOf(s.quote)+s.quote.length>at);if(pov&&!fullAllowed&&!scene)continue;const start=fullAllowed?Math.max(0,at-160):c.body.indexOf(scene!.quote),end=fullAllowed?Math.min(c.body.length,at+500):start+scene!.quote.length;const quote=c.body.slice(start,end);
-     const score=terms.filter(t=>quote.includes(t)).length*8+(scene?.importance??1)*5+(scene?.entityIds.filter(e=>relevant.has(e)).length??0)*10+(memory?.content.obligations.some(o=>o.state==='open'&&quote.includes(o.quote))?20:0)+Math.min(sourceFor(domain,c).ordinal/Math.max(1,options.asOf),1);
+     const score=terms.filter(t=>quote.includes(t)).length*8+(scene?.importance??1)*5+(scene?.entityIds.filter(e=>relevant.has(e)).length??0)*10+(memory?.content.obligations.some(o=>o.state==='open'&&quote.includes(o.quote))?20:0)+Math.min((chapterPositions.get(c.id)??0)/Math.max(1,options.asOf),1);
      hits.push({chapterId:c.id,versionId:String(c.fields.currentVersion),quote,start,end,reason:'目标词/别名/关联实体命中；回查接受正文及必要因果',score,scene,memoryId:memory?.id});
    }
  }

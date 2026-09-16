@@ -11,8 +11,8 @@ export interface PromptBlock {id:string;layer:'P0'|'P1'|'P2'|'P3'|'P4'|'P5';sour
 export interface CompiledPrompt {system:string;messages:{role:'system'|'user'|'assistant';text:string}[];blocks:PromptBlock[];role:TaskRole;config:ConfigSnapshot;warnings:string[];macros:{macro:string;value:string;dynamic:boolean;resolved:boolean}[];transformations:Transformation[];sampling:{temperature?:number;maxTokens?:number;stop?:string[]};hash:string;stableHash:string;estimatedTokens:number;budget:number;context?:Omit<ContextPack,'text'|'canon'>;localCompilationCache:'HIT'|'MISS';}
 const taskRole=(key:string):TaskRole=>['write','assist'].includes(key)?'Writer':['review','repair'].includes(key)?'Reviewer':key==='extract'||key.startsWith('source')?'Extractor':key==='summarize'?'Summarizer':'Planner';
 const cache=new Map<string,CompiledPrompt>();
-export function macroEnvironment(domain:Domain,task:CreativeTask,snapshot:ConfigSnapshot,input:Record<string,any>){
-  const p=domain.project(task.projectId),b=snapshot.config.bindings??{};const objects=domain.store.objects(task.projectId);const name=(id?:string)=>id?objects.find(o=>o.id===id&&o.kind==='character')?.title:undefined;
+export function macroEnvironment(domain:Domain,task:CreativeTask,snapshot:ConfigSnapshot,input:Record<string,any>,allowedIds?:Set<string>){
+  const p=domain.project(task.projectId),b=snapshot.config.bindings??{};const objects=domain.store.objects(task.projectId);const name=(id?:string)=>id&&(!allowedIds||allowedIds.has(id))?objects.find(o=>o.id===id&&o.kind==='character')?.title:undefined;
   const variables:Record<string,string|undefined>={char:name(b.characterId),user:b.authorName,viewpoint:name(task.perspective?.viewpointId??b.viewpointId),project:p.title,chapterGoal:input.goal??task.goal,style:stable(snapshot.config.native??{}),date:snapshot.date.slice(0,10),time:snapshot.date.slice(11,19)};
   const trace:CompiledPrompt['macros']=[],warnings:string[]=[];
   const expand=(text:string,escape=false)=>text.replace(/\{\{([^{}]+)\}\}/gu,(full,key:string)=>{
@@ -26,9 +26,9 @@ export function macroEnvironment(domain:Domain,task:CreativeTask,snapshot:Config
 export async function compilePrompt(domain:Domain,task:CreativeTask,key:PromptKey,rawInput:Record<string,any>):Promise<CompiledPrompt>{
   const config=task.configSnapshot??{hash:hash('legacy-disabled'),versions:[],config:{enabled:false},origins:{},report:[],seed:task.id,date:task.createdAt} as ConfigSnapshot,role=taskRole(key);const enabled=config.config.enabled===true;
   const input=structuredClone(rawInput),pack=input._contextPack as ContextPack|undefined;delete input._contextPack;
-  const project=domain.project(task.projectId);const cacheKey=hash(stable({task:{id:task.id,goal:task.goal,perspective:task.perspective},config,input,pack,project,entities:domain.store.objects(task.projectId,'character').map(o=>[o.id,o.title,o.revision]),key,version:prompts[key].version}));
+  const project=domain.project(task.projectId);const cacheKey=hash(stable({task:{id:task.id,goal:task.goal,perspective:task.perspective,planningScope:task.planningScope},config,input,pack,project,key,version:prompts[key].version}));
   const cached=cache.get(cacheKey);if(cached)return {...structuredClone(cached),localCompilationCache:'HIT'};
-  const env=macroEnvironment(domain,task,config,input);const transformations:Transformation[]=[];const rules=enabled&&role==='Writer'?config.config.regex??[]:[];
+  const scopedIds=pack?.scope.objectIds??input.storyScope?.objectIds;const env=macroEnvironment(domain,task,config,input,Array.isArray(scopedIds)?new Set(scopedIds):undefined);const transformations:Transformation[]=[];const rules=enabled&&role==='Writer'?config.config.regex??[]:[];
   for(const scope of ['goal','selection'] as const){const text=scope==='goal'?input.goal:input.selection?.expectedText;if(typeof text==='string'&&rules.some(r=>r.stage==='before'&&r.scope===scope&&r.enabled)){
     const processed=await transformText(text,rules,'before',scope,{expand:env.expand});transformations.push(...processed.trace);if(scope==='goal')input.goal=processed.text;else input.selection={...input.selection,expectedText:processed.text};}}
   const blocks:PromptBlock[]=[];const add=(block:Omit<PromptBlock,'chars'>)=>blocks.push({...block,chars:block.text.length});

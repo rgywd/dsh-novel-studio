@@ -1,5 +1,19 @@
 # Architecture
 
+## 2026-09-16 Stage 1：统一读取范围与状态投影
+
+`src/scope.ts` 是现有 Domain 之上的唯一小说读取范围解析器。`resolveStoryScope` 以项目、章节、分支、截止水位、来源版本、视角和规划授权为输入，先调用时态投影排除未来证据、其他分支、未接受内容、旧正文版本和角色未知资料，再交给 Context Engine 做相关性与预算筛选。它输出本次可读对象、章节、规划、任务依赖及 `StoryScopeTrace`。传给模型的 trace 会汇总省略原因，不发送范围外对象 ID；本地 Context Inspector 保留完整诊断。任务约定编译、正文上下文、滚动规划、重规划依赖、编译预览和最终请求复用同一个已解析 scope。
+
+`CreativeTask.planningScope` 是任务快照的一部分，默认 `current-branch`；`all-branches` 只能由 Director 重规划表单明确选择。旧任务缺少该 JSON 字段时在读取处采用默认值，服务启动不会为了补默认值改写旧任务。恢复旧备份会在新建的独立副本中规范化该字段。数据库 schema 仍为 3，本阶段没有迁移、清库或正文重写。
+
+`src/ui/project-session.ts` 提供轻量项目会话协调器。`enter/leave` 增加项目 epoch 并取消全部旧意图；每个 `begin(project,intent)` 增加意图序号并取消同类前请求；`commit` 同时校验项目、epoch、意图序号和 AbortSignal。`main.tsx` 将打开、刷新、配置、任务详情、轮询、证据定位、历史、Context、展示、任务控制、接管和正文保存回执接入这道提交门。AbortController 只减少无用工作，正确性依赖提交检查和服务端 revision/epoch 校验。
+
+`chapterStructureFingerprint` 对稳定章节 ID、父卷、局部顺序和分支做确定性哈希。卷/章排序、跨卷移动和章节分支改变时，Domain 统一使结构相关记忆失效，使仅有旧数字范围的派生对象过期，并记录带前后指纹的 `structure.reordered` changeset；正文和已接受版本不修改。新来源同时记录旧 ordinal 和稳定 `fromChapterId`，时态查询优先稳定 ID。
+
+`src/foreshadow.ts` 是伏笔状态的单一读取投影。计划值来自伏笔对象，确认值只来自当前 scope 中状态为 accepted、正文版本仍为 current 的 `foreshadowState` 事实。Context、滚动规划、项目 snapshot 和 UI 共用该投影；确认 resolved 后不再建议重复回收，正文证据失效后恢复为 unconfirmed，历史事实仍留在账本中。
+
+模型边界仍由单一 Runner 和共享 Domain 执行。Prompt、导入文件和模型输出都是数据；重规划 artifact 接受时会再次以任务固定 scope 校验每个 change 和 impact。预览和最终调用采用同一 scope，缓存键包含规划授权与最终 Context Pack，不能以缓存复用绕过新 revision 或结构指纹。
+
 ## 2026-09-15 Director 会话工作台布局
 
 这是 UI 层增量，没有新增领域模型、API、schema、依赖或第二套任务状态。`DirectorTaskSidebar.tsx` 从现有 `CreativeTask[]` 渲染可搜索会话并通过原有 `onLoadTask` 选择；`main.tsx` 在 Director 模式挂载该侧栏，并在没有当前任务时选择本项目最新任务。`Director.tsx` 继续消费原有任务、步骤、产物、事件、请求记录和控制回调，只把结构调整为紧凑会话头、中央实际执行流、底部委派输入和右侧任务约定。`WorkbenchRail.tsx` 根据模式标记“导演会话/任务约定”，资料入口保持当前模式；`style.css` 提供桌面、折叠面板和窄屏抽屉规则。

@@ -1,5 +1,18 @@
 # 验收记录
 
+## Stage 1：边界与状态一致性（2026-09-16）
+
+| 场景 | 实际实现与动态验收 | 状态 / 证据 |
+|---|---|---|
+| 1A 统一上下文范围 | `resolveStoryScope` 先做分支、截止、来源版本、视角/知情和证据过滤，再做召回与预算；brief、Context、滚动规划、重规划依赖、编译预览和最终请求共用 scope。实际 `ModelProvider` 拦截 brief + replan 全部请求，其他分支、未来已发生事件、他人 privateGoal/secret 和范围外任务目标哨兵均未发送；明确 `all-branches` 后只放宽规划分支。恶意 artifact 引用范围外影响时接受失败。 | **PASS**；`test/stage1.test.ts` 1A；`src/scope.ts`、`planning.ts`、`runtime.ts`、`http.ts` |
+| 1B 项目会话隔离 | 项目 epoch + 每意图序号 + AbortSignal；打开、离开、刷新、配置、任务详情、轮询、定位、历史、Context、接管等只允许当前 ticket 提交。单元回归覆盖 A→B、返回书架、旧 poll、旧配置/任务详情/定位；浏览器施加 1200ms 延迟后连续打开 A、B，迟到 A 未覆盖 B。保存失败仍由 Editor.flush 阻止离开并保留 local recovery。旧任务缺省 scope 在重启时不被改写。 | **PASS**；`test/stage1.test.ts` 1B 两项；实际 4318 浏览器；`src/ui/project-session.ts`、`main.tsx` |
+| 1C 全局章序变化 | 卷/章排序、跨卷移动、章节分支变化共用结构指纹。测试将原第三章所在卷换到最前：稳定 chapter evidence 变为第一章语义，相关记忆失效，正文与 currentVersion 不变，changeset 保存前后指纹。没有稳定 ID 的旧数字派生项保守过期。 | **PASS**；`test/stage1.test.ts` 1C；`src/domain.ts`、`scope.ts`、`memory.ts`、`temporal.ts` |
+| 1D 伏笔有效状态 | 单一投影输出 plannedState / confirmedState。实际通过 chapter artifact 接受正文证据后 resolved，不再进入滚动规划；作者接管改文后 unconfirmed 并重新进入待回收；回滚旧版本后恢复 resolved。历史失效事实仍保留为 revoked。实际 UI 同时显示“计划”与“正文确认”。 | **PASS**；`test/stage1.test.ts` 1D；`src/foreshadow.ts`、`context.ts`、`memory.ts`、`Objects.tsx` |
+| 旧数据、迁移与恢复 | schema 保持 3，无数据库迁移或清库；7 个当前作品先备份。中途默认字段误写已从精确备份补偿并保留完整 DB 快照。改进后的冻结回归要求所有既有行不变、允许之后追加行，8/8 PASS。旧备份仍恢复为独立副本并在副本中规范化新默认。 | **PASS**；`.local/backups/stage1-20260916-135102/`（忽略且不提交）；`evidence/upgrade-old-projects.json`；`configuration.test.ts` / `domain.test.ts` |
+| 实际 UI 与窄窗口 | 默认桌面、900×760、720×760 检查 Writer / Director；窄屏章节/任务导航收起，正文或任务流没有水平遮挡。Director 表单可见“仅当前分支（默认）/全部分支规划（明确授权）”；Context Trace 显示 cutoff/source/structure；console error/warning 为空，viewport reset。 | **PASS**；实际 in-app browser 操作回执记录于 `evidence/stage1-boundary-20260916.json` |
+
+验证分类：单元/集成/确定性模型替身合计 `npm test` 79 PASS、0 FAIL/skip，其中 Stage 1 定向 5 PASS；`npm run typecheck` 与 `npm run build` PASS。真实 DSH 连接在健康检查中可用，但本阶段不需要创作质量验证且用户未授权新增费用，因此真实模型调用为 **NOT_RUN**，没有把确定性替身冒充真实模型。Stage 2–6 为 **NOT_RUN**。同目录 `AUDIT.md` 和 `audit-repros.mjs` 未找到，附件结论核对为 **BLOCKED（输入缺失）**；这不阻塞按真实模块完成 Stage 1 的修复与验收。
+
 ## Director Agent 会话布局增量（2026-09-15）
 
 | 检查项 | 实际结果 | 状态与证据 |

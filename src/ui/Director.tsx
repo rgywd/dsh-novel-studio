@@ -54,6 +54,7 @@ export function Director({ onInspect, composerRequest = 0, task, objects, chapte
   const [viewpoint, setViewpoint] = useState('');
   const [composerOpen, setComposerOpen] = useState(!task);
   const [replanScope, setReplanScope] = useState('future');
+  const [planningScope, setPlanningScope] = useState<'current-branch'|'all-branches'>('current-branch');
   const [answer, setAnswer] = useState('');
   const [goal, setGoal] = useState(initialGoal ?? '');
   const [kind, setKind] = useState(objects.some(object => object.kind === 'character') ? 'write' : objects.some(object => object.kind === 'chapter' && object.body) ? 'extract' : 'bootstrap');
@@ -88,6 +89,7 @@ export function Director({ onInspect, composerRequest = 0, task, objects, chapte
         goal: goal || chapter?.fields.goal || '沿着当前故事继续，保持人物状态和世界规则一致',
         provider,
         reasoning,
+        planningScope,
         count,
         targetWords: words,
         autoAccept: auto,
@@ -120,7 +122,7 @@ export function Director({ onInspect, composerRequest = 0, task, objects, chapte
           <span className="director-avatar"><Clapperboard size={15}/></span>
           <div>
             <div className="director-title-line"><strong>{task ? objective : '新的导演会话'}</strong>{task && <span className={`badge task-state ${task.status}`}>{statusText[task.status]}</span>}</div>
-            <small>{task ? `${taskKindNames[task.kind] ?? '创作任务'} · 输入修订 ${task.inputRevision}` : '把目标交给导演，执行过程与成果会持续留在这里'}</small>
+            <small>{task ? `${taskKindNames[task.kind] ?? '创作任务'} · 输入修订 ${task.inputRevision} · ${task.planningScope === 'all-branches' ? '已授权全部分支规划' : '仅当前分支'}` : '把目标交给导演，执行过程与成果会持续留在这里'}</small>
           </div>
         </div>
         <div className="director-header-actions">
@@ -172,7 +174,7 @@ export function Director({ onInspect, composerRequest = 0, task, objects, chapte
           <div className="composer-head"><span>新任务</span><select aria-label="导演任务类型" value={kind} onChange={event => setKind(event.target.value)}>{[['write', '创作章节'], ['bootstrap', '从灵感开书'], ['review', '审查并局部修复'], ['replan', '重规划未来章纲'], ['extract', '从正文提取资料'], ['summarize', '总结作品记忆'], ['ideas', '剧情推演']].map(([key, title]) => <option key={key} value={key}>{title}</option>)}</select></div>
           <textarea aria-label="创作目标" placeholder={kind === 'bootstrap' ? '例如：在一个以记忆支付灯火的港口，邮差收到一封寄给失踪母亲的信…' : '例如：继续两章，让沈砚开始怀疑导师，但不要揭露身份。不修改前文，不新增核心角色。'} rows={3} value={goal} onChange={event => setGoal(event.target.value)}/>
           <div className="composer-options"><label>章节数 <select aria-label="章节数" value={count} onChange={event => setCount(Number(event.target.value))}>{[1, 2, 3].map(number => <option value={number} key={number}>{number} 章</option>)}</select></label><label>目标 <input aria-label="目标字数" type="number" min="300" max="8000" step="100" value={words} onChange={event => setWords(Number(event.target.value))}/> 字 / 章</label><select aria-label="模型提供方" value={provider} onChange={event => { setProvider(event.target.value); if (event.target.value === 'demo') setWords(600); else if (words === 600) setWords(2000); }}><option value="dsh">DSH 当前模型</option><option value="demo">演示提供方 · 非真实 AI</option></select></div>
-          {kind === 'replan' && <Field label="规划作用范围"><select value={replanScope} onChange={event => setReplanScope(event.target.value)}><option value="future">全部未锁定未来大纲</option>{chapter && chapter.status === 'planned' && !chapter.locked && !chapter.body && <option value="chapter">仅当前章：{chapter.title}</option>}</select></Field>}
+          {kind === 'replan' && <div className="form-grid"><Field label="规划对象范围"><select value={replanScope} onChange={event => setReplanScope(event.target.value)}><option value="future">全部未锁定未来大纲</option>{chapter && chapter.status === 'planned' && !chapter.locked && !chapter.body && <option value="chapter">仅当前章：{chapter.title}</option>}</select></Field><Field label="可读取的规划分支" hint="默认仅当前分支。全部分支会记录为本任务的明确授权，但不会放宽正文事实、角色知情或来源截止范围。"><select value={planningScope} onChange={event => setPlanningScope(event.target.value as 'current-branch'|'all-branches')}><option value="current-branch">仅当前分支（默认）</option><option value="all-branches">全部分支规划（明确授权）</option></select></Field></div>}
           <details className="task-boundaries"><summary>创作边界与预算 <ChevronDown size={14}/></summary><Field label="模型推理配置" hint="均衡优先使用模型支持的非推理模式，否则使用低推理档；保留预算用于正文与审校，不修改 DSH 配置。"><select value={reasoning} onChange={event => setReasoning(event.target.value)}><option value="balanced">均衡创作（默认）</option><option value="configured">沿用 DSH 当前配置</option></select></Field><Field label="本次场景文风（临时覆盖）"><textarea rows={2} value={scene} onChange={event => setScene(event.target.value)} placeholder="留空沿用作品配置；本次任务固定版本"/></Field><Field label="本次视角人物"><select value={viewpoint} onChange={event => setViewpoint(event.target.value)}><option value="">沿用作品配置 / 作者视角</option>{objects.filter(object => object.kind === 'character').map(object => <option key={object.id} value={object.id}>{object.title}</option>)}</select></Field><Field label="必须遵守（每行一条）"><textarea rows={3} value={constraints} onChange={event => setConstraints(event.target.value)} placeholder={'不揭露导师身份\n不新增核心角色'}/></Field><div className="form-grid three"><Field label="最多模型调用"><input type="number" min="1" max="40" value={calls} onChange={event => setCalls(Number(event.target.value))}/></Field><Field label="输出 token 上限"><input type="number" min="500" max="150000" value={tokens} onChange={event => setTokens(Number(event.target.value))}/></Field><Field label="上下文字符上限"><input type="number" min="1000" max="48000" value={chars} onChange={event => setChars(Number(event.target.value))}/></Field></div></details>
           <div className="composer-bottom"><label className="check-field"><input type="checkbox" checked={auto} onChange={event => setAuto(event.target.checked)}/>自动接受通过检查的成果</label><button className="solid" disabled={busy || active} onClick={() => void submit()}>{busy ? '正在建立任务…' : active ? '当前任务运行中' : '开始执行'}<ArrowRight size={15}/></button></div>
           {provider === 'demo' && <p className="composer-note">演示使用原创固定样本，验证工作流与状态；不代表真实模型创作。</p>}{provider === 'dsh' && !health?.dsh?.available && <p className="composer-note warning">尚未连接 DSH 模型。仍可写作、导入或选择演示；真实调用会明确报错。</p>}{error && <div className="notice error" role="alert">{error}</div>}

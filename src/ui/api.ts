@@ -1,5 +1,5 @@
-export async function api<T=any>(path:string,body?:unknown,method='POST'):Promise<T>{
-  let response:Response;try{response=await fetch('/api/novel-studio'+path,body===undefined?{cache:'no-store'}:{method,headers:{'Content-Type':'application/json','X-Novel-Studio':'1'},body:JSON.stringify(body)});}catch{throw new Error('连接已中断。未保存的编辑仍保留，请恢复服务后重试。');}
+export async function api<T=any>(path:string,body?:unknown,method='POST',signal?:AbortSignal):Promise<T>{
+  let response:Response;try{response=await fetch('/api/novel-studio'+path,body===undefined?{cache:'no-store',signal}:{method,headers:{'Content-Type':'application/json','X-Novel-Studio':'1'},body:JSON.stringify(body),signal});}catch(error){if(signal?.aborted)throw error;throw new Error('连接已中断。未保存的编辑仍保留，请恢复服务后重试。');}
   const data=await response.json();if(!response.ok)throw new Error(`${data.error?.message??'操作失败'}${data.error?.code?' ['+data.error.code+']':''}`);return data;
 }
 export function download(name:string,text:string,type='text/plain;charset=utf-8'){const url=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}

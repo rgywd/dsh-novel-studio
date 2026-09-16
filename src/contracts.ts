@@ -18,7 +18,7 @@ export type Kind = typeof kinds[number];
 export const sourceSchema = z.object({
   type: z.enum(['user','chapter','ai','import']), chapterId: z.string().optional(), versionId: z.string().optional(),
   quote: str.default(''), start: z.number().int().nonnegative().optional(), end: z.number().int().nonnegative().optional(),
-  time: str.default('未知'), fromChapter: z.number().optional(), toChapter: z.number().optional(),
+  time: str.default('未知'), fromChapter: z.number().optional(), toChapter: z.number().optional(), fromChapterId: z.string().optional(), toChapterId: z.string().optional(),
   inference: z.boolean().default(false), modality: z.enum(['objective','knowledge','rumor','memory','dream','uncertain']).default('objective'),
   supersedes: z.string().optional(), taskId: z.string().optional(), policy: z.string().optional(),
   sourceWorkId:z.string().optional(),sourceVersionId:z.string().optional(),sourceChapterId:z.string().optional(),sourceAssetId:z.string().optional(),manifestId:z.string().optional(),provenance:z.enum(['source','baseline','adaptation','branch']).optional()
@@ -51,6 +51,7 @@ export const taskInputSchema = z.object({
   constraints: z.array(z.string().max(2000)).max(30).default([]), autoAccept: z.boolean().default(false),
   provider: z.enum(['dsh','demo']).default('dsh'),
   reasoning: z.enum(['balanced','configured']).default('balanced'),
+  planningScope: z.enum(['current-branch','all-branches']).default('current-branch'),
   configuration: configOverrideSchema.optional(),
   perspective: z.object({asOfChapter:z.number().int().nonnegative().optional(),viewpointId:z.string().optional(),audience:z.enum(['author','character','reader']).default('author'),branch:z.string().max(100).default('main')}).optional(),
   budget: z.object({calls:z.number().int().min(1).max(1000).default(18),outputTokens:z.number().int().min(500).max(3000000).default(48000),contextChars:z.number().int().min(1000).max(48000).default(18000)}).default({}),

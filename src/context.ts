@@ -1,17 +1,17 @@
 import { Domain } from './domain.js';
-import { temporalObjects,worldRecall,type Perspective } from './temporal.js';
+import { worldRecall,type Perspective } from './temporal.js';
 import { memoryStatus,recallMemory,validMemory } from './memory.js';
 import { requireThat, type StoryObject } from './contracts.js';
+import { resolveStoryScope,type PlanningScope,type StoryReadScope,type StoryScopeTrace } from './scope.js';
+import { foreshadowProjection } from './foreshadow.js';
 export interface ContextItem {id:string;version:string;kind:string;reason:string;priority:number;mandatory:boolean;text:string;}
-export interface ContextPack {projectId:string;revision:number;chapterId?:string;budget:number;used:number;items:ContextItem[];omitted:{id:string;reason:string}[];missing:string[];canon:StoryObject[];text:string;}
+export interface ContextPack {projectId:string;revision:number;chapterId?:string;budget:number;used:number;items:ContextItem[];omitted:{id:string;reason:string}[];missing:string[];canon:StoryObject[];scope:StoryScopeTrace;text:string;read?:StoryReadScope;}
 
-export function buildContext(domain:Domain,projectId:string,options:{chapterId?:string;goal?:string;maxChars?:number;entityIds?:string[];purpose?:'generation'|'state-refresh';memory?:{enabled:boolean;recallLimit?:number}}&Perspective={}):ContextPack {
+export function buildContext(domain:Domain,projectId:string,options:{chapterId?:string;goal?:string;maxChars?:number;entityIds?:string[];purpose?:'generation'|'state-refresh';memory?:{enabled:boolean;recallLimit?:number};planningScope?:PlanningScope;resolvedScope?:StoryReadScope}&Perspective={}):ContextPack {
   const p=domain.project(projectId);const budget=options.maxChars??18000;requireThat(Number.isInteger(budget)&&budget>=1000&&budget<=48000,'BUDGET','上下文预算必须在 1000–48000 字符内',422);
-  const original=domain.store.objects(projectId);const chapters=domain.chapters(projectId);const current=options.chapterId?domain.object(projectId,options.chapterId):undefined;
-  const index=Math.min(options.asOfChapter??Infinity,current?chapters.findIndex(c=>c.id===current.id):chapters.length);
+  const read=options.resolvedScope??resolveStoryScope(domain,projectId,options);const chapters=read.chapters,current=read.current,index=read.trace.evidenceThrough;
   requireThat(!current?.fields.referenceOnly||p.lineage?.referenceTextAllowed!==false,'SOURCE_SCOPE','回溯改编已隔离原作引用正文；只向模型提供选择的有效资料与改编契约');
-  const temporal=temporalObjects(domain,projectId,{...options,asOfChapter:options.asOfChapter??index+1,evidenceThrough:index});const all=temporal.objects;
-  const prior=chapters.slice(0,index).filter(c=>(!c.fields.referenceOnly||p.lineage?.referenceTextAllowed!==false)&&c.status==='accepted'&&String(c.fields.branch??'main')===(options.branch??'main'));const ordinal=new Map(chapters.map((c,n)=>[c.id,n+1]));const byId=new Map(original.map(o=>[o.id,o]));
+  const all=read.objects,prior=chapters.slice(0,index).filter(c=>(!c.fields.referenceOnly||p.lineage?.referenceTextAllowed!==false)&&c.status==='accepted');const ordinal=new Map(chapters.map((c,n)=>[c.id,n+1]));const byId=new Map(all.map(o=>[o.id,o]));
   const refreshing=options.purpose==='state-refresh';
   const relevant=new Set(options.entityIds??[]);const query=(refreshing?[current?.title,current?.body]:[options.goal,current?.title,current?.fields.goal,current?.fields.participants,current?.fields.events,prior.at(-1)?.body.slice(-2400)]).filter(Boolean).join(' ');
   for(const o of all.filter(o=>['character','world'].includes(o.kind))){const aliases=Array.isArray(o.fields.aliases)?o.fields.aliases:[];if(query.includes(o.id)||[o.title,...aliases].some(name=>query.includes(name)))relevant.add(o.id);}
@@ -19,12 +19,13 @@ export function buildContext(domain:Domain,projectId:string,options:{chapterId?:
   for(const o of all)if(o.kind==='relationship'&&(relationSeeds.has(String(o.fields.fromId))||relationSeeds.has(String(o.fields.toId)))){relevant.add(String(o.fields.fromId));relevant.add(String(o.fields.toId));}
   for(const entityId of [...relevant])for(const linked of Array.isArray(byId.get(entityId)?.fields.relatedEntityIds)?byId.get(entityId)!.fields.relatedEntityIds as string[]:[])relevant.add(linked);
   const latest=(o:StoryObject)=>!o.source?.versionId||byId.get(o.source.chapterId??'')?.fields.currentVersion===o.source.versionId;
-  const history=all.filter(o=>o.kind==='fact'&&o.status==='accepted'&&!o.source?.inference&&['objective','knowledge'].includes(o.source?.modality??'objective')&&latest(o)&&(!o.source?.chapterId||(ordinal.get(o.source.chapterId)??Infinity)<=index)&&(!o.source?.fromChapter||o.source.fromChapter<=index+1)&&(!o.source?.toChapter||o.source.toChapter>=index+1));
+  const sourceOrder=(o:StoryObject)=>{const stableId=o.source?.fromChapterId??o.source?.chapterId;return stableId?ordinal.get(stableId)??Number.MAX_SAFE_INTEGER:o.source?.fromChapter??0;};
+  const history=all.filter(o=>o.kind==='fact'&&o.status==='accepted'&&!o.source?.inference&&['objective','knowledge'].includes(o.source?.modality??'objective')&&latest(o));
   const projection=new Map<string,StoryObject>();const superseded=new Set(history.map(f=>f.source?.supersedes).filter(Boolean));
-  for(const f of history.filter(f=>!superseded.has(f.id)).sort((a,b)=>(a.source?.fromChapter??0)-(b.source?.fromChapter??0)||a.updatedAt.localeCompare(b.updatedAt)))projection.set(`${f.fields.entityId}:${f.fields.property}:${f.source?.modality??'objective'}${['known','alias'].includes(String(f.fields.property))?':'+String(f.fields.value):''}`,f);
+  for(const f of history.filter(f=>!superseded.has(f.id)).sort((a,b)=>sourceOrder(a)-sourceOrder(b)||a.updatedAt.localeCompare(b.updatedAt)))projection.set(`${f.fields.entityId}:${f.fields.property}:${f.source?.modality??'objective'}${['known','alias'].includes(String(f.fields.property))?':'+String(f.fields.value):''}`,f);
   const canon=[...projection.values()];const canonIds=new Set(canon.map(f=>f.id));
   const worlds=worldRecall(all.filter(o=>o.kind==='world'&&o.status==='accepted'),query,relevant);
-  const candidates:ContextItem[]=[];const omitted:ContextPack['omitted']=[...temporal.omitted,...worlds.omitted];const missing:string[]=[];
+  const foreshadows=foreshadowProjection(all,chapters);const candidates:ContextItem[]=[];const omitted:ContextPack['omitted']=[...read.trace.omitted,...worlds.omitted];const missing:string[]=[];
   const add=(id:string,version:string,kind:string,reason:string,priority:number,mandatory:boolean,text:string)=>{candidates.push({id,version,kind,reason,priority,mandatory,text});};
   add(p.id,String(p.revision),'project','故事承诺、风格和不可破坏约束',100,true,JSON.stringify({title:p.title,premise:p.premise,style:p.style,constraints:p.constraints}));
   if(p.lineage)add(p.lineage.manifestId,String(p.lineage.manifestRevision),'inheritance-baseline','固定来源版本、严格前缀与作者已接受改编；原作后文不在本分支',100,true,JSON.stringify(p.lineage));
@@ -45,20 +46,20 @@ export function buildContext(domain:Domain,projectId:string,options:{chapterId?:
   }
   for(const {object:o,reason,depth} of worlds.entries)if(!o.locked)add(o.id,String(o.revision),'world',`${reason} · 递归深度 ${depth}/2`,o.fields.core||o.fields.pinned?100:88,o.fields.core===true||o.fields.pinned===true,serialize(o));
   if(options.memory?.enabled){
-    const state=memoryStatus(domain,projectId);const before=new Set(prior.map(c=>c.id));
-    for(const m of state.memories.filter(m=>m.kind==='checkpoint'&&validMemory(domain,m)&&m.sources.every(s=>before.has(s.chapterId))).slice(0,2))if(options.audience!=='character')add(m.id,String(m.revision),'memory-checkpoint','封存历史段；不是当前状态，保留来源链',72,false,JSON.stringify({historical:true,range:m.sources.map(s=>s.ordinal),summary:m.content.summary,sources:m.sources}));
-    for(const c of prior.slice(-3)){const m=state.memories.find(m=>m.kind==='chapter'&&m.status==='valid'&&m.sources[0].chapterId===c.id);const pov=options.audience==='character'?options.viewpointId:undefined;const readable=!pov||c.fields.viewpointId===pov||c.fields.public===true;
+    const state=memoryStatus(domain,projectId),scopeChapterIds=new Set(chapters.map(c=>c.id)),scopedMemories=state.memories.filter(m=>m.sources.every(s=>scopeChapterIds.has(s.chapterId)));const before=new Set(prior.map(c=>c.id));
+    for(const m of scopedMemories.filter(m=>m.kind==='checkpoint'&&validMemory(domain,m)&&m.sources.every(s=>before.has(s.chapterId))).slice(0,2))if(options.audience!=='character')add(m.id,String(m.revision),'memory-checkpoint','封存历史段；不是当前状态，保留来源链',72,false,JSON.stringify({historical:true,range:m.sources.map(s=>s.ordinal),summary:m.content.summary,sources:m.sources}));
+    for(const c of prior.slice(-3)){const m=scopedMemories.find(m=>m.kind==='chapter'&&m.status==='valid'&&m.sources[0].chapterId===c.id);const pov=options.audience==='character'?options.viewpointId:undefined;const readable=!pov||c.fields.viewpointId===pov||c.fields.public===true;
       if(m&&readable)add(m.id,String(m.revision),'memory-summary','近期章节记忆；来源版本有效',86,false,JSON.stringify(m.content));
       if(readable&&c.body)add(c.id+':recent',String(c.fields.currentVersion),'accepted-body','近期必要原文，不用摘要替代全部证据',94,true,c.body.slice(-2400));
     }
     for(const gap of state.gaps.filter(g=>before.has(g.chapterId))){const c=byId.get(gap.chapterId)!;if(options.audience==='character'&&options.viewpointId&&c.fields.viewpointId!==options.viewpointId&&c.fields.public!==true){missing.push(`「${c.title}」记忆缺口未向当前角色暴露；需要有知情证据的总结`);continue;}requireThat(!gap.needsReview,'MEMORY_GAP','早期改文导致下游状态失效；请先审查受影响章节');add(c.id+':gap',gap.versionId,'memory-gap','尚未总结的已接受正文，完整补入覆盖缺口',97,true,c.body);}
-    for(const hit of recallMemory(domain,projectId,{goal:query,asOf:index,branch:options.branch,entityIds:[...relevant],viewpointId:options.viewpointId,audience:options.audience,limit:options.memory.recallLimit??6}))add(hit.chapterId+':evidence:'+hit.start,hit.versionId,'memory-evidence',hit.reason,82,false,JSON.stringify(hit));
-    for(const m of state.memories.filter(m=>m.status==='stale'))omitted.push({id:m.id,reason:'摘要来源版本/顺序已失效；不用于当前状态'});
+    for(const hit of recallMemory(domain,projectId,{goal:query,asOf:index,branch:read.trace.branch,entityIds:[...relevant],viewpointId:options.viewpointId,audience:options.audience,limit:options.memory.recallLimit??6,scope:read}))add(hit.chapterId+':evidence:'+hit.start,hit.versionId,'memory-evidence',hit.reason,82,false,JSON.stringify(hit));
+    for(const m of scopedMemories.filter(m=>m.status==='stale'))omitted.push({id:m.id,reason:'摘要来源版本/顺序已失效；不用于当前状态'});
   }
-  if(p.lineage&&!options.memory?.enabled)for(const hit of recallMemory(domain,projectId,{goal:query,asOf:index,branch:options.branch,entityIds:[...relevant],viewpointId:options.viewpointId,audience:options.audience,limit:4}).filter(h=>byId.get(h.chapterId)?.fields.referenceOnly))add(hit.chapterId+':source-evidence:'+hit.start,hit.versionId,'inherited-evidence','继承前缀内原文按目标召回；历史证据不是新计划',81,false,JSON.stringify(hit));
+  if(p.lineage&&!options.memory?.enabled)for(const hit of recallMemory(domain,projectId,{goal:query,asOf:index,branch:read.trace.branch,entityIds:[...relevant],viewpointId:options.viewpointId,audience:options.audience,limit:4,scope:read}).filter(h=>byId.get(h.chapterId)?.fields.referenceOnly))add(hit.chapterId+':source-evidence:'+hit.start,hit.versionId,'inherited-evidence','继承前缀内原文按目标召回；历史证据不是新计划',81,false,JSON.stringify(hit));
   for(const o of canon)if(!o.locked){const linked=relevant.has(String(o.fields.entityId));add(o.id,o.source?.versionId??String(o.revision),'canon',linked?'相关实体的有来源正式事实':'有限补充的正式事实',linked?92:60,false,serialize(o));}
-  for(const o of all.filter(o=>o.kind==='event'&&o.status==='accepted'&&latest(o)&&(!o.source?.chapterId||(ordinal.get(o.source.chapterId)??Infinity)<=index))){add(o.id,o.source?.versionId??String(o.revision),'happened-event','已经发生且来源版本仍有效的事件',65,false,serialize(o));}
-  for(const o of all.filter(o=>o.kind==='foreshadow'&&o.status!=='candidate'&&o.status!=='revoked')){const resolved=canon.some(f=>f.fields.entityId===o.id&&f.fields.property==='foreshadowState'&&f.fields.value==='resolved');if(!resolved)add(o.id,String(o.revision),'foreshadow-plan','活跃伏笔与计划回收；不是已发生事实',68,false,serialize(o));}
+  for(const o of all.filter(o=>o.kind==='event'&&o.status==='accepted'&&latest(o))){add(o.id,o.source?.versionId??String(o.revision),'happened-event','已经发生且来源版本仍有效的事件',65,false,serialize(o));}
+  for(const o of all.filter(o=>o.kind==='foreshadow'&&o.status!=='candidate'&&o.status!=='revoked')){const state=foreshadows[o.id];if(state?.confirmedState!=='resolved')add(o.id,String(o.revision),'foreshadow-plan','活跃伏笔与计划回收；计划状态和正文确认分开记录',68,false,JSON.stringify({object:JSON.parse(serialize(o)),state}));}
   for(const o of all)if(o.source?.versionId&&!latest(o))omitted.push({id:o.id,reason:'来源正文版本已失效'});
   const selected:ContextItem[]=[];const seen=new Set<string>();let used=0;
   for(const item of candidates.sort((a,b)=>b.priority-a.priority)){
@@ -69,7 +70,8 @@ export function buildContext(domain:Domain,projectId:string,options:{chapterId?:
   }
   const text=selected.map(render).join('\n\n');
   const included=new Set(selected.filter(i=>i.kind==='canon'||i.kind==='locked').map(i=>i.id));
-  return {projectId,revision:p.revision,chapterId:current?.id,budget,used:text.length,items:selected,omitted,missing,canon:canon.filter(f=>included.has(f.id)),text};
+  const pack:ContextPack={projectId,revision:p.revision,chapterId:current?.id,budget,used:text.length,items:selected,omitted,missing,canon:canon.filter(f=>included.has(f.id)),scope:read.trace,text};
+  Object.defineProperty(pack,'read',{value:read,enumerable:false});return pack;
 }
 function serialize(o:StoryObject){const source=o.source?.quote===o.body?{...o.source,quote:undefined,quoteRef:'body'}:o.source;return JSON.stringify({id:o.id,title:o.title,kind:o.kind,status:o.status,body:o.body,fields:o.fields,source,tags:o.tags});}
 function render(item:ContextItem){return `【${item.kind} ${item.id} @${item.version}】\n${item.text}`;}

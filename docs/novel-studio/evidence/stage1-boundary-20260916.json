@@ -1,0 +1,70 @@
+{
+  "at": "2026-09-16T06:33:31.454Z",
+  "stage": "1 - boundary and state consistency",
+  "baseline": {
+    "commit": "8b8a8a0d6bb37b5eaeb57f433ae3686ba25496f9",
+    "worktree": "clean",
+    "node": "v24.14.0",
+    "schema": 3,
+    "typecheck": "PASS",
+    "build": "PASS",
+    "tests": "74 PASS"
+  },
+  "auditInput": {
+    "AUDIT.md": "MISSING",
+    "audit-repros.mjs": "MISSING",
+    "classification": "BLOCKED_INPUT_MISSING",
+    "action": "Findings were reproduced against real modules and converted into test/stage1.test.ts; no attachment result was counted."
+  },
+  "findings": [
+    {"id": "1A", "before": "STILL_PRESENT", "after": "PASS", "implementation": ["src/scope.ts", "src/planning.ts", "src/context.ts", "src/runtime.ts", "src/http.ts"]},
+    {"id": "1B", "before": "STILL_PRESENT", "after": "PASS", "implementation": ["src/ui/project-session.ts", "src/ui/main.tsx", "src/ui/api.ts"]},
+    {"id": "1C", "before": "STILL_PRESENT", "after": "PASS", "implementation": ["src/domain.ts", "src/scope.ts", "src/memory.ts", "src/temporal.ts"]},
+    {"id": "1D", "before": "STILL_PRESENT", "after": "PASS", "implementation": ["src/foreshadow.ts", "src/context.ts", "src/memory.ts", "src/ui/Objects.tsx"]}
+  ],
+  "dataProtection": {
+    "projectBackups": 7,
+    "backupDirectory": ".local/backups/stage1-20260916-135102",
+    "schemaMigration": "NONE",
+    "databaseReset": false,
+    "legacyDefaultWriteback": {
+      "detected": true,
+      "fullDatabaseBackup": "dsh-novel-studio-pre-compensation.sqlite",
+      "exactFieldsRemoved": 30,
+      "proseObjectsVersionsTaskStatusArtifactsChanged": false,
+      "startupWritebackRemoved": true
+    },
+    "frozenProjectRegression": "8/8 PASS",
+    "legitimateAppendsAllowed": {"tasks": 1, "artifacts": 1}
+  },
+  "automated": {
+    "command": "npm test",
+    "result": "79 PASS, 0 FAIL, 0 SKIP",
+    "stage1": "5 PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "diffCheck": "PASS",
+    "legacyCommand": "npm run test:old-projects",
+    "legacyResult": "8/8 PASS"
+  },
+  "browser": {
+    "url": "http://127.0.0.1:4318/novel-studio/",
+    "sessionRace": "PASS - 1200ms network latency, A then B; final project, chapter, task and configuration remained B",
+    "directorScopeSelector": "PASS",
+    "contextTrace": "PASS",
+    "foreshadowProjection": "PASS",
+    "viewports": ["default 1280x720", "900x760", "720x760"],
+    "horizontalObstruction": false,
+    "consoleErrorsOrWarnings": 0,
+    "viewportReset": true
+  },
+  "runtime": {
+    "version": "0.3.0",
+    "schema": 3,
+    "provider": "deepseek-official / deepseek-flash",
+    "providerAvailable": true,
+    "realModelCalls": "NOT_RUN",
+    "reason": "Stage 1 validates deterministic scope and state boundaries; no new paid model call was authorized or required."
+  },
+  "laterStages": "NOT_RUN"
+}
