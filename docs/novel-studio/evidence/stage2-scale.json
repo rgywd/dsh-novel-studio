@@ -1,0 +1,257 @@
+{
+  "at": "2026-09-16T07:03:30.260Z",
+  "fixture": "directly seeded synthetic accepted chapters; no model calls",
+  "environment": {
+    "cpu": "Intel(R) Core(TM) Ultra 5 225H",
+    "threads": 14,
+    "platform": "win32",
+    "arch": "x64",
+    "ramGiB": 31,
+    "node": "v24.14.0",
+    "storage": "SQLite :memory:"
+  },
+  "samples": 7,
+  "results": [
+    {
+      "chapters": 100,
+      "memoryEnabled": false,
+      "queryCount": {
+        "p50": 4,
+        "p95": 4,
+        "max": 4
+      },
+      "cacheHits": {
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      },
+      "navigationMs": {
+        "p50": 1.05,
+        "p95": 1.48,
+        "max": 1.48
+      },
+      "contextMs": {
+        "p50": 1.55,
+        "p95": 2.69,
+        "max": 2.69
+      },
+      "navigationBytes": {
+        "p50": 36594,
+        "p95": 36594,
+        "max": 36594
+      },
+      "contextBytes": {
+        "p50": 8080,
+        "p95": 8080,
+        "max": 8080
+      },
+      "rssMiB": {
+        "p50": 105.92,
+        "p95": 107.68,
+        "max": 107.68
+      },
+      "scope": "queries count only instrumented project/objects/tasks/changesets/memories/version reads in ProjectReadIndex path; memory setup excluded"
+    },
+    {
+      "chapters": 100,
+      "memoryEnabled": true,
+      "queryCount": {
+        "p50": 5,
+        "p95": 5,
+        "max": 5
+      },
+      "cacheHits": {
+        "p50": 101,
+        "p95": 101,
+        "max": 101
+      },
+      "navigationMs": {
+        "p50": 1.3,
+        "p95": 1.98,
+        "max": 1.98
+      },
+      "contextMs": {
+        "p50": 5.68,
+        "p95": 6.29,
+        "max": 6.29
+      },
+      "navigationBytes": {
+        "p50": 36594,
+        "p95": 36594,
+        "max": 36594
+      },
+      "contextBytes": {
+        "p50": 31794,
+        "p95": 31794,
+        "max": 31794
+      },
+      "rssMiB": {
+        "p50": 114.18,
+        "p95": 116.65,
+        "max": 116.65
+      },
+      "scope": "queries count only instrumented project/objects/tasks/changesets/memories/version reads in ProjectReadIndex path; memory setup excluded"
+    },
+    {
+      "chapters": 500,
+      "memoryEnabled": false,
+      "queryCount": {
+        "p50": 4,
+        "p95": 4,
+        "max": 4
+      },
+      "cacheHits": {
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      },
+      "navigationMs": {
+        "p50": 6.28,
+        "p95": 7.14,
+        "max": 7.14
+      },
+      "contextMs": {
+        "p50": 7.39,
+        "p95": 8.34,
+        "max": 8.34
+      },
+      "navigationBytes": {
+        "p50": 179394,
+        "p95": 179394,
+        "max": 179394
+      },
+      "contextBytes": {
+        "p50": 8084,
+        "p95": 8084,
+        "max": 8084
+      },
+      "rssMiB": {
+        "p50": 137.5,
+        "p95": 137.98,
+        "max": 137.98
+      },
+      "scope": "queries count only instrumented project/objects/tasks/changesets/memories/version reads in ProjectReadIndex path; memory setup excluded"
+    },
+    {
+      "chapters": 500,
+      "memoryEnabled": true,
+      "queryCount": {
+        "p50": 5,
+        "p95": 5,
+        "max": 5
+      },
+      "cacheHits": {
+        "p50": 501,
+        "p95": 501,
+        "max": 501
+      },
+      "navigationMs": {
+        "p50": 5.95,
+        "p95": 7.65,
+        "max": 7.65
+      },
+      "contextMs": {
+        "p50": 51.53,
+        "p95": 55.79,
+        "max": 55.79
+      },
+      "navigationBytes": {
+        "p50": 179394,
+        "p95": 179394,
+        "max": 179394
+      },
+      "contextBytes": {
+        "p50": 31800,
+        "p95": 31800,
+        "max": 31800
+      },
+      "rssMiB": {
+        "p50": 182.1,
+        "p95": 257.49,
+        "max": 257.49
+      },
+      "scope": "queries count only instrumented project/objects/tasks/changesets/memories/version reads in ProjectReadIndex path; memory setup excluded"
+    },
+    {
+      "chapters": 1000,
+      "memoryEnabled": false,
+      "queryCount": {
+        "p50": 4,
+        "p95": 4,
+        "max": 4
+      },
+      "cacheHits": {
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      },
+      "navigationMs": {
+        "p50": 10.77,
+        "p95": 13.55,
+        "max": 13.55
+      },
+      "contextMs": {
+        "p50": 16.82,
+        "p95": 26.65,
+        "max": 26.65
+      },
+      "navigationBytes": {
+        "p50": 357898,
+        "p95": 357898,
+        "max": 357898
+      },
+      "contextBytes": {
+        "p50": 8090,
+        "p95": 8090,
+        "max": 8090
+      },
+      "rssMiB": {
+        "p50": 264.11,
+        "p95": 279.21,
+        "max": 279.21
+      },
+      "scope": "queries count only instrumented project/objects/tasks/changesets/memories/version reads in ProjectReadIndex path; memory setup excluded"
+    },
+    {
+      "chapters": 1000,
+      "memoryEnabled": true,
+      "queryCount": {
+        "p50": 5,
+        "p95": 5,
+        "max": 5
+      },
+      "cacheHits": {
+        "p50": 1001,
+        "p95": 1001,
+        "max": 1001
+      },
+      "navigationMs": {
+        "p50": 10.41,
+        "p95": 11.25,
+        "max": 11.25
+      },
+      "contextMs": {
+        "p50": 128.57,
+        "p95": 148.4,
+        "max": 148.4
+      },
+      "navigationBytes": {
+        "p50": 357898,
+        "p95": 357898,
+        "max": 357898
+      },
+      "contextBytes": {
+        "p50": 31786,
+        "p95": 31786,
+        "max": 31786
+      },
+      "rssMiB": {
+        "p50": 303.51,
+        "p95": 322.95,
+        "max": 322.95
+      },
+      "scope": "queries count only instrumented project/objects/tasks/changesets/memories/version reads in ProjectReadIndex path; memory setup excluded"
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,5 +1,19 @@
 # Execution state — recovery entry
 
+## 当前阶段：请求记录与查询成本（2026-09-16，Stage 2 实现与验证）
+
+Stage 1 `80648af` 已推送 `origin/main`。Stage 2 在独立工作树 `C:\Users\rgywd\Documents\novel-stage2`、分支 `codex/stage2-request-query-cost` 实施；原主工作树没有用户脏文件。下一步在 Stage 2 核验并合并推送后，**顺序开始 Stage 3 项目会话壳与书架**；Stage 4–6 仍为 NOT_RUN。本段是当前恢复入口；下面 Stage 1 的“Stage 2 未开始/不推送”是该阶段当时的历史结论，已由本次用户明确推送授权取代。
+
+Stage 2 现状→缺口→修改→验收：旧请求行混存摘要和正文并截断最近 100 条，影响已接受/待审版本的诊断；改为 schema 4 新增 `request_summaries`、`request_details`，保留旧 `requests` 表为只读迁移来源，旧行逐条复制且不改写。详情默认保留 100 条或 90 天，摘要保留 500 条或 365 天；活跃任务、待审成果、已接受正文版本及未终结请求受引用保护，作者可按时间清理并看见已清理状态。生成检查器按页读取摘要，选中后才读含正文的详情，显示保护原因、真实用量与 UNKNOWN。旧备份可恢复为独立副本。
+
+项目读取拆为 metadata、navigation（章节正文为空）、单章 detail、任务 summary/detail、成果 summary/detail；前端打开和刷新只请求需要的正文。`ProjectReadIndex` 在一次范围读取内共享章节顺序、来源前缀 hash、记忆列表、版本和时态投影；项目 revision、全局结构指纹和记忆源版本决定有效性，不靠 TTL 推测。本阶段不更改 ModelProvider、任务 runner、正文版本/接管协议或 DSH Core。`InheritanceView` 使用非章节对象，不依赖导航中的章节正文。
+
+验证：`npm test` **83 PASS、0 FAIL/skip**，其中 Stage 2 模块/真实 HTTP 回归 4 项；`npm run typecheck`、`npm run build`、`git diff --check` PASS。100/500/1000 章、记忆关/开各 7 次热身后样本：1000 章记忆开导航 p50 10.41ms / 357898 bytes，上下文 p50 128.57ms / 31786 bytes，读取索引路径计数 5 次，进程 RSS p50 303.51 MiB；SQLite 内存库、Node v24.14.0、Ultra 5 225H/31 GiB、直接合成正文与摘要，无模型调用或磁盘 IO 基准。该计数仅覆盖已埋点的索引路径，不代表全部 SQLite 查询。详情见 `evidence/stage2-scale.json`。
+
+迁移前先从运行中的 4318/4317 schema 3 库经**只读连接 VACUUM INTO**制作一致性副本，永久放在主工作区 `.local/backups/stage2-20260916/`（忽略、不入 Git）；只在副本执行 schema 4 迁移。13 类旧表行数及 SHA256 一致，两个副本 `integrity_check=ok` 且项目私人 JSON 备份都能独立恢复。原运行库仍为 schema 3，应用正式更新后才应按已有重启流程增量升级；绝不能覆盖原库。见 `evidence/stage2-migration.json`。隔离服务 4322 使用全新测试库，实际浏览器创建项目、以显式演示提供方执行 Director、打开分页检查器并选中实际请求，详情有 P0/P1/P5 和 UNKNOWN 缓存计量；没有使用真实模型。当前 4318/4317 尚未重启或迁移，Stage 3 尚未开始。
+
+当前未提交文件：`src/{read-model,projections,requests,store,scope,temporal,memory,context,domain,http,contracts}.ts`、`src/ui/{main,CreativeConfig,RequestInspector,SourceLibrary}.tsx`、`test/{stage2,configuration}.test.ts`、`scripts/stage2-{scale,migrate-copy}`、`package.json` 及本段文档/证据。下一步：核对完整 diff 与证据路径，提交 Stage 2；快进主分支后 push；重启本项目两个服务核对旧数据，再新建 Stage 3 工作树。Stage 2 合并前不可删独立工作树及其中运行的 4322 服务。
+
 ## 当前阶段：边界与状态一致性（2026-09-16，Stage 1 已完成）
 
 基线为 `8b8a8a0d6bb37b5eaeb57f433ae3686ba25496f9`，开始时工作树干净，Node `v24.14.0`，SQLite schema 3；基线 typecheck、build 和 74 项测试通过。任务书提到的同目录 `AUDIT.md` 与 `audit-repros.mjs` 在仓库及用户文档目录的定向查找中均不存在，因此不能核对附件的 5/5；本阶段按实际模块建立了 5 项真实回归，而没有把缺失附件当成产品证据。

@@ -1,0 +1,131 @@
+{
+  "at": "2026-09-16T07:04:44.210Z",
+  "status": "PASS",
+  "method": "SQLite read-only source VACUUM INTO distinct ignored copy, migrate copy to schema 4, byte-equivalent JSON row checks, independent project backup restore on copy",
+  "results": [
+    {
+      "source": "DSH 4318",
+      "oldSchema": "3",
+      "schema": "4",
+      "backup": "C:\\Users\\rgywd\\Documents\\novel\\.local\\backups\\stage2-20260916\\dsh-copy.sqlite",
+      "integrity": "ok",
+      "protectedRows": {
+        "projects": {
+          "count": 8,
+          "sha256": "05ef234550f05c5698fdc1e48f32c1b6fcf6e334cba68efbef84c6eab38606da"
+        },
+        "objects": {
+          "count": 432,
+          "sha256": "e42ed9b592c94dc6dcf4094266f9ec150ba1e3e4b45c9d2f9fe5e0b01bc93e63"
+        },
+        "versions": {
+          "count": 28,
+          "sha256": "d50a430dfcea979f0e5464cdb1a8e4ea571897d267be3bc19f3049c7b33452a9"
+        },
+        "tasks": {
+          "count": 31,
+          "sha256": "ff5819018dbebacce923e9359d0305060fbce7d2d9dd274f2f5054f6b013c730"
+        },
+        "artifacts": {
+          "count": 34,
+          "sha256": "5aa38f4a81a13d642744a4da4e2b8e677b09f838bf4efa4a7bbe2f1432239853"
+        },
+        "requests": {
+          "count": 80,
+          "sha256": "fb854e63a7b22328a6e943ed6112f1e130e22baabc388478dcf4e563495bfd24"
+        },
+        "memories": {
+          "count": 10,
+          "sha256": "5b3594ea4afc9b804cf37484af8faa721d121da8264544de8e58199b087d3096"
+        },
+        "source_works": {
+          "count": 1,
+          "sha256": "a951e8991eea0d6df76d2c3d5b301eecb5aff807ffbb8254fa7f20917a2535e6"
+        },
+        "source_versions": {
+          "count": 1,
+          "sha256": "cb06fa873f162e9746af5cdeda53b8469480fcb7100bb3cdf984d0f7a9e34a18"
+        },
+        "source_runs": {
+          "count": 1,
+          "sha256": "3b5c1914eaa5c228227fb8edea2da631914e46868b940eed7e35d0f33a24c3cc"
+        },
+        "source_assets": {
+          "count": 77,
+          "sha256": "e8045fb8aa181b4263e6e03522466348df87d1b2038c78bca5aa6d712af6ad79"
+        },
+        "source_decisions": {
+          "count": 10,
+          "sha256": "4781a256c9bca19707a1104f22cf46cba9de993d790b5fc4b0851ed0250738e4"
+        },
+        "import_manifests": {
+          "count": 1,
+          "sha256": "5af674a60b743c05c5c8330dbbc30f3f4ca7cf864591cb7db6292ed699e79c5e"
+        }
+      },
+      "independentRestore": "PASS"
+    },
+    {
+      "source": "standalone 4317",
+      "oldSchema": "3",
+      "schema": "4",
+      "backup": "C:\\Users\\rgywd\\Documents\\novel\\.local\\backups\\stage2-20260916\\local-copy.sqlite",
+      "integrity": "ok",
+      "protectedRows": {
+        "projects": {
+          "count": 4,
+          "sha256": "34e3900a8c0bbef31026aad32f4659adc2e0ceae6a53a1c77e596833faad7d12"
+        },
+        "objects": {
+          "count": 34,
+          "sha256": "f9ba0386ea19917d2dad47cf1d033854c1f8cfa618912e1f721e4c6eb2d0ff77"
+        },
+        "versions": {
+          "count": 11,
+          "sha256": "4e4a1ab5712e04d24ed7fea8c6b91129eb952b9f732aecf35b4bef0ddea8941b"
+        },
+        "tasks": {
+          "count": 8,
+          "sha256": "18ca479a395c48ba819239f0eec79262327d9b1acbeb6c0682f5f1eea487f38e"
+        },
+        "artifacts": {
+          "count": 9,
+          "sha256": "22fb966022114c86f3386d13a8caf9952e6db0d52260f98b45855fe1f11a7cbb"
+        },
+        "requests": {
+          "count": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "memories": {
+          "count": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "source_works": {
+          "count": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "source_versions": {
+          "count": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "source_runs": {
+          "count": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "source_assets": {
+          "count": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "source_decisions": {
+          "count": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "import_manifests": {
+          "count": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      },
+      "independentRestore": "PASS"
+    }
+  ]
+}

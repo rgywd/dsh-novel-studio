@@ -46,8 +46,8 @@ export function buildContext(domain:Domain,projectId:string,options:{chapterId?:
   }
   for(const {object:o,reason,depth} of worlds.entries)if(!o.locked)add(o.id,String(o.revision),'world',`${reason} · 递归深度 ${depth}/2`,o.fields.core||o.fields.pinned?100:88,o.fields.core===true||o.fields.pinned===true,serialize(o));
   if(options.memory?.enabled){
-    const state=memoryStatus(domain,projectId),scopeChapterIds=new Set(chapters.map(c=>c.id)),scopedMemories=state.memories.filter(m=>m.sources.every(s=>scopeChapterIds.has(s.chapterId)));const before=new Set(prior.map(c=>c.id));
-    for(const m of scopedMemories.filter(m=>m.kind==='checkpoint'&&validMemory(domain,m)&&m.sources.every(s=>before.has(s.chapterId))).slice(0,2))if(options.audience!=='character')add(m.id,String(m.revision),'memory-checkpoint','封存历史段；不是当前状态，保留来源链',72,false,JSON.stringify({historical:true,range:m.sources.map(s=>s.ordinal),summary:m.content.summary,sources:m.sources}));
+    const state=memoryStatus(domain,projectId,read),scopeChapterIds=new Set(chapters.map(c=>c.id)),scopedMemories=state.memories.filter(m=>m.sources.every(s=>scopeChapterIds.has(s.chapterId)));const before=new Set(prior.map(c=>c.id));
+    for(const m of scopedMemories.filter(m=>m.kind==='checkpoint'&&validMemory(domain,m,read.index)&&m.sources.every(s=>before.has(s.chapterId))).slice(0,2))if(options.audience!=='character')add(m.id,String(m.revision),'memory-checkpoint','封存历史段；不是当前状态，保留来源链',72,false,JSON.stringify({historical:true,range:m.sources.map(s=>s.ordinal),summary:m.content.summary,sources:m.sources}));
     for(const c of prior.slice(-3)){const m=scopedMemories.find(m=>m.kind==='chapter'&&m.status==='valid'&&m.sources[0].chapterId===c.id);const pov=options.audience==='character'?options.viewpointId:undefined;const readable=!pov||c.fields.viewpointId===pov||c.fields.public===true;
       if(m&&readable)add(m.id,String(m.revision),'memory-summary','近期章节记忆；来源版本有效',86,false,JSON.stringify(m.content));
       if(readable&&c.body)add(c.id+':recent',String(c.fields.currentVersion),'accepted-body','近期必要原文，不用摘要替代全部证据',94,true,c.body.slice(-2400));

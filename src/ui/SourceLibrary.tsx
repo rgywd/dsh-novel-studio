@@ -2,7 +2,7 @@ import { useEffect,useRef,useState } from 'react';
 import { BookOpen,ArrowRight,Upload,Search,Pause,Play,FileText } from 'lucide-react';
 import { Modal,Field } from './Modal.js';
 import { api,download,statusText } from './api.js';
-import { GenerationInspector } from './CreativeConfig.js';
+import { GenerationInspector } from './RequestInspector.js';
 import { fieldLabels,RelationshipGraph } from './Objects.js';
 import { inheritedFields } from '../source-contracts.js';
 import type { Project } from '../contracts.js';

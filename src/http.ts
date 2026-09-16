@@ -11,7 +11,7 @@ import { binding,bindConfig,listConfigs,configVersion,importConfiguration,saveCo
 import { configPatchSchema,regexRuleSchema } from './config-contracts.js';
 import { compilePrompt,macroEnvironment } from './compiler.js';
 import { transformText } from './text-pipeline.js';
-import { requestGet,requestList } from './requests.js';
+import { pruneRequests,requestGet,requestRetention,requestSummaries } from './requests.js';
 import { taskInputSchema,now,type CreativeTask } from './contracts.js';
 import { memoryStatus,memoryGet,editMemory,recallMemory,rollingPlanning } from './memory.js';
 import { temporalObjects } from './temporal.js';
@@ -19,6 +19,7 @@ import { previewLorebook,acceptLorebook } from './lorebook.js';
 import { sourceRoute } from './source-http.js';
 import { resolveStoryScope,type StoryScopeOptions } from './scope.js';
 import { planningInput } from './planning.js';
+import { artifactSummaries,chapterDetail,projectMetadata,projectNavigation,taskSummaries } from './projections.js';
 export const API='/api/novel-studio';
 const num=z.number().int().positive();
 export async function readJson(req:IncomingMessage){let size=0;const chunks:Buffer[]=[];for await(const chunk of req){const b=Buffer.from(chunk);size+=b.length;requireThat(size<=64*1024*1024,'BODY_LIMIT','请求超过 64 MiB',413);chunks.push(b);}try{return JSON.parse(Buffer.concat(chunks).toString('utf8')||'{}');}catch{throw new DomainError('INVALID_JSON','请求不是有效 JSON',400);}}
@@ -49,13 +50,15 @@ export class HttpApp {
   async dispatch(method:string,path:string,body:any={},query=new URLSearchParams()):Promise<any>{
     const segments=path.split('/').filter(Boolean);const [group,pid,resource,key,action]=segments;
     if(['sources','source-versions','source-runs','manifests'].includes(group))return sourceRoute(this.domain,this.runner,method,segments,body,query);
-    if(method==='GET'&&path==='/health')return {version:'0.3.0',dsh:this.runner.provider.info(),demo:this.runner.demo.info(),schema:3,prompts:Object.values(prompts).map(p=>({id:p.id,version:p.version,purpose:p.purpose}))};
+    if(method==='GET'&&path==='/health')return {version:'0.3.0',dsh:this.runner.provider.info(),demo:this.runner.demo.info(),schema:4,prompts:Object.values(prompts).map(p=>({id:p.id,version:p.version,purpose:p.purpose}))};
     if(group==='projects'&&!pid){if(method==='GET')return this.domain.store.list('projects').filter(p=>!p.sourceWorkspace);if(method==='POST')return this.domain.createProject(body);}
     if(path==='/backups/restore'&&method==='POST')return this.domain.restoreBackup(body);
     requireThat(group==='projects'&&pid,'NOT_FOUND','未知接口',404);requireThat(!this.domain.project(pid).sourceWorkspace||method==='GET'&&['requests','tasks','events'].includes(resource),'SOURCE_SCOPE','原作分析空间只允许通过有范围的原作接口操作',403);
     if(!resource){if(method==='GET')return this.domain.snapshot(pid);if(method==='PATCH')return this.domain.updateProject(pid,num.parse(body.revision),body.project);}
+    if(resource==='metadata'&&method==='GET')return projectMetadata(this.domain,pid);
+    if(resource==='navigation'&&method==='GET')return projectNavigation(this.domain,pid);
     if(resource==='source-baseline'&&method==='GET'){const row=this.domain.store.db.prepare("SELECT data FROM changesets WHERE projectId=? AND kind='source.activated' ORDER BY rowid LIMIT 1").get(pid);return row?JSON.parse(row.data as string):{assets:[]};}
-    if(resource==='status'&&method==='GET')return {project:this.domain.project(pid),tasks:this.domain.store.list('tasks',pid).map(t=>({...t,steps:[]}))};
+    if(resource==='status'&&method==='GET')return {project:this.domain.project(pid),tasks:taskSummaries(this.domain,pid)};
     if(resource==='planning-check'&&method==='GET'){const read=resolveStoryScope(this.domain,pid,scopeQuery(query));return rollingPlanning(this.domain,pid,read);}
     if(resource==='memories'){
       if(method==='GET'&&!key)return memoryStatus(this.domain,pid);
@@ -79,11 +82,16 @@ export class HttpApp {
       const prompt=z.enum(Object.keys(prompts) as [keyof typeof prompts,...(keyof typeof prompts)[]]).parse(body.prompt??'write'),t=previewTask(this.domain,pid,body.task??{kind:'write',goal:'继续当前章节'}),config=t.configSnapshot!.config;
       const options={chapterId:t.chapterId,goal:t.goal,maxChars:t.budget.contextChars,...t.perspective,planningScope:t.planningScope,viewpointId:t.perspective?.viewpointId??config.bindings?.viewpointId,audience:t.perspective?.audience??config.bindings?.audience,memory:config.enabled?config.memory:undefined},read=resolveStoryScope(this.domain,pid,options),pack=buildContext(this.domain,pid,{...options,resolvedScope:read}),extra=prompt==='replan'?planningInput(this.domain,t,read):{};return compilePrompt(this.domain,t,prompt,{goal:t.goal,targetWords:t.targetWords,constraints:t.constraints,context:pack.text,_contextPack:pack,chapterId:t.chapterId,...extra});
     }
-    if(resource==='requests'&&method==='GET')return key?requestGet(this.domain.store,pid,key):requestList(this.domain.store,pid).map(r=>({id:r.id,taskId:r.taskId,stepKey:r.stepKey,createdAt:r.createdAt,status:r.status,role:r.compiled.role,configHash:r.compiled.config.hash,hash:r.compiled.hash,localCompilationCache:r.compiled.localCompilationCache,localPrefixReuse:r.localPrefixReuse,usage:r.usage,error:r.error}));
+    if(resource==='requests'){
+      if(method==='GET'&&key==='retention')return requestRetention(this.domain.store,pid);
+      if(method==='GET'&&key)return requestGet(this.domain.store,pid,key);
+      if(method==='GET'){const page=requestSummaries(this.domain.store,pid,{offset:Number(query.get('offset'))||0,limit:Number(query.get('limit'))||100,taskId:query.get('taskId')??undefined});return query.get('paged')==='1'?page:page.items;}
+      if(method==='POST'&&key==='cleanup')return pruneRequests(this.domain.store,pid,{user:true,before:z.string().datetime().parse(body.before),removeSummaries:body.removeSummaries===true});
+    }
     if(resource==='objects'){
       if(method==='GET'&&!key){const q=query.get('q')??'';const kind=query.get('kind');const all=this.domain.store.objects(pid,kind??undefined).filter(o=>!q||`${o.title} ${o.body} ${JSON.stringify(o.fields)}`.toLowerCase().includes(q.toLowerCase()));const offset=Math.max(0,Number(query.get('offset'))||0);const limit=Math.min(300,Math.max(1,Number(query.get('limit'))||100));return {items:all.slice(offset,offset+limit),total:all.length};}
       if(method==='POST'&&!key)return this.domain.createObject(pid,num.parse(body.revision),body.object);
-      if(method==='GET'&&key&&!action)return this.domain.object(pid,key);
+      if(method==='GET'&&key&&!action)return chapterDetail(this.domain,pid,key);
       if(method==='PATCH'&&key)return this.domain.updateObject(pid,key,num.parse(body.revision),body.object);
       if(method==='POST'&&key&&action==='takeover')return this.domain.takeover(pid,key,num.parse(body.revision));
       if(method==='POST'&&key&&action==='adopt')return this.domain.adoptIdea(pid,key,num.parse(body.revision));
@@ -93,13 +101,14 @@ export class HttpApp {
       if(method==='GET'&&key&&action==='history')return this.domain.history(pid,key);
     }
     if(resource==='tasks'){
-      if(method==='GET'&&!key)return this.domain.store.list('tasks',pid);
+      if(method==='GET'&&!key)return taskSummaries(this.domain,pid);
       if(method==='POST'&&!key){const task=this.domain.createTask(pid,body);this.runner.start(task.id);return task;}
-      if(method==='GET'&&key){const t=this.domain.task(pid,key);return {...t,events:this.domain.store.events(pid,key),artifacts:this.domain.store.list('artifacts',pid).filter(a=>a.taskId===key).map(a=>({...a,data:{title:a.data.title,content:a.data.content,review:a.data.review,context:a.data.context,late:a.data.late}}))};}
+      if(method==='GET'&&key){const t=this.domain.task(pid,key);const artifacts=this.domain.store.db.prepare('SELECT data FROM artifacts WHERE projectId=? AND taskId=?').all(pid,key).map(row=>JSON.parse(String(row.data))).map(a=>({...a,data:{title:a.data.title,content:a.data.content,review:a.data.review,context:a.data.context,late:a.data.late}}));return {...t,events:this.domain.store.events(pid,key),artifacts};}
       if(method==='POST'&&key&&action==='clarify'){const t=this.domain.clarifyTask(pid,key,z.string().parse(body.answer));this.runner.start(t.id);return t;}
       if(method==='POST'&&key&&action==='budget')return this.domain.grantTaskBudget(pid,key,body);
       if(method==='POST'&&key&&action){const parsed=z.enum(['pause','resume','redelegate','cancel']).parse(action);const task=this.domain.controlTask(pid,key,parsed);if(task.status==='QUEUED')this.runner.start(task.id);return task;}
     }
+    if(resource==='artifact-summaries'&&method==='GET')return artifactSummaries(this.domain,pid);
     if(resource==='artifacts'&&key){
       if(method==='GET')return this.domain.artifact(pid,key);
       if(method==='POST'&&action==='accept')return this.domain.acceptArtifact(pid,key,'author',body.partialText);

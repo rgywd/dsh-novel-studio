@@ -1,5 +1,13 @@
 # Architecture
 
+## 2026-09-16 Stage 2：诊断保留与读取投影
+
+schema 3→4 是增量事务迁移：保留旧 `requests` 表及字节不变的原行，复制为 `request_summaries`（不含编译正文/原始响应）和按 ID 读取的 `request_details`。新写入只进入新表。`src/requests.ts` 按任务、待审 artifact 的 generation/requestIds、已接受版本显式 requestIds 或旧 commitKey 反查保护引用；未终结请求也不清。100 条/90 天详情与 500 条/365 天摘要独立限额，单项目主动清理与清理痕迹可见；导出/恢复同时保存可用详情或墓碑摘要。旧请求表作为迁移来源保留，后续归档策略仍可审计，不误把详情物理存在理解为可以无限增长。
+
+`src/projections.ts` 提供 metadata/navigation/taskSummary/artifactSummary/detail；`src/ui/main.tsx` 首屏并行读取元数据、导航、任务和成果摘要，只对当前章节调用 detail。旧完整 `/projects/:id` 保留给旧集成和备份语义。任务详情按项目+任务索引取成果。`src/read-model.ts` 的 ProjectReadIndex 只活在一次读取范围中，缓存章节次序/全局结构指纹、来源前缀 hash、版本/记忆行与时态投影；新请求重新读取实际项目 revision 和结构，不用计时器复用可能过期的数据。`scope.ts`、`temporal.ts`、`memory.ts`、`context.ts` 共用该索引，不允许跨作者接管复用旧派生资料。
+
+迁移回退：运行前通过只读 SQLite `VACUUM INTO` 制作完整一致性私有副本；升级失败保持原库不变或停服务用完整副本恢复，不在运行中的库上覆盖文件。旧 JSON 项目备份可以恢复为独立项目，旧请求迁移测试逐行核对；schema 4 已写入后若回滚程序，应先退回完整 schema 3 副本或保留新程序读取新表，不能用旧二进制继续写一份分叉请求历史。没有新 npm 依赖、DSH Core 变更或正文重存储。
+
 ## 2026-09-16 Stage 1：统一读取范围与状态投影
 
 `src/scope.ts` 是现有 Domain 之上的唯一小说读取范围解析器。`resolveStoryScope` 以项目、章节、分支、截止水位、来源版本、视角和规划授权为输入，先调用时态投影排除未来证据、其他分支、未接受内容、旧正文版本和角色未知资料，再交给 Context Engine 做相关性与预算筛选。它输出本次可读对象、章节、规划、任务依赖及 `StoryScopeTrace`。传给模型的 trace 会汇总省略原因，不发送范围外对象 ID；本地 Context Inspector 保留完整诊断。任务约定编译、正文上下文、滚动规划、重规划依赖、编译预览和最终请求复用同一个已解析 scope。

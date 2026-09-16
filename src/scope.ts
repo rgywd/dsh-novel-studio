@@ -2,6 +2,7 @@ import type { Domain } from './domain.js';
 import { orderedChapters, requireThat, type CreativeTask, type StoryObject } from './contracts.js';
 import { hash } from './store.js';
 import { temporalObjects, type Perspective } from './temporal.js';
+import { measured,projectReadIndex,type ProjectReadIndex,type ReadMetrics } from './read-model.js';
 
 export type PlanningScope = 'current-branch' | 'all-branches';
 
@@ -31,6 +32,7 @@ export interface StoryScopeTrace {
 }
 
 export interface StoryReadScope {
+  index: ProjectReadIndex;
   trace: StoryScopeTrace;
   objects: StoryObject[];
   chapters: StoryObject[];
@@ -59,11 +61,12 @@ export function chapterStructureFingerprint(objects: StoryObject[], throughChapt
   ]));
 }
 
-export function resolveStoryScope(domain: Domain, projectId: string, options: StoryScopeOptions = {}): StoryReadScope {
-  const project = domain.project(projectId);
-  const stored = domain.store.objects(projectId);
-  const ordered = orderedChapters(stored);
-  const current = options.chapterId ? domain.object(projectId, options.chapterId) : undefined;
+export function resolveStoryScope(domain: Domain, projectId: string, options: StoryScopeOptions = {}, metrics?: ReadMetrics): StoryReadScope {
+  const index = projectReadIndex(domain, projectId, metrics);
+  const project = index.project;
+  const stored = index.objects;
+  const ordered = index.chapters;
+  const current = options.chapterId ? index.object(options.chapterId) : undefined;
   if (current) requireThat(current.kind === 'chapter', 'SCOPE', '上下文截止对象必须是章节');
   const branch = options.branch ?? String(current?.fields.branch ?? 'main');
   if (current) requireThat(String(current.fields.branch ?? 'main') === branch, 'SCOPE', '章节不属于请求的故事分支');
@@ -77,14 +80,14 @@ export function resolveStoryScope(domain: Domain, projectId: string, options: St
     branch,
     asOfChapter,
     evidenceThrough,
-  });
+  },index);
   const planningScope = options.planningScope ?? 'current-branch';
   const planningObjects = (planningScope === 'all-branches' ? stored : temporal.objects)
     .filter(object => ['book', 'volume', 'chapter'].includes(object.kind)
       && !object.locked
       && object.status === 'planned'
       && (object.kind !== 'chapter' || !object.body.trim()));
-  const tasks = domain.store.list('tasks', projectId).filter(task => planningScope === 'all-branches'
+  const tasks = measured(metrics,'tasks',()=>domain.store.list('tasks', projectId)).filter(task => planningScope === 'all-branches'
     || String(task.perspective?.branch ?? 'main') === branch);
   const trace: StoryScopeTrace = {
     projectId,
@@ -98,14 +101,14 @@ export function resolveStoryScope(domain: Domain, projectId: string, options: St
     viewpointId: options.viewpointId,
     audience: options.audience ?? 'author',
     planningScope,
-    structureHash: chapterStructureFingerprint(stored),
+    structureHash: index.structureRevision,
     objectIds: temporal.objects.map(object => object.id),
     chapterIds: chapters.map(chapter => chapter.id),
     planningObjectIds: planningObjects.map(object => object.id),
     taskIds: tasks.map(task => task.id),
     omitted: temporal.omitted,
   };
-  return { trace, objects: temporal.objects, chapters, current, planningObjects, tasks };
+  return { index, trace, objects: temporal.objects, chapters, current, planningObjects, tasks };
 }
 
 export function scopeOptions(task: Pick<CreativeTask, 'chapterId' | 'perspective' | 'planningScope'>): StoryScopeOptions {

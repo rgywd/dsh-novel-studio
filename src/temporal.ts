@@ -1,14 +1,17 @@
 import type { Domain } from './domain.js';
 import type { StoryObject } from './contracts.js';
+import { measured,projectReadIndex,type ProjectReadIndex } from './read-model.js';
 export interface Perspective {asOfChapter?:number;viewpointId?:string;audience?:'author'|'character'|'reader';branch?:string;storyTime?:string;evidenceThrough?:number;}
-export function temporalObjects(domain:Domain,pid:string,at:Perspective={}){
- const current=domain.store.objects(pid),project=domain.project(pid),byId=new Map(current.map(o=>[o.id,o])),branch=at.branch??'main';
- const chapters=domain.chapters(pid).filter(c=>String(c.fields.branch??'main')===branch),ordinal=new Map(chapters.map((c,n)=>[c.id,n+1])),asOf=at.asOfChapter??chapters.length+1,evidenceThrough=at.evidenceThrough??asOf;
+export interface TemporalView {objects:StoryObject[];omitted:{id:string;reason:string}[];asOf:number;branch:string;}
+export function temporalObjects(domain:Domain,pid:string,at:Perspective={},index:ProjectReadIndex=projectReadIndex(domain,pid)):TemporalView{
+ const cacheKey=JSON.stringify([pid,index.cacheRevision(),at]);const cached=index.temporalCache.get(cacheKey) as TemporalView|undefined;if(cached)return structuredClone(cached);
+ const current=index.objects,project=index.project,byId=index.byId,branch=at.branch??'main';
+ const chapters=index.chapters.filter(c=>String(c.fields.branch??'main')===branch),ordinal=new Map(chapters.map((c,n)=>[c.id,n+1])),asOf=at.asOfChapter??chapters.length+1,evidenceThrough=at.evidenceThrough??asOf;
  const sourcePosition=(o:StoryObject,edge:'from'|'to')=>{const source=o.source;if(!source)return undefined;const stableId=edge==='from'?(source.fromChapterId??source.chapterId):source.toChapterId;if(stableId)return ordinal.get(stableId)??Number.POSITIVE_INFINITY;return edge==='from'?source.fromChapter:source.toChapter;};
  const objectBranch=(o:StoryObject)=>{if(o.kind==='chapter')return String(o.fields.branch??'main');if(o.fields.branch!==undefined)return String(o.fields.branch);if(o.source?.chapterId){const sourceChapter=byId.get(o.source.chapterId);if(sourceChapter?.kind==='chapter')return String(sourceChapter.fields.branch??'main');}return undefined;};
  const valid=(o:StoryObject)=>{const from=sourcePosition(o,'from'),to=sourcePosition(o,'to'),sourceChapter=o.source?.chapterId?byId.get(o.source.chapterId):undefined,belongs=objectBranch(o),sourceVersionAllowed=!project.lineage||!o.source?.sourceVersionId||o.source.sourceVersionId===project.lineage.versionId;return sourceVersionAllowed&&!(o.kind==='world'&&o.fields.enabled===false)&&!['candidate','draft','revoked','stale'].includes(o.status)&&(belongs===undefined||belongs===branch)&&(from===undefined||from<=asOf)&&(to===undefined||to>=asOf)&&(!o.source?.chapterId||((ordinal.get(o.source.chapterId)??Infinity)<=evidenceThrough&&sourceChapter?.fields.currentVersion===o.source.versionId&&!sourceChapter?.fields.needsReview))&&(!at.storyTime||!o.fields.storyTime||o.fields.storyTime===at.storyTime||o.source?.time===at.storyTime);};
  const histories=new Map<string,StoryObject[]>();for(const o of current)histories.set(o.id,[o]);
- for(const r of domain.store.db.prepare('SELECT data FROM changesets WHERE projectId=? ORDER BY rowid').all(pid)){const change=JSON.parse(r.data as string);for(const o of [change.before,change.after])if(o&&['relationship','world','character'].includes(o.kind)&&o.projectId===pid&&histories.has(o.id))histories.get(o.id)!.push(o);}
+ for(const r of measured(index.metrics,'changesets',()=>domain.store.db.prepare('SELECT data FROM changesets WHERE projectId=? ORDER BY rowid').all(pid))){const change=JSON.parse(r.data as string);for(const o of [change.before,change.after])if(o&&['relationship','world','character'].includes(o.kind)&&o.projectId===pid&&histories.has(o.id))histories.get(o.id)!.push(o);}
  const projected:StoryObject[]=[];for(const [oid,versions] of histories){const cur=byId.get(oid)!;if(cur.kind==='world'&&cur.fields.enabled===false||['revoked','stale'].includes(cur.status)&&(sourcePosition(cur,'from')??0)<=asOf)continue;const choices=['relationship','world','character'].includes(cur.kind)?versions:[cur];const chosen=choices.filter(valid).sort((a,b)=>(sourcePosition(b,'from')??0)-(sourcePosition(a,'from')??0)||b.revision-a.revision)[0];if(chosen)projected.push(structuredClone(chosen));}
  const relations=new Map<string,StoryObject>();for(const o of projected.filter(o=>o.kind==='relationship').sort((a,b)=>(sourcePosition(a,'from')??0)-(sourcePosition(b,'from')??0)||a.updatedAt.localeCompare(b.updatedAt)))relations.set(String(o.fields.edgeKey??`${o.fields.fromId}:${o.fields.toId}:${o.fields.type}`),o);
  const result=projected.filter(o=>o.kind!=='relationship').concat([...relations.values()]);const omitted:{id:string;reason:string}[]=[];
@@ -25,7 +28,7 @@ export function temporalObjects(domain:Domain,pid:string,at:Perspective={}){
  const stateFacts=visible.filter(o=>o.kind==='fact'&&o.status==='accepted'&&!o.source?.inference&&['objective','knowledge'].includes(o.source?.modality??'objective')).sort((a,b)=>(sourcePosition(a,'from')??0)-(sourcePosition(b,'from')??0)||a.updatedAt.localeCompare(b.updatedAt));
  const superseded=new Set(stateFacts.map(f=>f.source?.supersedes).filter(Boolean));for(const f of stateFacts.filter(f=>!superseded.has(f.id))){const target=visible.find(o=>o.id===f.fields.entityId);if(target&&typeof f.fields.property==='string'&&typeof f.fields.value==='string'){if(['known','alias'].includes(f.fields.property))continue;target.fields[f.fields.property]=f.fields.value;}}
  for(const o of current)if(!result.some(x=>x.id===o.id))omitted.push({id:o.id,reason:'尚未生效、其他分支、未接受或来源已失效'});
- return {objects:visible,omitted,asOf,branch};
+ const resultView={objects:visible,omitted,asOf,branch};index.temporalCache.set(cacheKey,structuredClone(resultView));return resultView;
 }
 export function worldRecall(worlds:StoryObject[],query:string,entityIds:Set<string>,maxEntries=24){
  const included=new Map<string,{object:StoryObject;reason:string;depth:number}>(),omitted:{id:string;reason:string}[]=[];let text=query;
