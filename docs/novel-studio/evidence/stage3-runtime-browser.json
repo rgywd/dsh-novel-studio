@@ -1,0 +1,27 @@
+{
+  "at": "2026-09-16T07:43:34.992Z",
+  "status": "PASS",
+  "browser": "headless Chrome 1280x800, fresh context, read-only",
+  "checks": [
+    {
+      "name": "DSH shelf",
+      "status": "PASS",
+      "visibleProjects": 7
+    },
+    {
+      "name": "global creative assets",
+      "status": "PASS"
+    },
+    {
+      "name": "global source library",
+      "status": "PASS"
+    },
+    {
+      "name": "shared project and both modes",
+      "status": "PASS",
+      "taskCount": 3
+    }
+  ],
+  "errors": [],
+  "writes": []
+}

@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 
 const port=Number(process.argv[2]??4323);
 if(!Number.isInteger(port)||port<1024||port>65535)throw new Error('Use an isolated local test port');
+if(port===4317||port===4318)throw new Error('This script writes fixtures; use an isolated test service, never the daily databases');
 const base=`http://127.0.0.1:${port}`;
 const browser=await chromium.launch({headless:true,executablePath:'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'});
 const checks=[],errors=[];

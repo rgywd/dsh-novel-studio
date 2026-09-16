@@ -1,16 +1,18 @@
 # Execution state — recovery entry
 
-## 当前阶段：项目会话壳与书架（2026-09-16，Stage 3 待正式运行读回）
+## 当前阶段：项目会话壳与书架（2026-09-16，Stage 2–3 已完成）
 
-本轮顺序执行：Stage 1 `80648af` → Stage 2 `52a7fe0`、运行回执 `63d115c`，均已推送 `origin/main`。Stage 3 从 `main@63d115c` 的隔离工作树 `C:\Users\rgywd\Documents\novel-stage3`、分支 `codex/stage3-shelf-shell` 实施。主工作区保持不动；用户明确授权本轮提交与推送。下一步是最终 diff/测试、Stage 3 独立提交并快进合并推送，再基于既有忽略备份升级 4318/4317，跑旧项目回归与运行态哈希复核，追加运行回执提交。Stage 4–6 NOT_RUN。
+本轮顺序执行：Stage 1 `80648af` → Stage 2 `52a7fe0`、运行回执 `63d115c` → Stage 3 `12199fe` 及最终运行修复回执（见 `git log -1`），均推送 `origin/main`。Stage 3 从 `main@63d115c` 的隔离工作树 `C:\Users\rgywd\Documents\novel-stage3` 实施，快进合并至主工作区。用户明确授权本轮提交与推送。第三阶段正式运行验收已通过；Stage 4–6 NOT_RUN，下一阶段入口是 Stage 4 World 工作台，不预先开始。
 
 现状→缺口→最小修改→验收：Writer/Director、原作资料、配置版本和项目会话 epoch 已存在，但大型初次引导始终占据书架，全局创作资产需先选项目，封面/最近章/待审缺少轻量投影。增加全局 `ProjectShelf`，SourceLibrary inline 复用，CreativeAssets 复用已有配置表；schema 5 只增加 `project_shelf` 和 `project_covers`，保存封面独立乐观修订及可恢复备份，不写旧正文。项目 URL + 本地视图定位，失效章节与损坏位置可回退，不打开新任务。项目退出仍经 Editor.flush/会话门。
 
 已通过：`npm test` 86 PASS、0 FAIL/skip（Stage 3 新增 3 项），`npm run typecheck`、`npm run build`；4323 隔离服务使用全新测试库，真实 Chrome 浏览器在 1280×800 与 390×844 测书架/原作/资产、网格列表、上传移除封面、项目/Director 刷新恢复、返回书架、暗色，横向溢出均 0，pageerror 为空。浏览器人工操作归档→筛选→打开恢复；窄屏长标题封面裁切在截图发现并修复后重测。证据 `evidence/stage3-browser.json` 与 5 张截图。没有真实模型调用，不声明创作质量新验收。
 
-迁移：脚本 `scripts/stage3-migrate-copy.mjs` 对运行中的 schema 4 库只读 VACUUM INTO 至主工作区忽略的 `.local/backups/stage3-20260916/{dsh,local}-copy.sqlite`，仅在副本升级到 schema 5；20 类旧表行数/哈希全相同，两副本 integrity_check=ok，旧项目备份恢复为独立副本。证据 `evidence/stage3-migration.json`。正式实例尚为 schema 4，运行升级和回归尚未执行，不能据副本宣称已上线。
+迁移：脚本 `scripts/stage3-migrate-copy.mjs` 对运行中的 schema 4 库只读 VACUUM INTO 至主工作区忽略的 `.local/backups/stage3-20260916/{dsh,local}-copy.sqlite`，仅在副本升级到 schema 5；20 类旧表行数/哈希全相同，两副本 integrity_check=ok，旧项目备份恢复为独立副本。升级前再次只读核对两运行库与备份没有漂移；主工作区构建后，使用已有 `scripts/serve.ps1` 顺序重启 4318/4317 并升级 v5。运行库 20 类旧表哈希全部一致、quick_check=ok、`/health`、`/shelf`、`/creative-assets` 正常，冻结 8 个旧项目回归 8/8 PASS。证据 `evidence/stage3-{migration,runtime,runtime-browser}.json` 和更新的 `upgrade-old-projects.json`。
 
-最近修改：`src/{store,shelf,domain,http}.ts`、`src/ui/{main,ProjectShelf,CreativeAssets,Modal,SourceLibrary,style.css}`、`test/{stage3,configuration,stage2}.test.ts`、`scripts/stage3-{migrate-copy,browser}.mjs`、`package.json` 及四份执行文档/证据。当前未提交内容均在 Stage 3 隔离工作树。备份路径为旧库恢复点，绝不覆盖运行库或删除备份；回退须先停止本项目两服务并选对应库副本。Stage 2 文档下述“Stage 3 尚未开始”是 Stage 2 当时状态，以本节为准。
+正式 4318 的第一次只读浏览器检查捕获了一个旧项目有成果时的真实前端错误：`readWorkspace` 并行请求把 task/artifact 两个返回位置写反，导致用 artifact ID 请求 task。修正后重建，在同一旧项目检查 3 个真实导演任务、Writer/Director 与全局页签，pageerror、失败请求和写请求均为零；`npm test` 86 PASS、typecheck/build PASS。该失败不涉及数据库写入，已保留本段诊断，不用隔离空项目的通过结果掩盖。
+
+最近修改：`src/{store,shelf,domain,http}.ts`、`src/ui/{main,ProjectShelf,CreativeAssets,Modal,SourceLibrary,style.css}`、`test/{stage3,configuration,stage2}.test.ts`、`scripts/stage3-{migrate-copy,browser,runtime,runtime-browser}.mjs`、`package.json`、README 及四份执行文档/证据。本节运行回执和浏览器修复收口后，主工作区应以 `git status --short` 无输出、HEAD 与 `origin/main` 一致作为最终断点。4323 隔离服务已按 PID 48304 停止，隔离测试库与两个完整旧库备份保留。备份路径为旧库恢复点，绝不覆盖运行库或删除备份；回退须先停止本项目两服务并选对应库副本。Stage 2 文档下述“Stage 3 尚未开始”是 Stage 2 当时状态，以本节为准。
 
 ## 当前阶段：请求记录与查询成本（2026-09-16，Stage 2 实现与验证）
 

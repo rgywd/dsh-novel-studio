@@ -1,0 +1,29 @@
+{
+  "at": "2026-09-16T07:41:27.491Z",
+  "status": "PASS",
+  "results": [
+    {
+      "source": "DSH 4318",
+      "schema": "5",
+      "healthSchema": 5,
+      "integrity": "ok",
+      "projectCount": 8,
+      "shelfCount": 8,
+      "shelfVisible": 7,
+      "configVersions": 6,
+      "changedOldTables": []
+    },
+    {
+      "source": "standalone 4317",
+      "schema": "5",
+      "healthSchema": 5,
+      "integrity": "ok",
+      "projectCount": 4,
+      "shelfCount": 4,
+      "shelfVisible": 4,
+      "configVersions": 0,
+      "changedOldTables": []
+    }
+  ],
+  "method": "Read-only live DB hash/row comparison to pre-upgrade VACUUM copy, quick_check, live /health /shelf /creative-assets"
+}
