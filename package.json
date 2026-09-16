@@ -29,7 +29,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test test/*.test.ts",
     "test:unit": "node --import tsx --test test/context.test.ts test/review.test.ts test/compiler-unit.test.ts test/source-unit.test.ts",
-    "test:integration": "node --import tsx --test test/domain.test.ts test/runtime.test.ts test/guards.test.ts test/workbench.test.ts test/plugin.test.ts test/configuration.test.ts test/memory.test.ts test/source-integration.test.ts test/source-boundary.test.ts test/stage1.test.ts test/stage2.test.ts",
+    "test:integration": "node --import tsx --test test/domain.test.ts test/runtime.test.ts test/guards.test.ts test/workbench.test.ts test/plugin.test.ts test/configuration.test.ts test/memory.test.ts test/source-integration.test.ts test/source-boundary.test.ts test/stage1.test.ts test/stage2.test.ts test/stage3.test.ts",
     "test:e2e": "node --import tsx --test test/http.test.ts test/upgrade-http.test.ts test/source-http.test.ts",
     "test:source-scale": "node --import tsx scripts/source-scale.ts",
     "test:stage2-scale": "node --import tsx scripts/stage2-scale.ts",

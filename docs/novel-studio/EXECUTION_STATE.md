@@ -1,5 +1,17 @@
 # Execution state — recovery entry
 
+## 当前阶段：项目会话壳与书架（2026-09-16，Stage 3 待正式运行读回）
+
+本轮顺序执行：Stage 1 `80648af` → Stage 2 `52a7fe0`、运行回执 `63d115c`，均已推送 `origin/main`。Stage 3 从 `main@63d115c` 的隔离工作树 `C:\Users\rgywd\Documents\novel-stage3`、分支 `codex/stage3-shelf-shell` 实施。主工作区保持不动；用户明确授权本轮提交与推送。下一步是最终 diff/测试、Stage 3 独立提交并快进合并推送，再基于既有忽略备份升级 4318/4317，跑旧项目回归与运行态哈希复核，追加运行回执提交。Stage 4–6 NOT_RUN。
+
+现状→缺口→最小修改→验收：Writer/Director、原作资料、配置版本和项目会话 epoch 已存在，但大型初次引导始终占据书架，全局创作资产需先选项目，封面/最近章/待审缺少轻量投影。增加全局 `ProjectShelf`，SourceLibrary inline 复用，CreativeAssets 复用已有配置表；schema 5 只增加 `project_shelf` 和 `project_covers`，保存封面独立乐观修订及可恢复备份，不写旧正文。项目 URL + 本地视图定位，失效章节与损坏位置可回退，不打开新任务。项目退出仍经 Editor.flush/会话门。
+
+已通过：`npm test` 86 PASS、0 FAIL/skip（Stage 3 新增 3 项），`npm run typecheck`、`npm run build`；4323 隔离服务使用全新测试库，真实 Chrome 浏览器在 1280×800 与 390×844 测书架/原作/资产、网格列表、上传移除封面、项目/Director 刷新恢复、返回书架、暗色，横向溢出均 0，pageerror 为空。浏览器人工操作归档→筛选→打开恢复；窄屏长标题封面裁切在截图发现并修复后重测。证据 `evidence/stage3-browser.json` 与 5 张截图。没有真实模型调用，不声明创作质量新验收。
+
+迁移：脚本 `scripts/stage3-migrate-copy.mjs` 对运行中的 schema 4 库只读 VACUUM INTO 至主工作区忽略的 `.local/backups/stage3-20260916/{dsh,local}-copy.sqlite`，仅在副本升级到 schema 5；20 类旧表行数/哈希全相同，两副本 integrity_check=ok，旧项目备份恢复为独立副本。证据 `evidence/stage3-migration.json`。正式实例尚为 schema 4，运行升级和回归尚未执行，不能据副本宣称已上线。
+
+最近修改：`src/{store,shelf,domain,http}.ts`、`src/ui/{main,ProjectShelf,CreativeAssets,Modal,SourceLibrary,style.css}`、`test/{stage3,configuration,stage2}.test.ts`、`scripts/stage3-{migrate-copy,browser}.mjs`、`package.json` 及四份执行文档/证据。当前未提交内容均在 Stage 3 隔离工作树。备份路径为旧库恢复点，绝不覆盖运行库或删除备份；回退须先停止本项目两服务并选对应库副本。Stage 2 文档下述“Stage 3 尚未开始”是 Stage 2 当时状态，以本节为准。
+
 ## 当前阶段：请求记录与查询成本（2026-09-16，Stage 2 实现与验证）
 
 Stage 1 `80648af`、Stage 2 实现 `52a7fe0` 已依次推送 `origin/main`。Stage 2 在独立工作树 `C:\Users\rgywd\Documents\novel-stage2`、分支 `codex/stage2-request-query-cost` 实施；原主工作树没有用户脏文件。**下一步顺序开始 Stage 3 项目会话壳与书架**；Stage 4–6 仍为 NOT_RUN。本段是当前恢复入口；下面 Stage 1 的“Stage 2 未开始/不推送”是该阶段当时的历史结论，已由本次用户明确推送授权取代。

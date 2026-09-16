@@ -1,5 +1,18 @@
 # 验收记录
 
+## Stage 3：项目会话壳与书架（2026-09-16）
+
+| 场景 | 实际证据 | 状态 |
+|---|---|---|
+| 旧项目/schema 4 升级与恢复 | 只读 VACUUM INTO 两运行库，副本升级 schema 5，20 类旧表哈希/行数未变，integrity_check=ok；旧项目备份在副本独立恢复。正式实例升级前保留完整私有旧库。 | **PASS（副本）** / **NOT_RUN（正式实例）**；`scripts/stage3-migrate-copy.mjs`、`evidence/stage3-migration.json`、`test/stage3.test.ts` |
+| 紧凑书架/封面/最近章/待审/归档 | HTTP 与 SQLite 回归：项目章节、成果状态和归档变更更新书架投影；封面签名/大小/独立 revision 校验，上传、读取、移除和完整项目备份恢复。实际隔离浏览器网格/列表、长标题、封面上传移除、归档筛选/打开恢复。 | **PASS**；`test/stage3.test.ts`、`evidence/stage3-browser.json`；浏览器归档操作 |
+| 原作与创作资产全局入口 | 原作资料复用既有 SourceLibrary，创作资产复用配置版本与绑定。全局版本保存不自动应用，全局绑定拒绝项目角色 ID；正在运行的任务仍使用固定配置。浏览器可从无项目状态进入、看到有效配置来源。 | **PASS**；`test/stage3.test.ts`、`evidence/stage3-{source,assets}-desktop.png` |
+| Writer/Director 身份和定位 | 同一个项目从书架进入模式，URL/本地位置刷新恢复，离开清除项目 URL，不自动创建任务。旧会话门和编辑器 flush 保留；旧双模式测试继续通过。 | **PASS**；`npm test`、`evidence/stage3-browser.json` |
+| 桌面/窄屏/主题 | 真实 Chrome 1280×800、390×844；书架和资产横向溢出 0，原作标题在固定导航下方，长标题窄屏封面裁切修复后重测，暗色可操作，浏览器 pageerror 为空。 | **PASS**；`scripts/stage3-browser.mjs`、5 张 `evidence/stage3-*.png` |
+| 真实模型和 Stage 4–6 | 本阶段只改全局 UI、配置绑定、封面与书架投影；未发起真实模型调用。World/Plot/统一审查仍须后续阶段单独实现和验收。 | **NOT_RUN** |
+
+当前 `npm test` 86 PASS、0 FAIL/skip，`npm run typecheck` / `npm run build` PASS；Stage 3 正式实例回归完成后补入运行证据。下文 Stage 2 的“Stage 3–6 NOT_RUN”是历史状态，以本节为准；保留原始验收条件。
+
 ## Stage 2：请求记录与查询成本（2026-09-16）
 
 | 场景 | 实际证据 | 状态 |

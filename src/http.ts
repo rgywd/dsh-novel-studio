@@ -20,6 +20,7 @@ import { sourceRoute } from './source-http.js';
 import { resolveStoryScope,type StoryScopeOptions } from './scope.js';
 import { planningInput } from './planning.js';
 import { artifactSummaries,chapterDetail,projectMetadata,projectNavigation,taskSummaries } from './projections.js';
+import { shelfProjects,coverGet,coverSave,coverRemove } from './shelf.js';
 export const API='/api/novel-studio';
 const num=z.number().int().positive();
 export async function readJson(req:IncomingMessage){let size=0;const chunks:Buffer[]=[];for await(const chunk of req){const b=Buffer.from(chunk);size+=b.length;requireThat(size<=64*1024*1024,'BODY_LIMIT','请求超过 64 MiB',413);chunks.push(b);}try{return JSON.parse(Buffer.concat(chunks).toString('utf8')||'{}');}catch{throw new DomainError('INVALID_JSON','请求不是有效 JSON',400);}}
@@ -35,6 +36,8 @@ export class HttpApp {
       if(url.pathname.startsWith(API)){
         const method=req.method??'GET';let body:any={};
         const download=url.pathname.slice(API.length).match(/^\/projects\/([^/]+)\/download$/);
+        const cover=url.pathname.slice(API.length).match(/^\/projects\/([^/]+)\/cover$/);
+        if(cover&&method==='GET'){const image=coverGet(this.domain,cover[1]);requireThat(image,'NOT_FOUND','封面不存在',404);res.writeHead(200,{'Content-Type':image.mime,'Content-Length':image.data.length,'Cache-Control':'private, max-age=0, must-revalidate'});res.end(Buffer.from(image.data));return;}
         if(download&&method==='GET'){const project=this.domain.project(download[1]);const format=z.enum(['txt','md','backup']).parse(url.searchParams.get('format'));const name=project.title+(format==='backup'?'.novel.json':'.'+format);const content=format==='backup'?JSON.stringify(this.domain.backup(project.id),null,2):this.domain.exportText(project.id,format);res.writeHead(200,{'Content-Type':format==='backup'?'application/json; charset=utf-8':'text/plain; charset=utf-8','Content-Disposition':`attachment; filename="novel-studio.${format==='backup'?'json':format}"; filename*=UTF-8''${encodeURIComponent(name)}`});res.end(content);return;}
         if(!['GET','HEAD'].includes(method)){requireThat(req.headers['content-type']?.startsWith('application/json')&&req.headers['x-novel-studio']==='1','CONTENT_TYPE','写请求需要 JSON 和本地工作台标识',403);body=await readJson(req);}
         const value=await this.dispatch(method,url.pathname.slice(API.length),body,url.searchParams);res.writeHead(200,{'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(value));return;
@@ -50,12 +53,25 @@ export class HttpApp {
   async dispatch(method:string,path:string,body:any={},query=new URLSearchParams()):Promise<any>{
     const segments=path.split('/').filter(Boolean);const [group,pid,resource,key,action]=segments;
     if(['sources','source-versions','source-runs','manifests'].includes(group))return sourceRoute(this.domain,this.runner,method,segments,body,query);
-    if(method==='GET'&&path==='/health')return {version:'0.3.0',dsh:this.runner.provider.info(),demo:this.runner.demo.info(),schema:4,prompts:Object.values(prompts).map(p=>({id:p.id,version:p.version,purpose:p.purpose}))};
+    if(method==='GET'&&path==='/health')return {version:'0.3.0',dsh:this.runner.provider.info(),demo:this.runner.demo.info(),schema:5,prompts:Object.values(prompts).map(p=>({id:p.id,version:p.version,purpose:p.purpose}))};
+    if(method==='GET'&&path==='/shelf')return shelfProjects(this.domain);
+    if(group==='creative-assets'){
+      const store=this.domain.store;
+      if(method==='GET'&&!pid)return {versions:listConfigs(store),global:binding(store,'global'),effective:resolveConfig(store,'global-preview'),samples:nativePresets};
+      if(method==='POST'&&pid==='preview')return importConfiguration(z.string().parse(body.raw),z.string().max(160).parse(body.name??'导入配置'),'本地文件',body.orderId);
+      if(method==='POST'&&pid==='save'){const raw=body.raw!==undefined?z.string().parse(body.raw):JSON.stringify({format:'dsh-novel-config',config:configPatchSchema.parse(body.config)});let version=importConfiguration(raw,z.string().trim().min(1).max(160).parse(body.name),'作者保存');if(body.parentId)version.parentId=configVersion(store,z.string().parse(body.parentId)).id;return store.transaction(()=>saveConfig(store,version));}
+      if(method==='POST'&&pid==='bind')return store.transaction(()=>{const key=z.string().nullable().parse(body.versionId);if(key){const version=configVersion(store,key);requireThat(!version.config.bindings?.characterId&&!version.config.bindings?.viewpointId,'GLOBAL_BINDING','全局规则不能绑定某本作品的可变角色；请改用项目配置',422);}bindConfig(store,'global',key,z.string().nullable().parse(body.expected));return {global:binding(store,'global'),effective:resolveConfig(store,'global-preview')};});
+      if(method==='POST'&&pid&&resource==='adapt')return adaptToNovel(configVersion(store,pid));
+    }
     if(group==='projects'&&!pid){if(method==='GET')return this.domain.store.list('projects').filter(p=>!p.sourceWorkspace);if(method==='POST')return this.domain.createProject(body);}
     if(path==='/backups/restore'&&method==='POST')return this.domain.restoreBackup(body);
     requireThat(group==='projects'&&pid,'NOT_FOUND','未知接口',404);requireThat(!this.domain.project(pid).sourceWorkspace||method==='GET'&&['requests','tasks','events'].includes(resource),'SOURCE_SCOPE','原作分析空间只允许通过有范围的原作接口操作',403);
     if(!resource){if(method==='GET')return this.domain.snapshot(pid);if(method==='PATCH')return this.domain.updateProject(pid,num.parse(body.revision),body.project);}
     if(resource==='metadata'&&method==='GET')return projectMetadata(this.domain,pid);
+    if(resource==='cover'){
+      if(method==='POST')return coverSave(this.domain,pid,z.object({base64:z.string(),mime:z.string(),expectedRevision:z.number().int().positive().nullable()}).parse(body));
+      if(method==='DELETE')return coverRemove(this.domain,pid,z.number().int().positive().parse(body.expectedRevision));
+    }
     if(resource==='navigation'&&method==='GET')return projectNavigation(this.domain,pid);
     if(resource==='source-baseline'&&method==='GET'){const row=this.domain.store.db.prepare("SELECT data FROM changesets WHERE projectId=? AND kind='source.activated' ORDER BY rowid LIMIT 1").get(pid);return row?JSON.parse(row.data as string):{assets:[]};}
     if(resource==='status'&&method==='GET')return {project:this.domain.project(pid),tasks:taskSummaries(this.domain,pid)};

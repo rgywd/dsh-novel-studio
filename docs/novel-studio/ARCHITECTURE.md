@@ -1,5 +1,13 @@
 # Architecture
 
+## 2026-09-16 Stage 3：全局壳、书架投影和创作资产
+
+`src/ui/ProjectShelf.tsx` 只在没有选中项目时渲染三个全局页签。原作页签复用 `SourceLibrary` 的既有分析和激活逻辑，以 inline 容器呈现；创作资产页签通过 `src/ui/CreativeAssets.tsx` 调用同一 `config_versions`、`config_bindings` 和 `resolveConfig`。全局绑定拒绝角色/视角的项目 ID；导入先预览兼容报告，保存独立版本后须显式设为全局。项目级覆盖和任务固定快照照旧。`main.tsx` 的项目会话协调器保护异步提交，返回书架先 flush 编辑器；URL `?project=` 与本地位置仅恢复视图，不启动任务，损坏或失效的定位回退到有效章节和工作台。
+
+schema 4→5 在事务中新增 `project_shelf`（最近章节 ID、标题、时间和待审数）及 `project_covers`（项目私有 BLOB、格式、独立乐观修订）。旧数据只做一次投影回填；后续 `Store.put` 在同一 SQLite 事务中更新投影。`GET /shelf` 只读项目元数据与投影，不扫正文/成果 payload；`/projects/:id/cover` 读取或按修订替换/移除，上传限制格式、签名和 2 MB。项目 JSON 备份有封面时包含原字节的 base64，并在独立副本中验证格式后恢复。来源工作空间不进入书架，也不能设置封面。
+
+迁移前使用只读 SQLite `VACUUM INTO` 在忽略的 `.local/backups/stage3-20260916/` 保存两个完整运行库，先在副本升级并比较 20 类旧表的行数与哈希、PRAGMA integrity_check 和旧项目独立恢复；失败时停止升级，保留原库。已升级的库若需回退程序，应先停止服务，从对应完整旧库副本恢复，不能让 schema 4 程序写 schema 5 数据库。无新增 npm 依赖、DSH Core 修改或正文格式迁移。
+
 ## 2026-09-16 Stage 2：诊断保留与读取投影
 
 schema 3→4 是增量事务迁移：保留旧 `requests` 表及字节不变的原行，复制为 `request_summaries`（不含编译正文/原始响应）和按 ID 读取的 `request_details`。新写入只进入新表。`src/requests.ts` 按任务、待审 artifact 的 generation/requestIds、已接受版本显式 requestIds 或旧 commitKey 反查保护引用；未终结请求也不清。100 条/90 天详情与 500 条/365 天摘要独立限额，单项目主动清理与清理痕迹可见；导出/恢复同时保存可用详情或墓碑摘要。旧请求表作为迁移来源保留，后续归档策略仍可审计，不误把详情物理存在理解为可以无限增长。

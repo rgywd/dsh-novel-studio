@@ -1,0 +1,54 @@
+{
+  "at": "2026-09-16T07:39:33.392Z",
+  "status": "PASS",
+  "server": "http://127.0.0.1:4323",
+  "browser": "Chrome headless via Playwright",
+  "checks": [
+    {
+      "name": "desktop shelf",
+      "status": "PASS",
+      "detail": "1280x800, project project_d6572d5d-a259-47ec-a3e4-88a96150113f, overflow 0px"
+    },
+    {
+      "name": "shelf controls",
+      "status": "PASS",
+      "detail": "Grid/list switch and cover upload/remove round trip through real HTTP"
+    },
+    {
+      "name": "global source library",
+      "status": "PASS",
+      "detail": "Existing source workflow embedded, heading y=142px"
+    },
+    {
+      "name": "projectless creative assets",
+      "status": "PASS",
+      "detail": "Effective global binding and version panel available without a project"
+    },
+    {
+      "name": "project position",
+      "status": "PASS",
+      "detail": "Director and project project_d6572d5d-a259-47ec-a3e4-88a96150113f restored after reload"
+    },
+    {
+      "name": "project navigation",
+      "status": "PASS",
+      "detail": "Director to global shelf clears project URL without new task"
+    },
+    {
+      "name": "narrow shelf",
+      "status": "PASS",
+      "detail": "390x844, overflow 0px"
+    },
+    {
+      "name": "narrow assets",
+      "status": "PASS",
+      "detail": "390x844, overflow 0px"
+    },
+    {
+      "name": "dark theme",
+      "status": "PASS",
+      "detail": "Global assets remain operable in dark theme"
+    }
+  ],
+  "errors": []
+}

@@ -27,7 +27,7 @@ export class Store {
       CREATE TABLE IF NOT EXISTS imports(id TEXT PRIMARY KEY,projectId TEXT NOT NULL,name TEXT NOT NULL,raw TEXT NOT NULL,at TEXT NOT NULL);
       CREATE VIRTUAL TABLE IF NOT EXISTS search USING fts5(id UNINDEXED,projectId UNINDEXED,title,body,tokenize='unicode61');`);
     const schema=this.db.prepare("SELECT value FROM meta WHERE key='schema'").get()?.value;
-    if(!['1','2','3','4'].includes(String(schema))) throw new DomainError('SCHEMA','数据库版本不兼容',500);
+    if(!['1','2','3','4','5'].includes(String(schema))) throw new DomainError('SCHEMA','数据库版本不兼容',500);
     // Additive migration: existing rows, immutable prose and the host database are untouched.
     if(schema==='1')this.transaction(()=>{this.db.exec(`
       CREATE TABLE config_versions(id TEXT PRIMARY KEY,data TEXT NOT NULL);
@@ -46,7 +46,7 @@ export class Store {
       CREATE TABLE source_decisions(id TEXT PRIMARY KEY,workId TEXT NOT NULL,versionId TEXT NOT NULL,data TEXT NOT NULL);
       CREATE TABLE import_manifests(id TEXT PRIMARY KEY,workId TEXT NOT NULL,versionId TEXT NOT NULL,data TEXT NOT NULL);
       UPDATE meta SET value='3' WHERE key='schema';`);});
-    if(schema!=='4')this.transaction(()=>{
+    if(schema!=='4'&&schema!=='5')this.transaction(()=>{
       this.db.exec(`CREATE TABLE request_summaries(id TEXT PRIMARY KEY,projectId TEXT NOT NULL REFERENCES projects(id),taskId TEXT NOT NULL,createdAt TEXT NOT NULL,status TEXT NOT NULL,detailState TEXT NOT NULL,data TEXT NOT NULL);
         CREATE INDEX request_summaries_project ON request_summaries(projectId,createdAt);
         CREATE TABLE request_details(id TEXT PRIMARY KEY REFERENCES request_summaries(id) ON DELETE CASCADE,data TEXT NOT NULL);`);
@@ -59,6 +59,17 @@ export class Store {
         this.db.prepare('INSERT INTO request_details VALUES(?,?)').run(summary.id,JSON.stringify(detail));
       }
       this.db.exec("UPDATE meta SET value='4' WHERE key='schema';");
+    });
+    if(schema!=='5')this.transaction(()=>{
+      this.db.exec(`CREATE TABLE project_shelf(projectId TEXT PRIMARY KEY REFERENCES projects(id),recentChapterId TEXT,recentTitle TEXT,recentAt TEXT,pendingReview INTEGER NOT NULL DEFAULT 0);
+        CREATE TABLE project_covers(projectId TEXT PRIMARY KEY REFERENCES projects(id),revision INTEGER NOT NULL,mime TEXT NOT NULL,data BLOB NOT NULL,updatedAt TEXT NOT NULL);`);
+      this.db.exec('INSERT INTO project_shelf(projectId) SELECT id FROM projects');
+      // One-time backfill. Thereafter the shelf never reads chapter prose or artifact payloads.
+      for(const row of this.db.prepare("SELECT projectId,json_extract(data,'$.id') id,json_extract(data,'$.title') title,json_extract(data,'$.updatedAt') at FROM objects WHERE kind='chapter' ORDER BY at,rowid").all())
+        this.db.prepare('UPDATE project_shelf SET recentChapterId=?,recentTitle=?,recentAt=? WHERE projectId=?').run(row.id,row.title,row.at,row.projectId);
+      for(const row of this.db.prepare("SELECT projectId,COUNT(*) total FROM artifacts WHERE json_extract(data,'$.status')='pending' GROUP BY projectId").all())
+        this.db.prepare('UPDATE project_shelf SET pendingReview=? WHERE projectId=?').run(row.total,row.projectId);
+      this.db.exec("UPDATE meta SET value='5' WHERE key='schema';");
     });
   }
   transaction<T>(fn:()=>T):T { this.db.exec('BEGIN IMMEDIATE');try{const value=fn();this.db.exec('COMMIT');return value;}catch(e){this.db.exec('ROLLBACK');throw e;} }
@@ -76,13 +87,14 @@ export class Store {
   }
   put<K extends keyof Tables>(table:K,value:Tables[K]):void {
     const v=value as any;
-    if(table==='projects') this.db.prepare('INSERT INTO projects(id,data) VALUES(?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data').run(v.id,JSON.stringify(v));
+    if(table==='projects') {this.db.prepare('INSERT INTO projects(id,data) VALUES(?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data').run(v.id,JSON.stringify(v));this.db.prepare('INSERT OR IGNORE INTO project_shelf(projectId) VALUES(?)').run(v.id);}
     else if(table==='objects') {
       this.db.prepare('INSERT INTO objects(id,projectId,kind,data) VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data,kind=excluded.kind').run(v.id,v.projectId,v.kind,JSON.stringify(v));
       this.db.prepare('DELETE FROM search WHERE id=?').run(v.id);
       this.db.prepare('INSERT INTO search(id,projectId,title,body) VALUES(?,?,?,?)').run(v.id,v.projectId,v.title,`${v.body}\n${JSON.stringify(v.fields)}`);
+      if(v.kind==='chapter')this.db.prepare('UPDATE project_shelf SET recentChapterId=?,recentTitle=?,recentAt=? WHERE projectId=? AND (recentAt IS NULL OR recentAt<=?)').run(v.id,v.title,v.updatedAt,v.projectId,v.updatedAt);
     } else if(table==='versions') this.db.prepare('INSERT INTO versions(id,projectId,chapterId,commitKey,data) VALUES(?,?,?,?,?)').run(v.id,v.projectId,v.chapterId,v.commitKey??null,JSON.stringify(v));
-    else if(table==='artifacts') this.db.prepare('INSERT INTO artifacts(id,projectId,taskId,data) VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data').run(v.id,v.projectId,v.taskId,JSON.stringify(v));
+    else if(table==='artifacts') {const previous=this.db.prepare("SELECT json_extract(data,'$.status') status FROM artifacts WHERE id=?").get(v.id)?.status;this.db.prepare('INSERT INTO artifacts(id,projectId,taskId,data) VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data').run(v.id,v.projectId,v.taskId,JSON.stringify(v));const delta=Number(v.status==='pending')-Number(previous==='pending');if(delta)this.db.prepare('UPDATE project_shelf SET pendingReview=MAX(0,pendingReview+?) WHERE projectId=?').run(delta,v.projectId);}
     else this.db.prepare('INSERT INTO tasks(id,projectId,data) VALUES(?,?,?) ON CONFLICT(id) DO UPDATE SET data=excluded.data').run(v.id,v.projectId,JSON.stringify(v));
   }
   event(projectId:string,taskId:string|null,type:string,message:string,data?:unknown){ this.db.prepare('INSERT INTO events(projectId,taskId,at,type,message,data) VALUES(?,?,?,?,?,?)').run(projectId,taskId,now(),type,message,JSON.stringify(data??{})); }
